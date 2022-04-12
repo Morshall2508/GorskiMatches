@@ -5,25 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cb9705de-6a67-46eb-9660-fcb901ad7a5a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/HELP.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/piekoszek/gorskimatches/GorskiMatchesApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/pl/piekoszek/gorskimatches/GorskiMatchesApplicationTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/piekoszek/gorskimatches/image/CreateImage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/piekoszek/gorskimatches/GorskiMatchesApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/piekoszek/gorskimatches/GorskiMatchesApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/pl/piekoszek/gorskimatches/GorskiMatchesApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/pl/piekoszek/gorskimatches/GorskiMatchesApplicationTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="aa" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -56,13 +58,32 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
   </component>
-  <component name="RunManager">
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\macie\IdeaProjects\GorskiMatches\src\main\java\pl\piekoszek\gorskimatches" />
+      <recent name="C:\Users\macie\IdeaProjects\GorskiMatches\build" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.GorskiMatchesApplication">
+    <configuration name="CreateImage" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="pl.piekoszek.gorskimatches.image.CreateImage" />
+      <module name="GorskiMatches" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pl.piekoszek.gorskimatches.image.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="GorskiMatchesApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="pl.piekoszek.gorskimatches.GorskiMatchesApplication" />
       <module name="GorskiMatches" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="pl.piekoszek.gorskimatches.*" />
+          <option name="PATTERN" value="pl.piekoszek.gorskimatches.image.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -73,6 +94,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.GorskiMatchesApplication" />
+        <item itemvalue="Application.CreateImage" />
       </list>
     </recent_temporary>
   </component>
@@ -97,16 +119,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/pl/piekoszek/gorskimatches/GorskiMatchesApplication.java</url>
-          <line>6</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
