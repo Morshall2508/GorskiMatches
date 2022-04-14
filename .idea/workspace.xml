@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cb9705de-6a67-46eb-9660-fcb901ad7a5a" name="Changes" comment="">
+    <list default="true" id="cb9705de-6a67-46eb-9660-fcb901ad7a5a" name="Changes" comment="GM-18: Added a change from Buffered image to bytes, the function to show in web browser does not work yet.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/piekoszek/gorskimatches/GorskiMatchesApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/piekoszek/gorskimatches/GorskiMatchesApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/piekoszek/gorskimatches/image/LineImageCreator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/piekoszek/gorskimatches/image/LineImageCreator.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,7 +24,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="feature/GM-17-creating-line-image-in-java" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -118,7 +120,14 @@
       <option name="project" value="LOCAL" />
       <updated>1649925800311</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="GM-17: New function to create image and create single 20x700px line has been added. Corrected backslashes and used File.separator instead.">
+      <created>1649933717678</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1649933717678</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -135,6 +144,13 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="GM-17: New function to create image and create single 20x700px line has been added." />
     <MESSAGE value="GM-17: New function to create image and create single 20x700px line has been added. Changes been made to names of classes and methods." />
-    <option name="LAST_COMMIT_MESSAGE" value="GM-17: New function to create image and create single 20x700px line has been added. Changes been made to names of classes and methods." />
+    <MESSAGE value="GM-17: New function to create image and create single 20x700px line has been added. Corrected backslashes and used File.separator instead." />
+    <MESSAGE value="GM-18: Added a change from Buffered image to bytes, the function to show in web browser does not work yet." />
+    <option name="LAST_COMMIT_MESSAGE" value="GM-18: Added a change from Buffered image to bytes, the function to show in web browser does not work yet." />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/GorskiMatches$GorskiMatchesApplication.ic" NAME="GorskiMatchesApplication Coverage Results" MODIFIED="1649943151868" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>pl.piekoszek.gorskimatches.image.*</FILTER>
+    </SUITE>
   </component>
 </project>
