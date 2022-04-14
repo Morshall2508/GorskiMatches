@@ -12,7 +12,7 @@ public class LineImageCreator {
         Graphics2D drawer = lineImage.createGraphics();
         drawer.setBackground(Color.black);
         drawer.clearRect(90, 50, 20, 700);
-        File file = new File("build\\line.png");
+        File file = new File("build" + File.separator + "line.png");
         ImageIO.write(lineImage,"PNG",file);
     }
 }
