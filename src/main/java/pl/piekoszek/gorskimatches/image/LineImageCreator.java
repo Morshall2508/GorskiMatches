@@ -13,7 +13,7 @@ public class LineImageCreator {
         drawer.setBackground(Color.black);
         drawer.clearRect(90, 50, 20, 700);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ImageIO.write(lineImage, "jpg", baos);
+        ImageIO.write(lineImage, "png", baos);
         byte[] bytes = baos.toByteArray();
         return bytes;
     }
