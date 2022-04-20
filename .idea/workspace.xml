@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cb9705de-6a67-46eb-9660-fcb901ad7a5a" name="Changes" comment="GM-18: Added a change from Buffered image to bytes, the function to show in web browser does not work yet.">
-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/piekoszek/gorskimatches/image/ImageControler.java" afterDir="false" />
+    <list default="true" id="cb9705de-6a67-46eb-9660-fcb901ad7a5a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/piekoszek/gorskimatches/GorskiMatchesApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/piekoszek/gorskimatches/GorskiMatchesApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/piekoszek/gorskimatches/image/LineImageCreator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/piekoszek/gorskimatches/image/LineImageCreator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/piekoszek/gorskimatches/image/ImageControler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/piekoszek/gorskimatches/image/ImageControler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -135,7 +134,14 @@
       <option name="project" value="LOCAL" />
       <updated>1649965501666</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="GM-18: Added a change from Buffered image to bytes, the function to show in web browser does not work yet.">
+      <created>1649966159781</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1649966159781</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
