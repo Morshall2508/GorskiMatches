@@ -14,7 +14,6 @@ public class LineImageCreator {
         drawer.clearRect(90, 50, 20, 700);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ImageIO.write(lineImage, "png", baos);
-        byte[] bytes = baos.toByteArray();
-        return bytes;
+        return baos.toByteArray();
     }
 }
