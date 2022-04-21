@@ -8,10 +8,15 @@ import java.io.IOException;
 @RestController
 @RequestMapping("api")
 class ImageController {
+
+    private final LineImageCreator lineImageCreator;
+
+    ImageController(LineImageCreator lineImageCreator){
+        this.lineImageCreator = lineImageCreator;
+    }
     @RequestMapping(value = "image", produces = MediaType.IMAGE_PNG_VALUE)
     byte[] getImage() throws IOException {
-        var createImage = new LineImageCreator();
-        return createImage.create();
+        return lineImageCreator.create();
     }
 }
 
