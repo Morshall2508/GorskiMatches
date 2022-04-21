@@ -16,7 +16,8 @@ class ImageController {
         this.lineImageCreator = lineImageCreator;
     }
     @GetMapping(value = "image", produces = MediaType.IMAGE_PNG_VALUE)
-    byte[] getImage() throws IOException {
+        byte[] getImage() throws IOException {
+
         return lineImageCreator.create();
     }
 }
