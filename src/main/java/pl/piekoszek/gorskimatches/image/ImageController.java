@@ -11,8 +11,7 @@ class ImageController {
     @RequestMapping(value = "image", produces = MediaType.IMAGE_PNG_VALUE)
     byte[] getImage() throws IOException {
         var createImage = new LineImageCreator();
-        var bytes = createImage.create();
-        return bytes;
+        return createImage.create();
     }
 }
 
