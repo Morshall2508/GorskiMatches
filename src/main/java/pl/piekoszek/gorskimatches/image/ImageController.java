@@ -10,7 +10,7 @@ import java.awt.*;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("api")
+@RequestMapping("number")
 class ImageController {
 
     private final LineImageCreator lineImageCreator;
@@ -19,10 +19,10 @@ class ImageController {
     ImageController(LineImageCreator lineImageCreator){
         this.lineImageCreator = lineImageCreator;
     }
-    @GetMapping(value = "image", produces = MediaType.IMAGE_PNG_VALUE)
-        byte[] getImage() throws IOException {
+    @GetMapping(value = "{number}", produces = MediaType.IMAGE_PNG_VALUE)
+        byte[] getImage(@PathVariable int number) throws IOException {
 
-        return lineImageCreator.create();
+        return lineImageCreator.create(number);
     }
 }
 
