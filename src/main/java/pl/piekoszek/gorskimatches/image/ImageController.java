@@ -10,7 +10,7 @@ import java.awt.*;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("number")
+@RequestMapping("api/number")
 class ImageController {
 
     private final LineImageCreator lineImageCreator;
