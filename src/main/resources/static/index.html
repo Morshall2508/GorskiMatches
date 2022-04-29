@@ -10,5 +10,13 @@
 </head>
 <body>
     <p>Here should show a different number</p>
-    <img src="api/number/">
+    <img id="number" src="api/number/3">
 </body>
+
+<script>
+<!--    document.getElementById("number").src = 'number';-->
+        const urlParams = new URLSearchParams(window.location.search);
+        const number = urlParams.get('number');
+        console.log(number);
+
+</script>
