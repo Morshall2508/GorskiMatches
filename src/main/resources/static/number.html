@@ -5,12 +5,13 @@
 
 </head>
 <body>
-<p>Here should show a different number</p>
+<p>Here should show a number with proper URL code</p>
 <img id="number" src="/api/number/">
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const number = urlParams.get('number');
         console.log(number);
+        var image = document.getElementById("number");
     </script>
 
 </body>
