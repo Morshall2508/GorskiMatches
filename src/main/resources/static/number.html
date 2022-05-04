@@ -11,8 +11,7 @@
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const number = urlParams.get('number');
-        console.log(number);
-        image = document.getElementById("image");
+        const image = document.getElementById("image");
         image.src = `/api/number/${number}`
 </script>
 
