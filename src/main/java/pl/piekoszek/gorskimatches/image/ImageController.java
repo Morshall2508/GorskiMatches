@@ -5,10 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.awt.*;
 import java.io.IOException;
-import java.lang.reflect.Proxy;
+
 
 @RestController
 @RequestMapping("api/number")
@@ -21,7 +19,6 @@ class ImageController {
         this.lineImageCreator = lineImageCreator;
     }
     @GetMapping(value = "{number}", produces = MediaType.IMAGE_PNG_VALUE)
-
         byte[] getImage(@PathVariable int number) throws IOException {
 
         return lineImageCreator.create(number);
