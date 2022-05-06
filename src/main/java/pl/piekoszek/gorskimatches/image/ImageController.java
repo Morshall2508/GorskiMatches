@@ -1,5 +1,6 @@
 package pl.piekoszek.gorskimatches.image;
 
+import org.springframework.core.style.ToStringCreator;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,16 +12,17 @@ import java.io.IOException;
 @RequestMapping("api/number")
 class ImageController {
 
-    private final LineImageCreator lineImageCreator;
+    private final EquationCreator equationCreator;
 
 
-    ImageController(LineImageCreator lineImageCreator){
-        this.lineImageCreator = lineImageCreator;
+    ImageController(EquationCreator equationCreator){
+        this.equationCreator = equationCreator;
     }
     @GetMapping(value = "{number}", produces = MediaType.IMAGE_PNG_VALUE)
-        byte[] getImage(@PathVariable char number) throws IOException {
+        byte[] getImage(@PathVariable() String number) throws IOException {
 
-        return lineImageCreator.create(number);
+        return equationCreator.create(number);
+
     }
 }
 
