@@ -14,17 +14,17 @@ public class LineImageCreator {
 
     {
 
-        var line0 = new LineInfo(20, 20, true); //Lines from 0-6 are responsible for numbers
-        var line1 = new LineInfo(20, 20, false);
-        var line2 = new LineInfo(20, 280, true);
-        var line3 = new LineInfo(360, 20, false);
-        var line4 = new LineInfo(20, 280, false);
-        var line5 = new LineInfo(20, 560, true);
-        var line6 = new LineInfo(360, 280, false);
-        var line7 = new LineInfo(20, 280, true); //minus -
-        var line8 = new LineInfo(180, 150, false); //plus +
-        var line9 = new LineInfo(20, 240, true); //equals top =
-        var line10 = new LineInfo(20, 320, true); //equals bottom =
+        var line0 = new LineInfo(60, 20, true); //Lines from 0-6 are responsible for numbers
+        var line1 = new LineInfo(20, 40, false);
+        var line2 = new LineInfo(60, 320, true);
+        var line3 = new LineInfo(360, 40, false);
+        var line4 = new LineInfo(20, 340, false);
+        var line5 = new LineInfo(60, 620, true);
+        var line6 = new LineInfo(360, 340, false);
+        var line7 = new LineInfo(60, 320, true); //minus -
+        var line8 = new LineInfo(190, 190, false); //plus +
+        var line9 = new LineInfo(60, 300, true); //equals top =
+        var line10 = new LineInfo(60, 360, true); //equals bottom =
 
         lineInfosByNumberOrSign['+'] = new LineInfo[]{line7, line8}; // plus +
         lineInfosByNumberOrSign['-'] = new LineInfo[]{line7}; // minus -
@@ -56,7 +56,7 @@ public class LineImageCreator {
     private void drawHorizontalLine(int x, int y, BufferedImage lineImage) {
         Graphics2D drawLine = lineImage.createGraphics();
         drawLine.setBackground(black);
-        drawLine.clearRect(x, y, 360, 20);
+        drawLine.clearRect(x, y, 280, 20);
     }
 
     private void drawVerticalLine(int x, int y, BufferedImage lineImage) {
