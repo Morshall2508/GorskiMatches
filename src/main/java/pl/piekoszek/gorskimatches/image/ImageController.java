@@ -19,10 +19,10 @@ class ImageController {
         this.equationCreator = equationCreator;
     }
 
-    @GetMapping(value = "{number}", produces = MediaType.IMAGE_PNG_VALUE)
-    byte[] getImage(@PathVariable() String number) throws IOException {
+    @GetMapping(value = "{equation}", produces = MediaType.IMAGE_PNG_VALUE)
+    byte[] getImage(@PathVariable() String equation) throws IOException {
 
-        return equationCreator.create(number);
+        return equationCreator.create(equation);
     }
 }
 
