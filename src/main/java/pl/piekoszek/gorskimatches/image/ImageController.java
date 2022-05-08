@@ -5,22 +5,24 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.io.IOException;
 
 @RestController
-@RequestMapping("api/number")
+@RequestMapping("api/equation")
 class ImageController {
 
-    private final LineImageCreator lineImageCreator;
+    private final EquationCreator equationCreator;
 
 
-    ImageController(LineImageCreator lineImageCreator){
-        this.lineImageCreator = lineImageCreator;
+    ImageController(EquationCreator equationCreator) {
+        this.equationCreator = equationCreator;
     }
-    @GetMapping(value = "{number}", produces = MediaType.IMAGE_PNG_VALUE)
-        byte[] getImage(@PathVariable int number) throws IOException {
 
-        return lineImageCreator.create(number);
+    @GetMapping(value = "{equation}", produces = MediaType.IMAGE_PNG_VALUE)
+    byte[] getImage(@PathVariable() String equation) throws IOException {
+
+        return equationCreator.create(equation);
     }
 }
 
