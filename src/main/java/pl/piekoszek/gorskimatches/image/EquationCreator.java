@@ -10,7 +10,6 @@ import java.io.IOException;
 @Component
 public class EquationCreator {
 
-    String[] randomEquation = new String[]{"9+2=6", "5+7=2", "9+3=5", "4+6=4", "5+2=8"};
 
     private final LineImageCreator lineImageCreator;
 

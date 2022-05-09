@@ -1,16 +1,31 @@
 <!DOCTYPE html>
 <html lang="eng">
 <head>
-<style>
+    <style>
 button {
     margin: 15px;
 }
-</style>
+
+
+
+
+
+    </style>
 </head>
 <body>
-    <p>Click the button bellow</p>
+<p>Click the button bellow</p>
 
-    <form action="/api/equation/2-2=4">
-        <input type="submit" value="Random equation"/>
-    </form>
+<form>
+    <input type="button" value="Random equation" onclick="setUrl(this.form.url)"/>
+</form>
+
+<script>
+    const equations = ["9+2=6", "5+7=2", "9+3=5", "4+6=4", "5+2=8"];
+    const equation = equations[Math.floor(Math.random() * equations.length)];
+    function setUrl(){
+    location.href = `/api/equation/${equation}`;
+<!--    console.log(equation);-->
+    }
+</script>
 </body>
+</html>
