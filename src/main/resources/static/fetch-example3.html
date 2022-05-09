@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fetch example 3</title>
+</head>
+<body>
+
+<div>Name</div>
+<input id="name">
+<div>Surname</div>
+<input id="surname">
+<div>Age</div>
+<input type="number" id="age">
+
+<button id="button">Click</button>
+
+<div id="adult"></div>
+<div id="gender"></div>
+
+</body>
+
+<script>
+
+    document.getElementById("button").onclick = () => {
+        fetch("/api/person",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    name: document.getElementById("name").value,
+                    surname: document.getElementById("surname").value,
+                    age: parseInt(document.getElementById("age").value)
+                })
+            })
+            .then(res => res.json())
+            .then(personInfo => {
+                document.getElementById("adult").innerText = personInfo.adult ? "Adult" : "Not adult";
+                document.getElementById("gender").innerText = personInfo.gender;
+            });
+    };
+
+</script>
+
+</html>

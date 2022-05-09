@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fetch example 1</title>
+</head>
+<body>
+
+<button id="button">Click</button>
+<div id="text"></div>
+
+</body>
+
+<script>
+
+    document.getElementById("button").onclick = () => {
+        fetch("/api/text")
+            .then(res => res.text())
+            .then(text => {
+                document.getElementById("text").innerText = text;
+            });
+    };
+
+</script>
+
+</html>
