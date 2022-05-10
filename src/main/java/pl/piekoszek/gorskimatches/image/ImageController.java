@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("api/equation")
+@RequestMapping("api/image/equation")
 class ImageController {
 
     private final EquationCreator equationCreator;

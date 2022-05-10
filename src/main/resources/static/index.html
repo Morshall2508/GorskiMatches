@@ -5,27 +5,28 @@
 button {
     margin: 15px;
 }
-
-
-
-
-
     </style>
 </head>
 <body>
 <p>Click the button bellow</p>
-
-<form>
-    <input type="button" value="Random equation" onclick="setUrl(this.form.url)"/>
-</form>
+<div id="equation"> </div>
+<button id="button">Random equation</button>
+<!--<form>-->
+<!--    <input type="button" value="Random equation" onclick="setUrl(this.form.url)"/>-->
+<!--</form>-->
 
 <script>
-    const equations = ["9+2=6", "5+7=2", "9+3=5", "4+6=4", "5+2=8"];
-    const equation = equations[Math.floor(Math.random() * equations.length)];
-    function setUrl(){
-    location.href = `/api/equation/${equation}`;
-<!--    console.log(equation);-->
-    }
+
+    document.getElementById("button").onclick = () => {
+        fetch("api/equation/newequation/1")
+            .then(res => res.text())
+            .then(text =>{
+<!--            document.getElementById("text").innerText = text;-->
+
+            location.href = "/api/image/equation/"+text;
+        });
+    };
+
 </script>
 </body>
 </html>
