@@ -17,8 +17,8 @@ class EquationController {
 
     }
 
-    @GetMapping("{randomNumber}")
-    String fetchString(@PathVariable() String randomNumber) {
+    @GetMapping("randomNumber")
+    String fetchString() {
         return equationRandomizer.randomNumber;
     }
 

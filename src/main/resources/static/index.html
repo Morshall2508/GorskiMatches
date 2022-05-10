@@ -5,11 +5,12 @@
 button {
     margin: 15px;
 }
+
     </style>
 </head>
 <body>
 <p>Click the button bellow</p>
-<div id="equation"> </div>
+<div id="equation"></div>
 <button id="button">Random equation</button>
 <!--<form>-->
 <!--    <input type="button" value="Random equation" onclick="setUrl(this.form.url)"/>-->
@@ -18,14 +19,13 @@ button {
 <script>
 
     document.getElementById("button").onclick = () => {
-        fetch("api/equation/newequation/1")
+        fetch("api/equation/newequation/randomNumber")
             .then(res => res.text())
             .then(text =>{
-<!--            document.getElementById("text").innerText = text;-->
-
             location.href = "/api/image/equation/"+text;
         });
     };
+
 
 </script>
 </body>
