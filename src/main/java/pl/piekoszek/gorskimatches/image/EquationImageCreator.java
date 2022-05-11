@@ -1,4 +1,4 @@
-package pl.piekoszek.gorskimatches.equation;
+package pl.piekoszek.gorskimatches.image;
 
 import org.springframework.stereotype.Component;
 import pl.piekoszek.gorskimatches.image.LineImageCreator;
