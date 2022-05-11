@@ -18,8 +18,7 @@ class EquationController {
 
     @GetMapping("randomNumber")
     String fetchString() {
-        return equationRandomizer.randomNumber;
+        return equationRandomizer.randomNumber();
     }
-
 
 }
