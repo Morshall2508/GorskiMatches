@@ -1,6 +1,7 @@
-package pl.piekoszek.gorskimatches.image;
+package pl.piekoszek.gorskimatches.equation;
 
 import org.springframework.stereotype.Component;
+import pl.piekoszek.gorskimatches.image.LineImageCreator;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -8,11 +9,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 @Component
-public class EquationCreator {
+public class EquationImageCreator {
 
     private final LineImageCreator lineImageCreator;
 
-    EquationCreator(LineImageCreator lineImageCreator) {
+    EquationImageCreator(LineImageCreator lineImageCreator) {
         this.lineImageCreator = lineImageCreator;
     }
 

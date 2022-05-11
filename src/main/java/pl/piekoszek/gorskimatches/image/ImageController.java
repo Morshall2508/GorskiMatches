@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pl.piekoszek.gorskimatches.equation.EquationImageCreator;
 
 import java.io.IOException;
 
@@ -12,10 +13,10 @@ import java.io.IOException;
 @RequestMapping("api/image/equation")
 class ImageController {
 
-    private final EquationCreator equationCreator;
+    private final EquationImageCreator equationCreator;
 
 
-    ImageController(EquationCreator equationCreator) {
+    ImageController(EquationImageCreator equationCreator) {
         this.equationCreator = equationCreator;
     }
 
