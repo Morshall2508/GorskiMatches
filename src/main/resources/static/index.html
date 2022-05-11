@@ -1,14 +1,23 @@
 <!DOCTYPE html>
 <html lang="eng">
 <head>
-<style>
-    img{
-    height: 450px;
-    width:auto;
-    }
-</style>
+    <style>
+button {
+    margin: 15px;
+}
+    </style>
 </head>
+
 <body>
-    <p>Here should show a different number</p>
-    <img src="api/number/">
+<p>Click the button bellow</p>
+<div id="equation"></div>
+<button id="button">Random equation</button>
+
+<script>
+        document.getElementById("button").onclick = () => {
+        location.href = "equation.html";
+    };
+
+</script>
 </body>
+</html>

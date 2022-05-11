@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("api/equation")
+@RequestMapping("api/image/equation")
 class ImageController {
 
-    private final EquationCreator equationCreator;
+    private final EquationImageCreator equationCreator;
 
 
-    ImageController(EquationCreator equationCreator) {
+    ImageController(EquationImageCreator equationCreator) {
         this.equationCreator = equationCreator;
     }
 

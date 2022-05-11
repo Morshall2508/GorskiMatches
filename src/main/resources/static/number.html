@@ -2,21 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-<style>
+    <style>
     img{
     width:50%;
     }
-</style>
+
+    </style>
 </head>
 <body>
 <p>Here should show a number with proper URL code</p>
 <img id="image">
 
-    <script>
+<script>
         const urlParams = new URLSearchParams(window.location.search);
         const number = urlParams.get('number');
         const image = document.getElementById("image");
-        image.src = `/api/number/${number}`
+        image.src = `/api/number/${number}`;
 </script>
 
 </body>
