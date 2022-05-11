@@ -10,7 +10,6 @@ import java.io.IOException;
 @Component
 public class EquationCreator {
 
-
     private final LineImageCreator lineImageCreator;
 
     EquationCreator(LineImageCreator lineImageCreator) {

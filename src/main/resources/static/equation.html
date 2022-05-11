@@ -5,6 +5,22 @@
     <title>Title</title>
 </head>
 <body>
+<style>
+    img{
+    width:55%;
+    }
 
+</style>
+<img id="image">
+
+<script>
+        const image = document.getElementById("image");
+            fetch("api/equation/random")
+            .then(res => res.text())
+            .then(text =>{
+            image.src = `/api/image/equation/${text}`;
+        });
+
+</script>
 </body>
 </html>

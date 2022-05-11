@@ -16,10 +16,11 @@ button {
 <script>
 
     document.getElementById("button").onclick = () => {
-        fetch("api/equation/newequation/randomNumber")
+        fetch("api/equation/random")
             .then(res => res.text())
             .then(text =>{
-            location.href = "/api/image/equation/"+text;
+            console.log(text);
+            location.href = "equation.html";
         });
     };
 
