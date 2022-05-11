@@ -12,7 +12,6 @@ class EquationController {
 
     EquationController(EquationRandomizer equationRandomizer) {
         this.equationRandomizer = equationRandomizer;
-
     }
 
     @GetMapping("random")
