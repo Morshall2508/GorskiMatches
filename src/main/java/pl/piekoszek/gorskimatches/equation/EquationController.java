@@ -18,5 +18,4 @@ class EquationController {
     String fetchString() {
         return equationRandomizer.randomEquation();
     }
-
 }

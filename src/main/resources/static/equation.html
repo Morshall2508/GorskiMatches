@@ -8,11 +8,14 @@
 <style>
     img{
     width:55%;
-    }
-
+    input{
+    display: flex;
+    margin: 1.5em;
+}
 </style>
 <img id="image">
-
+<input type = "answer" id="answer">
+<button id="buttonCheck">Check!</button>
 <script>
         const image = document.getElementById("image");
             fetch("api/equation/random")
@@ -21,6 +24,11 @@
             image.src = `/api/image/equation/${text}`;
         });
 
+</script>
+<script>
+            document.getElementById("buttonCheck").onclick = () => {
+
+    };
 </script>
 </body>
 </html>
