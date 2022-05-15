@@ -8,7 +8,7 @@ import java.util.Random;
 public class EquationRandomizer {
 
     public String randomEquation() {
-        String[] randomEquations = {"9+2=6", "5+7=2", "9+3=5", "4+6=4", "5+2=8", "1+2=8", "3+2=4", "7-2=4"};
+        String[] randomEquations = {"9+2=6", "6-4=3", "5+7=2", "4+6=4", "5+2=8", "1+2=8", "7-2=4"};
         int positionInString = new Random().nextInt(randomEquations.length);
         return randomEquations[positionInString];
     }
