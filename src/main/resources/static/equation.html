@@ -14,8 +14,11 @@
 }
 </style>
 <img id="image">
-<input type = "answer" id="answer">
+<div>Answer</div>
+<input id="answer">
 <button id="buttonCheck">Check!</button>
+<div id="quizAnswer"></div>
+</body>
 <script>
         const image = document.getElementById("image");
             fetch("api/equation/random")
@@ -27,8 +30,25 @@
 </script>
 <script>
             document.getElementById("buttonCheck").onclick = () => {
+        fetch("/api/equation/random/solution",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    answer: document.getElementById("answer").value,
+                })
+            })
+            .then(res => res.json())
+            .then(equationInfo => {
+            document.getElementById("quizAnswer").innerText = equationInfo.solution,
+            console.log(quizAnswer)
+<!--                document.getElementById("quizAnswer").innerText =  "true" : "false"-->
 
+            });
     };
+
 </script>
-</body>
+
 </html>
