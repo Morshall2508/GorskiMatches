@@ -15,7 +15,7 @@ public class SolvableEquations {
         storageOfSolvableEquations.put("9+2=6", "8-2=6");
         storageOfSolvableEquations.put("6-4=3", "6-4=2");
         storageOfSolvableEquations.put("5+7=2", "9-7=2");
-        storageOfSolvableEquations.put("4+6=4", "0+4=4");
+        storageOfSolvableEquations.put("4+6=4", "4+0=4");
         storageOfSolvableEquations.put("5+2=8", "5+3=8");
         storageOfSolvableEquations.put("1+2=8", "7+2=9");
         storageOfSolvableEquations.put("7-2=4", "7-3=4");
