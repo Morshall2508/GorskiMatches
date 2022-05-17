@@ -29,7 +29,7 @@ public class LineImageCreator {
         lineInfosByNumberOrSign['+'] = new LineInfo[]{line7, line8}; // plus +
         lineInfosByNumberOrSign['-'] = new LineInfo[]{line7}; // minus -
         lineInfosByNumberOrSign['0'] = new LineInfo[]{line0, line1, line3, line4, line5, line6};
-        lineInfosByNumberOrSign['1'] = new LineInfo[]{line1, line4};
+        lineInfosByNumberOrSign['1'] = new LineInfo[]{line3, line6};
         lineInfosByNumberOrSign['2'] = new LineInfo[]{line0, line3, line2, line4, line5};
         lineInfosByNumberOrSign['3'] = new LineInfo[]{line0, line3, line2, line6, line5};
         lineInfosByNumberOrSign['4'] = new LineInfo[]{line1, line2, line3, line6};

@@ -1,8 +1,6 @@
 package pl.piekoszek.gorskimatches.equation;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/equation")
@@ -10,8 +8,9 @@ class EquationController {
 
     private final EquationRandomizer equationRandomizer;
 
-    EquationController(EquationRandomizer equationRandomizer) {
+    EquationController(EquationRandomizer equationRandomizer, SolvableEquations solvableEquations) {
         this.equationRandomizer = equationRandomizer;
+        this.solvableEquations = solvableEquations;
     }
 
     @GetMapping("random")
@@ -19,4 +18,10 @@ class EquationController {
         return equationRandomizer.randomEquation();
     }
 
+    private final SolvableEquations solvableEquations;
+
+    @PostMapping("solution")
+    boolean checkAnswer(@RequestBody Equation equation) {
+        return solvableEquations.checkForCorrectAnswer(equation.quiz, equation.answer);
+    }
 }
