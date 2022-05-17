@@ -14,10 +14,10 @@
 }
 </style>
 <img id="image">
-<div>Answer</div>
+<div id="quiz"></div>
 <input id="answer">
 <button id="buttonCheck">Check!</button>
-<div id="quizAnswer"></div>
+<div id="solution"></div>
 </body>
 <script>
         const image = document.getElementById("image");
@@ -25,6 +25,7 @@
             .then(res => res.text())
             .then(text =>{
             image.src = `/api/image/equation/${text}`;
+            quiz = text;
         });
 
 </script>
@@ -34,21 +35,18 @@
             {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
+                "Content-Type": "application/json",
+            },
+                    body: JSON.stringify({
                     answer: document.getElementById("answer").value,
+                    quiz : quiz,
                 })
             })
             .then(res => res.json())
-            .then(equationInfo => {
-            document.getElementById("quizAnswer").innerText = equationInfo.solution,
-            console.log(quizAnswer)
-<!--                document.getElementById("quizAnswer").innerText =  "true" : "false"-->
+            .then(text => {
+            document.getElementById("solution").innerText = text,
 
-            });
-    };
-
+    });
+};
 </script>
-
 </html>

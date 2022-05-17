@@ -21,10 +21,7 @@ class EquationController {
     private final SolvableEquations solvableEquations;
 
     @PostMapping("random/solution")
-    EquationInfo equationInfo(@RequestBody EquationInfo equationInfo) {
-        return new EquationInfo(
-                equationInfo.quiz = equationRandomizer.randomEquation(),
-                equationInfo.solution = String.valueOf(solvableEquations.checkForCorrectAnswer(equationInfo.quiz, equationInfo.solution)));
-
+    boolean checkAnswer(@RequestBody Equation equation) {
+        return solvableEquations.checkForCorrectAnswer(equation.quiz, equation.answer);
     }
 }
