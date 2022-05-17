@@ -3,11 +3,12 @@ package pl.piekoszek.gorskimatches.equation;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class SolvableEquations {
 
-    HashMap<String, String> storageOfSolvableEquations = new HashMap<String, String>();
+    Map<String, String> storageOfSolvableEquations = new HashMap<>();
 
     {
 

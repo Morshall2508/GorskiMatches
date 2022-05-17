@@ -20,7 +20,7 @@ class EquationController {
 
     private final SolvableEquations solvableEquations;
 
-    @PostMapping("random/solution")
+    @PostMapping("solution")
     boolean checkAnswer(@RequestBody Equation equation) {
         return solvableEquations.checkForCorrectAnswer(equation.quiz, equation.answer);
     }

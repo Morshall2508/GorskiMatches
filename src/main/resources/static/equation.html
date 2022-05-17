@@ -8,7 +8,6 @@
 <style>
     img{
     width:55%;
-    input{
     display: flex;
     margin: 1.5em;
 }
@@ -31,22 +30,21 @@
 </script>
 <script>
             document.getElementById("buttonCheck").onclick = () => {
-        fetch("/api/equation/random/solution",
+        fetch("/api/equation/solution",
             {
                 method: "POST",
                 headers: {
-                "Content-Type": "application/json",
-            },
-                    body: JSON.stringify({
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
                     answer: document.getElementById("answer").value,
                     quiz : quiz,
                 })
             })
             .then(res => res.json())
             .then(text => {
-            document.getElementById("solution").innerText = text,
-
-    });
+                document.getElementById("solution").innerText = text;
+            });
 };
 </script>
 </html>
