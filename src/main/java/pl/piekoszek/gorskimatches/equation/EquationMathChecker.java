@@ -15,13 +15,9 @@ class EquationMathChecker {
         int c = Integer.parseInt(String.valueOf(equationChar[4]));
 
         if (equation.contains("+")) {
-            if (a + b == c) {
-                return true;
-            }
+            return a + b == c;
         } else if (equation.contains("-")) {
-            if (a - b == c) {
-                return true;
-            }
+            return a - b == c;
         }
         return false;
     }
