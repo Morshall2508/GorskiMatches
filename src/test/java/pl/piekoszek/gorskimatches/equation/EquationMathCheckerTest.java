@@ -31,7 +31,7 @@ class EquationMathCheckerTest {
     @Test
     void shouldReturnFalseOnIncorrectAddEquations() {
         assertThat(equationMathChecker.isMathematicallyCorrect("1+2=6")).isFalse();
-        assertThat(equationMathChecker.isMathematicallyCorrect("0+0=4")).isFalse();
+        assertThat(equationMathChecker.isMathematicallyCorrect("2+2=0")).isFalse();
         assertThat(equationMathChecker.isMathematicallyCorrect("9+0=3")).isFalse();
         assertThat(equationMathChecker.isMathematicallyCorrect("0+9=5")).isFalse();
         assertThat(equationMathChecker.isMathematicallyCorrect("4+4=7")).isFalse();
