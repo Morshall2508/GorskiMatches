@@ -2,9 +2,28 @@ package pl.piekoszek.gorskimatches.equation;
 
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+
 @Component
 class EquationMathChecker {
+    EquationGenerator equationGenerator = new EquationGenerator();
 
+    public ArrayList EquationGenerator() {
+        var equations = new ArrayList();
+        var coorectEquations = new ArrayList();
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                for (int k = 0; k < 10; k++) {
+                    equations.add(i + "+" + j + "=" + k);
+                    equations.add(i + "-" + j + "=" + k);
+                    for (int l = 0; l < equations.size(); l++) {
+                        coorectEquations.add((isMathematicallyCorrect((String) equations.get(l))));
+                    }
+                }
+            }
+        }
+        return coorectEquations;
+    }
 
     boolean isMathematicallyCorrect(String equation) {
 
