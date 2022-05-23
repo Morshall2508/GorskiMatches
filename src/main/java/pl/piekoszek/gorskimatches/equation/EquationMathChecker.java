@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 @Component
 class EquationMathChecker {
@@ -18,13 +19,16 @@ class EquationMathChecker {
                 for (int k = 0; k < 10; k++) {
                     equations.add(i + "+" + j + "=" + k);
                     equations.add(i + "-" + j + "=" + k);
+                    for (int l = 0; l < equations.size(); l++) {
+                        allEquations.put((String) equations.get(l), isMathematicallyCorrect((String) equations.get(l)));
+                        allEquations.remove(equations.get(l), false);
+
+                    }
                 }
             }
         }
-        for (int l = 0; l < equations.size(); l++) {
-            allEquations.put((String) equations.get(l), isMathematicallyCorrect((String) equations.get(l)));
-            allEquations.remove(equations.get(l), false);
-        }
+        Set<String> keySet = allEquations.keySet();
+        ArrayList<String> listOfMathCorrEquations = new ArrayList<String>(keySet);
     }
 
     static boolean isMathematicallyCorrect(String equation) {
