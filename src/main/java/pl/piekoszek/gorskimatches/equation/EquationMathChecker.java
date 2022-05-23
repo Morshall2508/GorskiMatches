@@ -3,29 +3,31 @@ package pl.piekoszek.gorskimatches.equation;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 class EquationMathChecker {
-    EquationGenerator equationGenerator = new EquationGenerator();
 
-    public ArrayList EquationGenerator() {
-        var equations = new ArrayList();
-        var coorectEquations = new ArrayList();
+    Map<String, Boolean> allEquations = new HashMap<>();
+    ArrayList equations = new ArrayList();
+
+    {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 for (int k = 0; k < 10; k++) {
                     equations.add(i + "+" + j + "=" + k);
                     equations.add(i + "-" + j + "=" + k);
-                    for (int l = 0; l < equations.size(); l++) {
-                        coorectEquations.add((isMathematicallyCorrect((String) equations.get(l))));
-                    }
                 }
             }
         }
-        return coorectEquations;
+        for (int l = 0; l < equations.size(); l++) {
+            allEquations.put((String) equations.get(l), isMathematicallyCorrect((String) equations.get(l)));
+            allEquations.remove(equations.get(l), false);
+        }
     }
 
-    boolean isMathematicallyCorrect(String equation) {
+    static boolean isMathematicallyCorrect(String equation) {
 
         char[] equationChar = equation.toCharArray();
 
@@ -40,7 +42,6 @@ class EquationMathChecker {
         }
         return false;
     }
-
 }
 
 
