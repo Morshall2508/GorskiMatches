@@ -2,9 +2,9 @@ package pl.piekoszek.gorskimatches.equation;
 
 import org.springframework.stereotype.Component;
 
+
 @Component
 class EquationMathChecker {
-
 
     boolean isMathematicallyCorrect(String equation) {
 
@@ -21,7 +21,6 @@ class EquationMathChecker {
         }
         return false;
     }
-
 }
 
 
