@@ -25,6 +25,6 @@ public class EquationGenerator {
             allEquations.remove(equation, false);
         }
         Set<String> keySet = allEquations.keySet();
-        List<String> listOfMathCorrectEquations = new ArrayList<>(keySet);
+        listOfMathCorrectEquations = new ArrayList<>(keySet);
     }
 }
