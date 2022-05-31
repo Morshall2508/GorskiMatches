@@ -42,7 +42,11 @@ public class SolutionToQuizzesMapper {
             var numbersInsideList = numberChangeableToOther.get(numberToBeChanged);
             for (Character character : numbersInsideList) {
                 quiz = characterChangeInString.changeCharactersInString(solution, i, character);
-                quizesAndSolutions.get(quiz).add(solution);
+                if (quizesAndSolutions.containsKey(quiz)) {
+                    quizesAndSolutions.get(quiz).add(solution);
+                } else {
+                    quizesAndSolutions.put(quiz, new HashSet<>());
+                }
             }
         }
         return quizesAndSolutions;
