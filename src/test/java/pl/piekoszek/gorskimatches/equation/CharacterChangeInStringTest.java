@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class CharacterChangeInStringTest {
 
-    private final CharacterChangeInString characterChangeInString = new CharacterChangeInString();
+    private final CharacterChanger characterChangeInString = new CharacterChanger();
 
     @Test
     void shouldChangeTheCharcterInString() {

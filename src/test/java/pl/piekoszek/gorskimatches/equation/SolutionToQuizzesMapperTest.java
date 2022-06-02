@@ -12,14 +12,17 @@ public class SolutionToQuizzesMapperTest {
 
     @Test
     void shouldCreateQuizzesFromSolutionByMovingMatchInsideOneCharacter() {
-        assertThat(solutionToQuizzesMapper.insideSingleMatch("6+1=7"))
-                .containsKeys("9+1=7");
+        var quizSolutionMap = solutionToQuizzesMapper.insideSingleMatch("6+1=7");
+
+        assertThat(quizSolutionMap.get("0+1=7")).containsExactly("6+1=7");
+        assertThat(quizSolutionMap.get("9+1=7")).containsExactly("6+1=7");
+        assertThat(quizSolutionMap).hasSize(2);
     }
 
     @Test
     void shouldCreateQuizzesFromSolutionByMovingMatchInsideOneCharacter2() {
-        assertThat(solutionToQuizzesMapper.insideSingleMatch("5+1=6"))
-                .containsKeys("3+1=6");
+        solutionToQuizzesMapper.insideSingleMatch("2+5=7");
+        assertThat(solutionToQuizzesMapper.insideSingleMatch("6+1=7")).hasSize(2);
     }
 
     @Test

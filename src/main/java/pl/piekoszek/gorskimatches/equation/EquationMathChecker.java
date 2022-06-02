@@ -4,10 +4,9 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-public
 class EquationMathChecker {
 
-    public boolean isMathematicallyCorrect(String equation) {
+    boolean isMathematicallyCorrect(String equation) {
 
         char[] equationChar = equation.toCharArray();
 
