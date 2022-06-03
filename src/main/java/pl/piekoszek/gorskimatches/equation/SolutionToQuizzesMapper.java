@@ -3,10 +3,10 @@ package pl.piekoszek.gorskimatches.equation;
 import java.util.*;
 
 public class SolutionToQuizzesMapper {
-    private CharacterChanger characterChangeInString = new CharacterChanger();
+    private final CharacterChanger characterChanger;
     private final Map<Character, List<Character>> numberOrSymbolChangeableToOther = new HashMap<>();
     SolutionToQuizzesMapper(CharacterChanger characterChanger) {
-        this.characterChangeInString = characterChanger;
+        this.characterChanger = characterChanger;
     }
 
     {
@@ -42,7 +42,7 @@ public class SolutionToQuizzesMapper {
             var numbersAndSymbolsToBeChangedTo = numberOrSymbolChangeableToOther.get(numberOrSymbolToBeReplaced);
 
             for (Character replacement : numbersAndSymbolsToBeChangedTo) {
-                String quiz = characterChangeInString.changeCharactersInString(solution, i, replacement);
+                String quiz = characterChanger.changeCharactersInString(solution, i, replacement);
                 quizzesAndSolutions.put(quiz, new HashSet<>());
                 quizzesAndSolutions.get(quiz).add(solution);
             }
