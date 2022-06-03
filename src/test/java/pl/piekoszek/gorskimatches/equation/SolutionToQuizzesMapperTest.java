@@ -8,8 +8,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class SolutionToQuizzesMapperTest {
 
-    private final SolutionToQuizzesMapper solutionToQuizzesMapper = new SolutionToQuizzesMapper();
-
+    private final SolutionToQuizzesMapper solutionToQuizzesMapper = new SolutionToQuizzesMapper(new CharacterChanger());
+    
     @Test
     void shouldCreateQuizzesFromSolutionByMovingMatchInsideOneCharacter() {
         var quizSolutionMap = solutionToQuizzesMapper.insideSingleMatch("6+1=7");
@@ -27,15 +27,12 @@ public class SolutionToQuizzesMapperTest {
 
     @Test
     void shouldCreateQuizzesFromSolutionByMovingMatchInsideOneCharacter3() {
-        assertThat(solutionToQuizzesMapper.insideSingleMatch("5+1=6"))
-                .containsKeys("5+1=0");
+        var quizSolutionMap = solutionToQuizzesMapper.insideSingleMatch("5+1=6");
 
+        assertThat(quizSolutionMap.get("5+1=0")).containsExactly("5+1=6");
+        assertThat(quizSolutionMap.get("5+1=9")).containsExactly("5+1=6");
+        assertThat(quizSolutionMap.get("3+1=6")).containsExactly("5+1=6");
+        assertThat(quizSolutionMap).hasSize(3);
     }
 
-    @Test
-    void shouldCreateQuizzesFromSolutionByMovingMatchInsideOneCharacter4() {
-        assertThat(solutionToQuizzesMapper.insideSingleMatch("5+1=6"))
-                .containsKeys("5+1=9");
-
-    }
 }

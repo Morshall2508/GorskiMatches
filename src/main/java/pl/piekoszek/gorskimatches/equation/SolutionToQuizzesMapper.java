@@ -3,9 +3,11 @@ package pl.piekoszek.gorskimatches.equation;
 import java.util.*;
 
 public class SolutionToQuizzesMapper {
-    private final CharacterChanger characterChangeInString = new CharacterChanger();
+    private CharacterChanger characterChangeInString = new CharacterChanger();
     private final Map<Character, List<Character>> numberOrSymbolChangeableToOther = new HashMap<>();
-    private final Map<String, Set<String>> quizesAndSolutions = new HashMap<>();
+    SolutionToQuizzesMapper(CharacterChanger characterChanger) {
+        this.characterChangeInString = characterChanger;
+    }
 
     {
         numberOrSymbolChangeableToOther.put('0', new ArrayList<>());
@@ -34,17 +36,17 @@ public class SolutionToQuizzesMapper {
     }
 
     public Map<String, Set<String>> insideSingleMatch(String solution) {
-        Map<String, Set<String>> quizesAndSolutions = new HashMap<>();
+        Map<String, Set<String>> quizzesAndSolutions = new HashMap<>();
         for (int i = 0; i < solution.length(); i++) {
             char numberOrSymbolToBeReplaced = solution.charAt(i);
             var numbersAndSymbolsToBeChangedTo = numberOrSymbolChangeableToOther.get(numberOrSymbolToBeReplaced);
 
             for (Character replacement : numbersAndSymbolsToBeChangedTo) {
                 String quiz = characterChangeInString.changeCharactersInString(solution, i, replacement);
-                quizesAndSolutions.put(quiz, new HashSet<>());
-                quizesAndSolutions.get(quiz).add(solution);
+                quizzesAndSolutions.put(quiz, new HashSet<>());
+                quizzesAndSolutions.get(quiz).add(solution);
             }
         }
-        return quizesAndSolutions;
+        return quizzesAndSolutions;
     }
 }
