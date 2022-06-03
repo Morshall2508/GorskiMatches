@@ -1,7 +1,10 @@
 package pl.piekoszek.gorskimatches.equation;
 
+import org.springframework.stereotype.Component;
+
 import java.util.*;
 
+@Component
 public class SolutionToQuizzesMapper {
     private final CharacterChanger characterChanger;
     private final Map<Character, List<Character>> numberOrSymbolChangeableToOther = new HashMap<>();

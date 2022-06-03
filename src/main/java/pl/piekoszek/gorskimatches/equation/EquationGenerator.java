@@ -8,8 +8,9 @@ import java.util.*;
 public class EquationGenerator {
 
     List<String> listOfMathCorrectEquations = new ArrayList<>();
+    public Map<String, Set<String>> allQuizzesAndSolutions = new HashMap<>();
 
-    EquationGenerator(EquationMathChecker equationMathChecker) {
+    EquationGenerator(EquationMathChecker equationMathChecker, SolutionToQuizzesMapper solutionToQuizzesMapper) {
         Map<String, Boolean> allEquations = new HashMap<>();
         List<String> equations = new ArrayList<>();
 
@@ -27,5 +28,12 @@ public class EquationGenerator {
         }
         Set<String> keySet = allEquations.keySet();
         listOfMathCorrectEquations = new ArrayList<>(keySet);
+        for (String solution : listOfMathCorrectEquations) {
+            allQuizzesAndSolutions = solutionToQuizzesMapper.insideSingleMatch(solution);
+        }
+    }
+
+    public Map<String, Set<String>> getAllQuizzesAndSolutions() {
+        return allQuizzesAndSolutions;
     }
 }
