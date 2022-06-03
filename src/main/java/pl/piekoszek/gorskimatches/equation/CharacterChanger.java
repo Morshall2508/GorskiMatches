@@ -4,9 +4,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CharacterChanger {
-    public String changeCharactersInString(String string, int position, char character) {
+    public String changeCharactersInString(String string, int position, char characters) {
         char[] inputStringCharArr = string.toCharArray();
-        inputStringCharArr[position] = character;
+        inputStringCharArr[position] = characters;
         return String.valueOf(inputStringCharArr);
     }
 }
