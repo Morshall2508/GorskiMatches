@@ -6,12 +6,18 @@ import java.util.*;
 
 @Component
 public class EquationRandomizer {
-    EquationGenerator equationGenerator = new EquationGenerator(null, null);
+
+    private final EquationGenerator equationGenerator;
+
+    public EquationRandomizer(EquationGenerator equationGenerator) {
+        this.equationGenerator = equationGenerator;
+    }
 
     public String randomEquation() {
         Map<String, Set<String>> allQuizzesAndSolutions = equationGenerator.getAllQuizzesAndSolutions();
+        Object[] quizSetForRandomizing = allQuizzesAndSolutions.keySet().toArray();
         Random generator = new Random();
-        Object[] values = allQuizzesAndSolutions.values().toArray();
-        return (String) values[generator.nextInt(values.length)];
+        Object randomIndex = quizSetForRandomizing[generator.nextInt(quizSetForRandomizing.length)];
+        return String.valueOf(randomIndex);
     }
 }

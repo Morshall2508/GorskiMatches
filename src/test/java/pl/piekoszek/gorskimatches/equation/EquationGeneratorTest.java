@@ -1,6 +1,12 @@
 package pl.piekoszek.gorskimatches.equation;
 
-public class EquationGeneratorTest {
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+public class EquationGeneratorTest {
+    private final EquationGenerator equationGenerator;
+
+    public EquationGeneratorTest(EquationGenerator equationGenerator) {
+        this.equationGenerator = equationGenerator;
+    }
 
 }

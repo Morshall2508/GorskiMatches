@@ -29,7 +29,12 @@ public class EquationGenerator {
         Set<String> keySet = allEquations.keySet();
         listOfMathCorrectEquations = new ArrayList<>(keySet);
         for (String solution : listOfMathCorrectEquations) {
-            allQuizzesAndSolutions = solutionToQuizzesMapper.insideSingleMatch(solution);
+            var temporaryStorage = solutionToQuizzesMapper.insideSingleMatch(solution);
+            var keysFromTemporaryStorage = temporaryStorage.keySet();
+            for (String key : keysFromTemporaryStorage) {
+                var valueFromTemporaryStorage = temporaryStorage.get(key);
+                allQuizzesAndSolutions.put(key, valueFromTemporaryStorage);
+            }
         }
     }
 
