@@ -7,7 +7,7 @@ import java.util.*;
 @Component
 public class EquationGenerator {
 
-    List<String> listOfMathCorrectEquations = new ArrayList<>();
+    List<String> listOfMathCorrectEquations;
     public Map<String, Set<String>> allQuizzesAndSolutions = new HashMap<>();
 
     EquationGenerator(EquationMathChecker equationMathChecker, SolutionToQuizzesMapper solutionToQuizzesMapper) {
@@ -29,11 +29,12 @@ public class EquationGenerator {
         Set<String> keySet = allEquations.keySet();
         listOfMathCorrectEquations = new ArrayList<>(keySet);
         for (String solution : listOfMathCorrectEquations) {
-            var temporaryStorage = solutionToQuizzesMapper.insideSingleMatch(solution);
-            var keysFromTemporaryStorage = temporaryStorage.keySet();
-            for (String key : keysFromTemporaryStorage) {
-                var valueFromTemporaryStorage = temporaryStorage.get(key);
-                allQuizzesAndSolutions.put(key, valueFromTemporaryStorage);
+            var mathCorrectEquationWithSolution = solutionToQuizzesMapper.insideSingleMatch(solution);
+            var quizFromMathCorrectEquation = mathCorrectEquationWithSolution.keySet();
+            for (String quiz : quizFromMathCorrectEquation) {
+                var solutionFromAllMathCorrectEquations = mathCorrectEquationWithSolution.get(quiz);
+                allQuizzesAndSolutions.putIfAbsent(quiz, new HashSet<>());
+                allQuizzesAndSolutions.get(quiz).addAll(solutionFromAllMathCorrectEquations);
             }
         }
     }
