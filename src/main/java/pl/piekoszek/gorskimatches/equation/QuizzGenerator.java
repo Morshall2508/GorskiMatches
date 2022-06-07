@@ -9,10 +9,10 @@ public class QuizzGenerator {
 
     public Map<String, Set<String>> solutionsByQuiz = new HashMap<>();
 
-    public QuizzGenerator(SolutionToQuizzesMapper solutionToQuizzesMapper, MathematicallyCorrectEquations mathematicallyCorrectEquations) {
+    public QuizzGenerator(SolutionToQuizzesMapper solutionToQuizzesMapper, EquationGenerator mathematicallyCorrectEquations) {
 
-        for (Object correctEquation : mathematicallyCorrectEquations.mathematicallyCorrectEquationsGenerator()) {
-            solutionToQuizzesMapper.insideSingleMatch((String) correctEquation).forEach((quiz, solution) -> {
+        for (String correctEquation : mathematicallyCorrectEquations.mathematicallyCorrectEquationsGenerator()) {
+            solutionToQuizzesMapper.insideSingleMatch(correctEquation).forEach((quiz, solution) -> {
                 solutionsByQuiz.putIfAbsent(quiz, new HashSet<>());
                 solutionsByQuiz.get(quiz).addAll(solution);
             });

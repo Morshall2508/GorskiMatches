@@ -5,15 +5,15 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 @Component
-public class MathematicallyCorrectEquations {
+public class EquationGenerator {
 
     private final EquationMathChecker equationMathChecker;
 
-    public MathematicallyCorrectEquations(EquationMathChecker equationMathChecker) {
+    public EquationGenerator(EquationMathChecker equationMathChecker) {
         this.equationMathChecker = equationMathChecker;
     }
 
-    public Set mathematicallyCorrectEquationsGenerator() {
+    public Set<String> mathematicallyCorrectEquationsGenerator() {
 
         Map<String, Boolean> correctEquations = new HashMap<>();
         List<String> equations = new ArrayList<>();
