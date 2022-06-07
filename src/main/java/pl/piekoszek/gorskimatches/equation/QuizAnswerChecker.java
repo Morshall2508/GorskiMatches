@@ -3,11 +3,11 @@ package pl.piekoszek.gorskimatches.equation;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SolvableEquations {
+public class QuizAnswerChecker {
 
-    private final QuizzGenerator equationGenerator;
+    private final QuizzesGenerator equationGenerator;
 
-    public SolvableEquations(QuizzGenerator equationGenerator) {
+    public QuizAnswerChecker(QuizzesGenerator equationGenerator) {
         this.equationGenerator = equationGenerator;
     }
 

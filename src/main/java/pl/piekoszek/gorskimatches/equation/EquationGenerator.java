@@ -13,7 +13,7 @@ public class EquationGenerator {
         this.equationMathChecker = equationMathChecker;
     }
 
-    public Set<String> mathematicallyCorrectEquationsGenerator() {
+    public Set<String> mathematicallyCorrectEquations() {
 
         Map<String, Boolean> correctEquations = new HashMap<>();
         List<String> equations = new ArrayList<>();

@@ -7,9 +7,9 @@ import java.util.*;
 @Component
 public class EquationRandomizer {
 
-    private final QuizzGenerator equationGenerator;
+    private final QuizzesGenerator equationGenerator;
 
-    public EquationRandomizer(QuizzGenerator equationGenerator) {
+    public EquationRandomizer(QuizzesGenerator equationGenerator) {
         this.equationGenerator = equationGenerator;
     }
 

@@ -8,7 +8,7 @@ class EquationController {
 
     private final EquationRandomizer equationRandomizer;
 
-    EquationController(EquationRandomizer equationRandomizer, SolvableEquations solvableEquations) {
+    EquationController(EquationRandomizer equationRandomizer, QuizAnswerChecker solvableEquations) {
         this.equationRandomizer = equationRandomizer;
         this.solvableEquations = solvableEquations;
     }
@@ -18,7 +18,7 @@ class EquationController {
         return equationRandomizer.randomEquation();
     }
 
-    private final SolvableEquations solvableEquations;
+    private final QuizAnswerChecker solvableEquations;
 
     @PostMapping("solution")
     boolean checkAnswer(@RequestBody Equation equation) {
