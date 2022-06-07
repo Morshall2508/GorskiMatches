@@ -6,11 +6,15 @@ import java.util.Map;
 import java.util.Set;
 
 @Component
-public record SolvableEquations(EquationGenerator equationGenerator) {
+public class SolvableEquations {
+
+    private final EquationGenerator equationGenerator;
+
+    public SolvableEquations(EquationGenerator equationGenerator) {
+        this.equationGenerator = equationGenerator;
+    }
 
     public boolean checkForCorrectAnswer(String quiz, String solution) {
-        Map<String, Set<String>> allQuizzesAndSolutions = equationGenerator.getAllQuizzesAndSolutions();
-        var correctSolution = allQuizzesAndSolutions.get(quiz);
-        return correctSolution.contains(solution);
+        return equationGenerator.getAllSolutionsByQuiz().get(quiz).contains(solution);
     }
 }

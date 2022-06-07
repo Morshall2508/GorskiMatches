@@ -14,10 +14,7 @@ public class EquationRandomizer {
     }
 
     public String randomEquation() {
-        Map<String, Set<String>> allQuizzesAndSolutions = equationGenerator.getAllQuizzesAndSolutions();
-        Object[] quizSetForRandomizing = allQuizzesAndSolutions.keySet().toArray();
-        Random generator = new Random();
-        Object randomIndex = quizSetForRandomizing[generator.nextInt(quizSetForRandomizing.length)];
-        return String.valueOf(randomIndex);
+        var quizzes = new ArrayList<>(equationGenerator.getAllSolutionsByQuiz().keySet());
+        return quizzes.get(new Random().nextInt(quizzes.size()));
     }
 }
