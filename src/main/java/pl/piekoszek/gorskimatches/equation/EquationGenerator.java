@@ -7,10 +7,15 @@ import java.util.*;
 @Component
 public class EquationGenerator {
 
-    List<String> listOfMathCorrectEquations = new ArrayList<>();
+    private final EquationMathChecker equationMathChecker;
 
-    EquationGenerator(EquationMathChecker equationMathChecker) {
-        Map<String, Boolean> allEquations = new HashMap<>();
+    public EquationGenerator(EquationMathChecker equationMathChecker) {
+        this.equationMathChecker = equationMathChecker;
+    }
+
+    public Set<String> mathematicallyCorrectEquations() {
+
+        Map<String, Boolean> correctEquations = new HashMap<>();
         List<String> equations = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
@@ -22,10 +27,10 @@ public class EquationGenerator {
             }
         }
         for (String equation : equations) {
-            allEquations.put(equation, equationMathChecker.isMathematicallyCorrect(equation));
-            allEquations.remove(equation, false);
+            correctEquations.put(equation, equationMathChecker.isMathematicallyCorrect(equation));
+            correctEquations.remove(equation, false);
         }
-        Set<String> keySet = allEquations.keySet();
-        listOfMathCorrectEquations = new ArrayList<>(keySet);
+        return correctEquations.keySet();
     }
+
 }

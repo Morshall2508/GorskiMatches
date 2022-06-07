@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class EquationMathCheckerTest {
 
-    private final EquationMathChecker equationMathChecker = new EquationMathChecker();;
+    private final EquationMathChecker equationMathChecker = new EquationMathChecker();
 
     @Test
     void shouldReturnTrueOnCorrectAddEquations() {

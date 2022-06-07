@@ -2,14 +2,19 @@ package pl.piekoszek.gorskimatches.equation;
 
 import org.springframework.stereotype.Component;
 
-import java.util.Random;
+import java.util.*;
 
 @Component
 public class EquationRandomizer {
 
+    private final QuizzesGenerator equationGenerator;
+
+    public EquationRandomizer(QuizzesGenerator equationGenerator) {
+        this.equationGenerator = equationGenerator;
+    }
+
     public String randomEquation() {
-        String[] randomEquations = {"9+2=6", "6-4=3", "5+7=2", "4+6=4", "5+2=8", "1+2=8", "7-2=4"};
-        int positionInString = new Random().nextInt(randomEquations.length);
-        return randomEquations[positionInString];
+        var quizzes = new ArrayList<>(equationGenerator.getAllSolutionsByQuiz().keySet());
+        return quizzes.get(new Random().nextInt(quizzes.size()));
     }
 }
