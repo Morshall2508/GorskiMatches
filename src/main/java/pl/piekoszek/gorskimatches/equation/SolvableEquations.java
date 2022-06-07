@@ -2,15 +2,12 @@ package pl.piekoszek.gorskimatches.equation;
 
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
-import java.util.Set;
-
 @Component
 public class SolvableEquations {
 
-    private final EquationGenerator equationGenerator;
+    private final QuizzGenerator equationGenerator;
 
-    public SolvableEquations(EquationGenerator equationGenerator) {
+    public SolvableEquations(QuizzGenerator equationGenerator) {
         this.equationGenerator = equationGenerator;
     }
 
