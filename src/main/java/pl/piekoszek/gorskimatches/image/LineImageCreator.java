@@ -1,12 +1,12 @@
 package pl.piekoszek.gorskimatches.image;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import static java.awt.Color.black;
-
 @Component
 public class LineImageCreator {
 

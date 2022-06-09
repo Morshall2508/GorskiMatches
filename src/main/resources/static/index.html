@@ -12,12 +12,31 @@ button {
 <p>Click the button bellow</p>
 <div id="equation"></div>
 <button id="button">Random equation</button>
-
+<p>To register, write your email below</p>
+<input id="email">
+<button id="confirm">Register</button>
 <script>
         document.getElementById("button").onclick = () => {
         location.href = "equation.html";
     };
-
+</script>
+<script>
+            document.getElementById("confirm").onclick = () => {
+        fetch("/",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: document.getElementById("email").value,
+                })
+            })
+            .then(res => res.json())
+            .then(text => {
+<!--                document.getElementById("solution").innerText = text;-->
+            });
+};
 </script>
 </body>
 </html>

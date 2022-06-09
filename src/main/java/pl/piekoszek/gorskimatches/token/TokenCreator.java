@@ -9,19 +9,21 @@ import java.util.UUID;
 
 class TokenCreator {
 
-    Instant now = null;
+    private AccountInfo accountInfo;
+
+    TokenCreator(AccountInfo accountInfo) {
+        this.accountInfo = accountInfo;
+    }
+
     String jwtToken;
 
     {
         assert false;
         jwtToken = Jwts.builder()
-                .claim("name", "Jane Doe")
-                .claim("email", "jane@example.com")
-                .setSubject("jane")
+                .claim("email", accountInfo.getEmail())
                 .setId(UUID.randomUUID().toString())
-                .setIssuedAt(Date.from(now))
-                .setExpiration(Date.from(now.plus(20l, ChronoUnit.MINUTES)))
+                .setIssuedAt(Date.from(Instant.now()))
+                .setExpiration(Date.from(Instant.now().plus(20l, ChronoUnit.MINUTES)))
                 .compact();
     }
-
 }
