@@ -1,5 +1,6 @@
 package pl.piekoszek.gorskimatches.image;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.awt.*;
@@ -9,6 +10,16 @@ import static java.awt.Color.black;
 
 @Component
 public class LineImageCreator {
+
+    private final int r;
+    private final int g;
+    private final int b;
+
+    public LineImageCreator(@Value("${quiz.color.r}") int r, @Value("${quiz.color.g}") int g, @Value("${quiz.color.b}") int b) {
+        this.r = r;
+        this.g = g;
+        this.b = b;
+    }
 
     LineInfo[][] lineInfosByNumberOrSign = new LineInfo[62][];
 
@@ -55,13 +66,13 @@ public class LineImageCreator {
 
     private void drawHorizontalLine(int x, int y, BufferedImage lineImage) {
         Graphics2D drawLine = lineImage.createGraphics();
-        drawLine.setBackground(black);
+        drawLine.setBackground(new Color(r,g,b));
         drawLine.clearRect(x, y, 280, 20);
     }
 
     private void drawVerticalLine(int x, int y, BufferedImage lineImage) {
         Graphics2D drawLine = lineImage.createGraphics();
-        drawLine.setBackground(black);
+        drawLine.setBackground(new Color(r,g,b));
         drawLine.clearRect(x, y, 20, 280);
     }
 

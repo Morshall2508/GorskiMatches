@@ -1,6 +1,7 @@
 package pl.piekoszek.gorskimatches.equation;
 
 import org.junit.jupiter.api.Test;
+import pl.piekoszek.gorskimatches.TestEndpoint;
 
 import java.util.HashSet;
 
