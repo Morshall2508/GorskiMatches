@@ -14,19 +14,10 @@ import javax.mail.MessagingException;
 @SpringBootApplication
 public class GorskiMatchesApplication {
 
-    private static EmailServiceImplemented emailServiceImplemented;
-    private static AccountInfo accountInfo;
-    private static TokenCreator tokenCreator;
-
-    public GorskiMatchesApplication(EmailServiceImplemented emailServiceImplemented, AccountInfo accountInfo, TokenCreator tokenCreator) {
-        GorskiMatchesApplication.emailServiceImplemented = emailServiceImplemented;
-        GorskiMatchesApplication.accountInfo = accountInfo;
-        GorskiMatchesApplication.tokenCreator = tokenCreator;
+    public GorskiMatchesApplication() {
     }
 
     public static void main(String[] args) throws MessagingException {
         SpringApplication.run(GorskiMatchesApplication.class, args);
-        emailServiceImplemented.sendSimpleMessage(String.valueOf(accountInfo.getEmail()), "Account registration link",
-                "Here is the activation link:" + "http://localhost:8080/auth.login.html?jwt=" + tokenCreator.jwtToken(accountInfo.getEmail()));
     }
 }

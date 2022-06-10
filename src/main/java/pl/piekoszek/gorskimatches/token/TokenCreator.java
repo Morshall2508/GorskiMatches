@@ -1,6 +1,8 @@
 package pl.piekoszek.gorskimatches.token;
 
+import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -11,17 +13,14 @@ import java.util.UUID;
 @Component
 public class TokenCreator {
 
-    public String jwtToken(String email) {
+    public static String jwtToken(String email) {
 
-        String jwtToken;
-        {
-            jwtToken = Jwts.builder()
-                    .claim("email", email)
-                    .setId(UUID.randomUUID().toString())
-                    .setIssuedAt(Date.from(Instant.now()))
-                    .setExpiration(Date.from(Instant.now().plus(20l, ChronoUnit.MINUTES)))
-                    .compact();
-        }
-        return jwtToken;
+        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+        JwtBuilder tokenBuilder = Jwts.builder()
+                .claim("email", email)
+                .setId(UUID.randomUUID().toString())
+                .setIssuedAt(Date.from(Instant.now()))
+                .setExpiration(Date.from(Instant.now().plus(20l, ChronoUnit.MINUTES)));
+        return tokenBuilder.compact();
     }
 }

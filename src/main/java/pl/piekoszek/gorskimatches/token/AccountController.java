@@ -16,16 +16,8 @@ class AccountController {
         this.accountInfo = accountInfo;
     }
 
-
     @PostMapping("email")
     String getToken(@RequestBody AccountInfo accountInfo) {
-        return tokenCreator.jwtToken(accountInfo.getEmail());
+        return TokenCreator.jwtToken(accountInfo.getEmail());
     }
 }
-
-
-
-//    @PostMapping("solution")
-//    boolean checkAnswer(@RequestBody Equation equation) {
-//        return solvableEquations.checkForCorrectAnswer(equation.quiz, equation.answer);
-//    }
