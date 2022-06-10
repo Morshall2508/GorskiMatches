@@ -1,12 +1,14 @@
 package pl.piekoszek.gorskimatches.token;
 
 import io.jsonwebtoken.Jwts;
+import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.UUID;
 
+@Component
 class TokenCreator {
 
     private AccountInfo accountInfo;
