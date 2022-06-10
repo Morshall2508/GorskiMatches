@@ -19,7 +19,7 @@ class AccountController {
 
     @PostMapping("email")
     String getToken(@RequestBody AccountInfo accountInfo) {
-        return tokenCreator.jwtToken;
+        return tokenCreator.jwtToken(accountInfo.getEmail());
     }
 }
 

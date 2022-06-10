@@ -13,11 +13,6 @@ import java.util.Properties;
 
 @Component
 public class EmailService {
-    //    private AccountInfo accountInfo;
-//
-//    HTMLEmailSender(AccountInfo accountInfo) {
-//        this.accountInfo = accountInfo;
-//    }
     @Bean
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
@@ -35,5 +30,4 @@ public class EmailService {
 
         return mailSender;
     }
-
 }

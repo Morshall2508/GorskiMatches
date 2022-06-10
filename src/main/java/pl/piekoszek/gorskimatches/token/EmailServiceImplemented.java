@@ -17,7 +17,7 @@ public class EmailServiceImplemented {
     public void sendSimpleMessage(String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("gorskimatchesserver@gmail.com");
-        message.setTo(accountInfo.getEmail());
+        message.setTo(to);
         message.setSubject(subject);
         message.setText(text);
         emailService.getJavaMailSender().send(message);
