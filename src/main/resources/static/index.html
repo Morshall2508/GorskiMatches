@@ -5,6 +5,7 @@
 button {
     margin: 15px;
 }
+
     </style>
 </head>
 
@@ -15,14 +16,16 @@ button {
 <p>To register, write your email below</p>
 <input id="email">
 <button id="confirm">Register</button>
+<div id ="loggedIn"></div>
 <script>
         document.getElementById("button").onclick = () => {
         location.href = "equation.html";
     };
+
 </script>
 <script>
             document.getElementById("confirm").onclick = () => {
-        fetch("/",
+        fetch("/auth/email",
             {
                 method: "POST",
                 headers: {
@@ -32,11 +35,14 @@ button {
                     email: document.getElementById("email").value,
                 })
             })
-            .then(res => res.json())
-            .then(text => {
-<!--                document.getElementById("solution").innerText = text;-->
-            });
+
 };
+
+</script>
+<script>
+        if (localStorage.getItem('token') !== null){
+        document.getElementById("loggedIn").innerText = "Welcome, good to see you here :)";
+        }
 </script>
 </body>
 </html>

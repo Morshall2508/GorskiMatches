@@ -3,23 +3,27 @@ package pl.piekoszek.gorskimatches.token;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Component;
 
+import javax.mail.Transport;
+
 
 @Component
 public class EmailServiceImplemented {
 
     private EmailService emailService;
     private AccountInfo accountInfo;
-    public EmailServiceImplemented(EmailService emailService, AccountInfo accountInfo) {
+    private TokenCreator tokenCreator;
+    public EmailServiceImplemented(EmailService emailService, AccountInfo accountInfo,TokenCreator tokenCreator) {
         this.emailService = emailService;
         this.accountInfo = accountInfo;
+        this.tokenCreator = tokenCreator;
     }
 
-    public void sendSimpleMessage(String to, String subject, String text) {
+    public void sendRegistrationLink(String to) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("gorskimatchesserver@gmail.com");
         message.setTo(to);
-        message.setSubject(subject);
-        message.setText(text);
+        message.setSubject("Account registration");
+        message.setText("To register click on this link:" + "http://localhost:8080/auth/login.html?token=" + TokenCreator.jwtToken(to));
         emailService.getJavaMailSender().send(message);
     }
 }

@@ -20,7 +20,7 @@ public class TokenCreator {
                 .claim("email", email)
                 .setId(UUID.randomUUID().toString())
                 .setIssuedAt(Date.from(Instant.now()))
-                .setExpiration(Date.from(Instant.now().plus(20l, ChronoUnit.MINUTES)));
+                .setExpiration(Date.from(Instant.now().plus(10l, ChronoUnit.MINUTES)));
         return tokenBuilder.compact();
     }
 }
