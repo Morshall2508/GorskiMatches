@@ -38,7 +38,7 @@ public class SolutionToQuizzesMapper {
         numberOrSymbolChangeableToOther.get('2').add('3');
     }
 
-    public Map<String, Set<String>> insideSingleMatch(String solution) {
+    public Map<String, Set<String>> insideSingleNumber(String solution) {
         Map<String, Set<String>> quizzesAndSolutions = new HashMap<>();
         for (int i = 0; i < solution.length(); i++) {
             char numberOrSymbolToBeReplaced = solution.charAt(i);

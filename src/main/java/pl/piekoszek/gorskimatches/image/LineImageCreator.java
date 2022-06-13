@@ -6,7 +6,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import static java.awt.Color.black;
-
 @Component
 public class LineImageCreator {
 
