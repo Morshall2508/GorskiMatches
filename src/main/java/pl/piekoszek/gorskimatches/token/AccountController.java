@@ -5,7 +5,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("auth")
 class AccountController {
-    private EmailServiceImplemented emailServiceImplemented;
+    private EmailService emailServiceImplemented;
+
+    AccountController(EmailService emailServiceImplemented){
+        this.emailServiceImplemented = emailServiceImplemented;
+    }
 
     @PostMapping("email")
     void getEmail(@RequestBody AccountInfo accountInfo) {

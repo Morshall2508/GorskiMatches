@@ -2,7 +2,6 @@ package pl.piekoszek.gorskimatches.token;
 
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -19,7 +18,7 @@ public class TokenCreator {
                 .claim("email", email)
                 .setId(UUID.randomUUID().toString())
                 .setIssuedAt(Date.from(Instant.now()))
-                .setExpiration(Date.from(Instant.now().plus(1, ChronoUnit.MONTHS)));
+                .setExpiration(Date.from(Instant.now().plus(31, ChronoUnit.DAYS)));
         return tokenBuilder.compact();
     }
 }

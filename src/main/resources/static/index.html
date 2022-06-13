@@ -16,7 +16,7 @@ button {
 <p>To register, write your email below</p>
 <input id="email">
 <button id="confirm">Register</button>
-<div id ="loggedIn"></div>
+<div id="loggedIn"></div>
 <script>
         document.getElementById("button").onclick = () => {
         location.href = "equation.html";
@@ -40,8 +40,10 @@ button {
 
 </script>
 <script>
+        token = localStorage.getItem('token');
+        a = JSON.parse(atob(token.split('.')[1]));
         if (localStorage.getItem('token') !== null){
-        document.getElementById("loggedIn").innerText = "Welcome, good to see you here :)";
+        document.getElementById("loggedIn").innerText = "Welcome " + a.email + ", good to see you here :)";
         }
 </script>
 </body>
