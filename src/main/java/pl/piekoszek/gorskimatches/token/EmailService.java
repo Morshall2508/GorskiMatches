@@ -10,9 +10,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailService {
 
-    @Autowired
-    private JavaMailSender mailSender;
-    private @Value("${matches.server.address}") String server;
+    private final JavaMailSender mailSender;
+    private final @Value("${matches.server.address}") String server;
+
+    EmailService(JavaMailSender mailSender, @Value("${matches.server.address}") String server) {
+        this.mailSender = mailSender;
+        this.server = server;
+    }
+
     public void sendRegistrationLink(String to) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("gorskimatchesserver@gmail.com");

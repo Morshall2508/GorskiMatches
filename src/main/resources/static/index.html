@@ -40,10 +40,10 @@ button {
 
 </script>
 <script>
-        token = localStorage.getItem('token');
-        a = JSON.parse(atob(token.split('.')[1]));
+        const token = localStorage.getItem('token');
+        const dividedToken = JSON.parse(atob(token.split('.')[1]));
         if (localStorage.getItem('token') !== null){
-        document.getElementById("loggedIn").innerText = "Welcome " + a.email + ", good to see you here :)";
+        document.getElementById("loggedIn").innerText = "Welcome " + dividedToken.email + ", good to see you here :)";
         }
 </script>
 </body>
