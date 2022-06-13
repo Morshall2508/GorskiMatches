@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class EmailService {
 
     private final JavaMailSender mailSender;
-    private final @Value("${matches.server.address}") String server;
+    private final String server;
 
     EmailService(JavaMailSender mailSender, @Value("${matches.server.address}") String server) {
         this.mailSender = mailSender;
