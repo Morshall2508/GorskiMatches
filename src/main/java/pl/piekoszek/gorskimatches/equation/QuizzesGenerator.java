@@ -12,7 +12,7 @@ public class QuizzesGenerator {
     public QuizzesGenerator(SolutionToQuizzesMapper solutionToQuizzesMapper, EquationGenerator mathematicallyCorrectEquations) {
 
         for (String correctEquation : mathematicallyCorrectEquations.mathematicallyCorrectEquations()) {
-            solutionToQuizzesMapper.insideSingleMatch(correctEquation).forEach((quiz, solution) -> {
+            solutionToQuizzesMapper.insideSingleNumber(correctEquation).forEach((quiz, solution) -> {
                 solutionsByQuiz.putIfAbsent(quiz, new HashSet<>());
                 solutionsByQuiz.get(quiz).addAll(solution);
             });

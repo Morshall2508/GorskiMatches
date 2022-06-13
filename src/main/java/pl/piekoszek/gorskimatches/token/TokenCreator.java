@@ -15,12 +15,11 @@ public class TokenCreator {
 
     public static String jwtToken(String email) {
 
-        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
         JwtBuilder tokenBuilder = Jwts.builder()
                 .claim("email", email)
                 .setId(UUID.randomUUID().toString())
                 .setIssuedAt(Date.from(Instant.now()))
-                .setExpiration(Date.from(Instant.now().plus(10l, ChronoUnit.MINUTES)));
+                .setExpiration(Date.from(Instant.now().plus(1, ChronoUnit.MONTHS)));
         return tokenBuilder.compact();
     }
 }

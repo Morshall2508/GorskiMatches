@@ -1,8 +1,5 @@
 package pl.piekoszek.gorskimatches.token;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class AccountInfo {
 
     private String email;
