@@ -1,9 +1,6 @@
 package pl.piekoszek.gorskimatches.token;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "accountInfo")
@@ -12,26 +9,33 @@ public class AccountInfo {
     @Id
     @Column(name = "email")
     private String email;
-    @Column(name = "accountname")
+    @Column(name = "accountName")
     private String accountName;
+    @Column(name = "avatar")
+    private String avatar;
 
     public AccountInfo() {
     }
-    public AccountInfo(String email, String accountName) {
+
+    public AccountInfo(String email, String accountName, String avatar) {
         this.email = email;
         this.accountName = accountName;
+        this.avatar = avatar;
     }
+
     public String getEmail() {
         return email;
     }
+
     public String getAccountName() {
         return accountName;
     }
-    public void setAccountName(String accountName){
-        this.accountName = accountName;
+
+    public String getAvatar() {
+        return avatar;
     }
-    @Override
-    public String toString(){
-        return "Account Info [" + " Email: " + email +", Account Name: " + accountName;
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
     }
 }

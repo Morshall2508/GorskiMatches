@@ -15,39 +15,50 @@ button {
 </style>
 <body>
 <h1>Account info</h1>
+<div id="loggedIn"></div>
 <form>
     <p>Write your username</p><input id="Username">
     <p>Select avatar</p>
     <main>
-        <input type="file" accept="image/*" onchange="loadFile(event)">
+        <input type="file" accept="image/*" onchange="loadFile(this)">
         <img id="output"/>
     </main>
     <button id="confirm">Confirm changes</button>
 </form>
 <script>
-  var loadFile = function(event) {
-    var output = document.getElementById('output');
-    output.src = URL.createObjectURL(event.target.files[0]);
-    output.onload = function() {
-      URL.revokeObjectURL(output.src)
-    }
-  };
+    function encodeImageFileAsURL(element) {
+  var output = element.files[0];
+  var reader = new FileReader();
+  reader.onloadend = function() {
+    console.log('RESULT', reader.result)
+  }
+  reader.readAsDataURL(output);
+}
 </script>
 <script>
             document.getElementById("confirm").onclick = () => {
-        fetch("/auth",
+
+        fetch("/auth/account",
             {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    username: document.getElementById("Username").value,
-                    avatar: document.getElementById("output")
+                    email: tokenData.email,
+                    accountName: document.getElementById("Username").value,
+                    avatar: byte64Image
                 })
             })
 };
+</script>
 
+<script>
+        const token = localStorage.getItem('token');
+        const tokenData = JSON.parse(atob(token.split('.')[1]));
+        if (localStorage.getItem('token') !== null){
+        document.getElementById("loggedIn").innerText = "Welcome " + tokenData.email + ", good to see you here :)";
+        }
 </script>
 </body>
 </html>

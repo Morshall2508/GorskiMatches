@@ -1,10 +1,11 @@
 package pl.piekoszek.gorskimatches.token;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.piekoszek.gorskimatches.repository.AccountRepository;
+import pl.piekoszek.gorskimatches.token.AccountInfo;
+
+import java.util.Collections;
 
 @CrossOrigin
 @RestController
@@ -24,13 +25,8 @@ class AccountController {
         emailService.sendRegistrationLink(accountInfo.getEmail());
     }
 
-    public ResponseEntity<AccountInfo> passAccount(@RequestBody AccountInfo accountInfo) {
-        try {
-            AccountInfo _accountInfo = accountRepository
-                    .save(new AccountInfo(accountInfo.getEmail(), accountInfo.getAccountName()));
-            return new ResponseEntity<>(_accountInfo, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    @PostMapping("account")
+    void changeAccountInfo(@RequestBody AccountInfo accountInfo) {
+        accountRepository.save(new AccountInfo(accountInfo.getEmail(), accountInfo.getAccountName(), accountInfo.getAvatar()));
     }
 }
