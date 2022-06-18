@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="eng">
+
 <head>
     <style>
-button {
-    margin: 15px;
-}
-.logOut{
-background: black;
-}
-    </style>
+    button {
+      margin: 15px;
+    }
+
+    .logOut {
+      background: black;
+    }
+  </style>
 </head>
 
 <body>
@@ -21,36 +23,37 @@ background: black;
 <button id="logOut">Logout</button>
 <div id="loggedIn"></div>
 <script>
-        document.getElementById("button").onclick = () => {
-        location.href = "equation.html";
+    document.getElementById("button").onclick = () => {
+      location.href = "equation.html";
     };
 
-</script>
+  </script>
 <script>
-            document.getElementById("confirm").onclick = () => {
-        fetch("/auth/email",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    email: document.getElementById("email").value,
-                })
-            })
-};
-
-</script>
-<script>
-        const token = localStorage.getItem('token');
-        const tokenData = JSON.parse(atob(token.split('.')[1]));
-        if (localStorage.getItem('token') !== null){
-        document.getElementById("loggedIn").innerText = "Welcome " + tokenData.email + ", good to see you here :)";
-        }
-        document.getElementById("logOut").onclick = () => {
-        localStorage.clear();
-        document.getElementById("loggedIn").style.display = 'none';
+    document.getElementById("confirm").onclick = () => {
+      fetch("/auth/email",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: document.getElementById("email").value,
+          })
+        })
     };
-</script>
+
+  </script>
+<script>
+    const token = localStorage.getItem('token');
+    const tokenData = JSON.parse(atob(token.split('.')[1]));
+    if (localStorage.getItem('token') !== null) {
+      document.getElementById("loggedIn").innerText = "Welcome " + tokenData.email + ", good to see you here :)";
+    }
+    document.getElementById("logOut").onclick = () => {
+      localStorage.clear();
+      document.getElementById("loggedIn").style.display = 'none';
+    };
+  </script>
 </body>
+
 </html>

@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <style>
-#output{
+  #output {
     width: 35px;
     height: auto;
-}
-button {
+  }
+
+  button {
     margin-top: 15px;
-}
+  }
 </style>
+
 <body>
 <h1>Account info</h1>
 <div id="loggedIn"></div>
@@ -20,45 +23,49 @@ button {
     <p>Write your username</p><input id="Username">
     <p>Select avatar</p>
     <main>
-        <input type="file" accept="image/*" onchange="loadFile(this)">
-        <img id="output"/>
+        <input type="file" accept="image/*" onchange="encodeImageFileAsURL(this)">
+        <img id="output" />
     </main>
     <button id="confirm">Confirm changes</button>
 </form>
 <script>
     function encodeImageFileAsURL(element) {
-  var output = element.files[0];
-  var reader = new FileReader();
-  reader.onloadend = function() {
-    console.log('RESULT', reader.result)
-  }
-  reader.readAsDataURL(output);
-}
-</script>
+      var output = element.files[0];
+      var reader = new FileReader();
+      reader.onloadend = function () {
+        var byte64Image = reader.result;
+        sessionStorage.setItem('byte64Image', byte64Image);
+      }
+      reader.readAsDataURL(output);
+    }
+  </script>
 <script>
-            document.getElementById("confirm").onclick = () => {
+    document.getElementById("confirm").onclick = () => {
 
-        fetch("/auth/account",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    email: tokenData.email,
-                    accountName: document.getElementById("Username").value,
-                    avatar: byte64Image
-                })
-            })
-};
-</script>
+      fetch("/auth/account",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: tokenData.email,
+            accountName: document.getElementById("Username").value,
+            avatar: sessionStorage.getItem('byte64Image')
+          })
+        })
+    };
+
+  </script>
 
 <script>
-        const token = localStorage.getItem('token');
-        const tokenData = JSON.parse(atob(token.split('.')[1]));
-        if (localStorage.getItem('token') !== null){
-        document.getElementById("loggedIn").innerText = "Welcome " + tokenData.email + ", good to see you here :)";
-        }
-</script>
+    const token = localStorage.getItem('token');
+    const tokenData = JSON.parse(atob(token.split('.')[1]));
+    if (localStorage.getItem('token') !== null) {
+      document.getElementById("loggedIn").innerText = "Welcome " + tokenData.email + ", good to see you here :)";
+    }
+
+  </script>
 </body>
+
 </html>

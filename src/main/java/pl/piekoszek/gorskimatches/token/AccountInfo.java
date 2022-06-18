@@ -7,11 +7,11 @@ import javax.persistence.*;
 public class AccountInfo {
 
     @Id
-    @Column(name = "email")
+    @Column
     private String email;
-    @Column(name = "accountName")
+    @Column
     private String accountName;
-    @Column(name = "avatar")
+    @Column(columnDefinition = "TEXT")
     private String avatar;
 
     public AccountInfo() {
