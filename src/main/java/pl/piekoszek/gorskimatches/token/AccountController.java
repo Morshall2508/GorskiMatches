@@ -1,29 +1,27 @@
 package pl.piekoszek.gorskimatches.token;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.piekoszek.gorskimatches.repository.AccountRepository;
 
-@CrossOrigin
 @RestController
-@RequestMapping("auth")
+@RequestMapping("api")
 class AccountController {
-    @Autowired
-    AccountRepository accountRepository;
 
+    private AccountRepository accountRepository;
     private EmailService emailService;
 
-    AccountController(EmailService emailService) {
+    AccountController(EmailService emailService, AccountRepository accountRepository) {
         this.emailService = emailService;
+        this.accountRepository = accountRepository;
     }
 
     @PostMapping("email")
-    void getEmail(@RequestBody AccountInfo accountInfo) {
-        emailService.sendRegistrationLink(accountInfo.getEmail());
+    void sendRegistrationEmail (@RequestBody AccountInfo accountInfo) {
+        emailService.sendAccountActivationLink(accountInfo.getEmail());
     }
 
     @PostMapping("account")
     void changeAccountInfo(@RequestBody AccountInfo accountInfo) {
-        accountRepository.save(new AccountInfo(accountInfo.getEmail(), accountInfo.getAccountName(), accountInfo.getAvatar()));
+        accountRepository.save(accountInfo);
     }
 }

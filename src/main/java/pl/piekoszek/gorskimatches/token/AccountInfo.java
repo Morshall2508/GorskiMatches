@@ -3,13 +3,10 @@ package pl.piekoszek.gorskimatches.token;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "accountInfo")
 public class AccountInfo {
 
     @Id
-    @Column
     private String email;
-    @Column
     private String accountName;
     @Column(columnDefinition = "TEXT")
     private String avatar;
