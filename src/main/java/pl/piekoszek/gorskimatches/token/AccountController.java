@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.piekoszek.gorskimatches.repository.AccountRepository;
 
 @RestController
-@RequestMapping("api")
+@RequestMapping("api/auth")
 class AccountController {
 
     private AccountRepository accountRepository;
@@ -17,7 +17,7 @@ class AccountController {
 
     @PostMapping("email")
     void sendRegistrationEmail (@RequestBody AccountInfo accountInfo) {
-        emailService.sendAccountActivationLink(accountInfo.getEmail());
+        emailService.sendRegistrationOrLoginLink(accountInfo.getEmail());
     }
 
     @PostMapping("account")

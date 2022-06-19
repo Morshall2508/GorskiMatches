@@ -17,7 +17,7 @@ public class EmailService {
         this.server = server;
     }
 
-    public void sendAccountActivationLink(String to) {
+    public void sendRegistrationOrLoginLink(String to) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("gorskimatchesserver@gmail.com");
         message.setTo(to);
