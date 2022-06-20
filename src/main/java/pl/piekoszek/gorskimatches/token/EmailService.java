@@ -1,6 +1,5 @@
 package pl.piekoszek.gorskimatches.token;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -18,7 +17,7 @@ public class EmailService {
         this.server = server;
     }
 
-    public void sendRegistrationLink(String to) {
+    public void sendRegistrationOrLoginLink(String to) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("gorskimatchesserver@gmail.com");
         message.setTo(to);
