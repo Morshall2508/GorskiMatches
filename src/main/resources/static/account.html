@@ -2,32 +2,28 @@
 <html lang="en">
 
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <title>Title</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<style>
-  #output {
-    width: 35px;
-    height: auto;
-  }
-
-  button {
-    margin-top: 15px;
-  }
-</style>
-
 <body>
-<h1>Account info</h1>
+  <div class = "accountPad">
+<div class = "accountPadTitle"><h1>Account <br>info</h1></div>
 <div id="loggedIn"></div>
 <form>
-    <p>Write your username</p><input id="Username">
-    <p>Select avatar</p>
+    <h2>Write your username</h2><input id="Username">
+    <h2>Select your avatar</h2>
     <main>
-        <input type="file" accept="image/*" onchange="encodeImageFileAsURL(this)">
+
+        <input type="file" id ="file" accept="image/*" onchange="encodeImageFileAsURL(this)">
+        <label for="file">
+            Choose file
+        </label>
         <img id="output" />
     </main>
-    <button id="confirm">Confirm changes</button>
+    <button id="confirmChanges">Confirm</button>
 </form>
+  </div>
 <script>
     function encodeImageFileAsURL(element) {
       var output = element.files[0];
@@ -61,10 +57,6 @@
 <script>
     const token = localStorage.getItem('token');
     const tokenData = JSON.parse(atob(token.split('.')[1]));
-    if (localStorage.getItem('token') !== null) {
-      document.getElementById("loggedIn").innerText = "Welcome " + tokenData.email + ", good to see you here :)";
-    }
-
   </script>
 </body>
 

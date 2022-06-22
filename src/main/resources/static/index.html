@@ -2,26 +2,21 @@
 <html lang="eng">
 
 <head>
-    <style>
-    button {
-      margin: 15px;
-    }
-
-    .logOut {
-      background: black;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-<p>Click the button bellow</p>
+  <div id="indexPad">
+<h2>For a random equation click the button bellow</h2>
 <div id="equation"></div>
 <button id="button">Random equation</button>
-<p>To register, write your email below</p>
+<h2>To register, write your email below</h2>
 <input id="email">
 <button id="confirm">Register</button>
 <button id="logOut">Logout</button>
 <div id="loggedIn"></div>
+</div>  
 <script>
     document.getElementById("button").onclick = () => {
       location.href = "equation.html";
