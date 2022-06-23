@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import static java.awt.Color.black;
+import static java.awt.Color.white;
 @Component
 public class LineImageCreator {
 
@@ -54,13 +54,13 @@ public class LineImageCreator {
 
     private void drawHorizontalLine(int x, int y, BufferedImage lineImage) {
         Graphics2D drawLine = lineImage.createGraphics();
-        drawLine.setBackground(black);
+        drawLine.setBackground(white);
         drawLine.clearRect(x, y, 280, 20);
     }
 
     private void drawVerticalLine(int x, int y, BufferedImage lineImage) {
         Graphics2D drawLine = lineImage.createGraphics();
-        drawLine.setBackground(black);
+        drawLine.setBackground(white);
         drawLine.clearRect(x, y, 20, 280);
     }
 

@@ -8,10 +8,11 @@
 
 <body>
 
-<script>
+<script type="module">
+    import Auth from "/auth.js";
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
-    localStorage.setItem('token', token);
+    Auth.saveToken(token);
     window.location.replace("/")
 </script>
 

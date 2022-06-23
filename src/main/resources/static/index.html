@@ -3,27 +3,29 @@
 
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
   <div id="indexPad">
-<h2>For a random equation click the button bellow</h2>
-<div id="equation"></div>
-<button id="button">Random equation</button>
-<h2>To register, write your email below</h2>
-<input id="email">
-<button id="confirm">Register</button>
-<button id="logOut">Logout</button>
-<div id="loggedIn"></div>
-</div>  
-<script>
+    <h2>For a random equation click the button bellow</h2>
+    <div id="equation"></div>
+    <button id="button">Random equation</button>
+    <h2>To register, write your email below</h2>
+    <input id="email">
+    <button id="confirm">Register</button>
+    <button id="logOut">Logout</button>
+    <div id="loggedIn"></div>
+  </div>
+
+  <script>
     document.getElementById("button").onclick = () => {
       location.href = "equation.html";
     };
 
   </script>
-<script>
+
+  <script>
     document.getElementById("confirm").onclick = () => {
       fetch("/api/auth/email",
         {
@@ -36,19 +38,19 @@
           })
         })
     };
-
   </script>
-<script>
-    const token = localStorage.getItem('token');
-    const tokenData = JSON.parse(atob(token.split('.')[1]));
-    if (localStorage.getItem('token') !== null) {
-      document.getElementById("loggedIn").innerText = "Welcome " + tokenData.email + ", good to see you here :)";
+
+  <script type="module">
+    import Auth from "/auth.js";
+    if (Auth.isLoggedIn()) {
+      document.getElementById("loggedIn").innerText = "Welcome " + Auth.getEmail() + ", good to see you here :)";
     }
     document.getElementById("logOut").onclick = () => {
       localStorage.clear();
       document.getElementById("loggedIn").style.display = 'none';
     };
   </script>
+
 </body>
 
 </html>
