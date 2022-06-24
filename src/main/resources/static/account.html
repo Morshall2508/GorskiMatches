@@ -2,62 +2,100 @@
 <html lang="en">
 
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class = "accountPad">
-<div class = "accountPadTitle"><h1>Account <br>info</h1></div>
-<div id="loggedIn"></div>
-<form>
-    <h2>Write your username</h2><input id="Username">
-    <h2>Select your avatar</h2>
-    <main>
+<div class="navigationBar">
+    <div id="homeButton">Home</div>
+    <div id="accountName"></div>
+    <img id="accountAvatar">
+</div>
+<div class="accountPad">
+    <div class="accountPadTitle"><h1>Account <br>info</h1></div>
+    <div id="loggedIn"></div>
+    <form>
+        <h2>Write your username</h2><input id="Username">
+        <h2>Select your avatar</h2>
+        <main>
 
-        <input type="file" id ="file" accept="image/*" onchange="encodeImageFileAsURL(this)">
-        <label for="file">
-            Choose file
-        </label>
-        <img id="output" />
-    </main>
-    <button id="confirmChanges">Confirm</button>
-</form>
-  </div>
+            <input type="file" id="file" accept="image/*" onchange="encodeImageFileAsURL(this)">
+            <label for="file">
+                Choose file
+            </label>
+            <img id="output"/>
+        </main>
+        <button id="confirmChanges">Confirm</button>
+    </form>
+</div>
 <script>
     function encodeImageFileAsURL(element) {
-      var output = element.files[0];
-      var reader = new FileReader();
-      reader.onloadend = function () {
-        var byte64Image = reader.result;
-        sessionStorage.setItem('byte64Image', byte64Image);
-      }
-      reader.readAsDataURL(output);
+        var output = element.files[0];
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            var byte64Image = reader.result;
+            sessionStorage.setItem('byte64Image', byte64Image);
+        }
+        reader.readAsDataURL(output);
     }
-  </script>
-<script>
-    document.getElementById("confirm").onclick = () => {
+</script>
+<script type="module">
+    import Auth from "/auth.js";
 
-      fetch("/api/auth/account",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: tokenData.email,
-            accountName: document.getElementById("Username").value,
-            avatar: sessionStorage.getItem('byte64Image')
-          })
-        })
+    document.getElementById("confirmChanges").onclick = () => {
+
+        fetch("/api/auth/account",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: Auth.getEmail(),
+                    accountName: document.getElementById("Username").value,
+                    avatar: sessionStorage.getItem('byte64Image')
+                })
+            })
     };
 
-  </script>
+</script>
 
+<script type="module">
+    import Auth from "/auth.js";
+
+    fetch("/api/auth/accountInfo",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                email: Auth.getEmail(),
+            })
+        })
+        .then(res => res.json())
+        .then(accountInfo => {
+            document.getElementById("accountName").innerText = accountInfo.accountName;
+            document.getElementById("accountAvatar").src = accountInfo.avatar;
+        });
+
+</script>
 <script>
     const token = localStorage.getItem('token');
     const tokenData = JSON.parse(atob(token.split('.')[1]));
-  </script>
+</script>
+
+<script>
+    document.getElementById("accountName").onclick = () => {
+        window.location.replace("/account.html")
+    };
+</script>
+<script>
+    document.getElementById("homeButton").onclick = () => {
+        window.location.replace("/")
+    };
+</script>
 </body>
 
 </html>

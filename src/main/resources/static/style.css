@@ -188,7 +188,12 @@ body {
         font-size: 0.9em;
         height: 1.5em;
     }
-    #Username{
+
+    #Username {
         width: 13em;
     }
 }
+/*TO DO :
+Ostylizować navigation bar - może się wysuwać z dołu na górę - strzałka ku górze po najechaniu się rozwija a potem przemienia na strzałkę w dół - kliknięcie do zwinięcia
+na navigation barze : Home - AccountName - prowadzi do account info; Ostylizowanie cąłości plus pomniejszenie image do rozmiaró odpowiadających navigation barowi
+*/

@@ -2,12 +2,12 @@
 <html lang="eng">
 
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <div id="indexPad">
+<div id="indexPad">
     <h2>For a random equation click the button bellow</h2>
     <div id="equation"></div>
     <button id="button">Random equation</button>
@@ -16,40 +16,41 @@
     <button id="confirm">Register</button>
     <button id="logOut">Logout</button>
     <div id="loggedIn"></div>
-  </div>
+</div>
 
-  <script>
+<script>
     document.getElementById("button").onclick = () => {
-      location.href = "equation.html";
+        location.href = "equation.html";
     };
 
-  </script>
+</script>
 
-  <script>
+<script>
     document.getElementById("confirm").onclick = () => {
-      fetch("/api/auth/email",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: document.getElementById("email").value,
-          })
-        })
+        fetch("/api/auth/email",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: document.getElementById("email").value,
+                })
+            })
     };
-  </script>
+</script>
 
-  <script type="module">
+<script type="module">
     import Auth from "/auth.js";
+
     if (Auth.isLoggedIn()) {
-      document.getElementById("loggedIn").innerText = "Welcome " + Auth.getEmail() + ", good to see you here :)";
+        document.getElementById("loggedIn").innerText = "Welcome " + Auth.getEmail() + ", good to see you here :)";
     }
     document.getElementById("logOut").onclick = () => {
-      localStorage.clear();
-      document.getElementById("loggedIn").style.display = 'none';
+        localStorage.clear();
+        document.getElementById("loggedIn").style.display = 'none';
     };
-  </script>
+</script>
 
 </body>
 
