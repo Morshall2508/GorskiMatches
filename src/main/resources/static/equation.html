@@ -2,52 +2,65 @@
 <html lang="en">
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <title>Title</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-<style>
-    img {
-      width: 55%;
-      display: flex;
-      margin: 1.5em;
-    }
-  </style>
-<img id="image">
-<div id="quiz"></div>
-<input id="answer">
-<button id="buttonCheck">Check!</button>
-<div id="solution"></div>
+<div class="bigiPad">
+    <div class="navigationBar">
+        <div id="homeButton">Home</div>
+        <div id="accountPage">Account</div>
+    </div>
+    <div id="equationPad">
+        <img id="image">
+        <div id="quiz"></div>
+        <input id="answer">
+        <button id="buttonCheck">Check!</button>
+        <div id="solution"></div>
+    </div>
+</div>
+
 </body>
+
 <script>
-  const image = document.getElementById("image");
-  fetch("api/equation/random")
-    .then(res => res.text())
-    .then(text => {
-      image.src = `/api/image/equation/${text}`;
-      quiz = text;
-    });
+    const image = document.getElementById("image");
+    fetch("api/equation/random")
+        .then(res => res.text())
+        .then(text => {
+            image.src = `/api/image/equation/${text}`;
+            quiz = text;
+        });
 
 </script>
 <script>
-  document.getElementById("buttonCheck").onclick = () => {
-    fetch("/api/equation/solution",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          answer: document.getElementById("answer").value,
-          quiz: quiz,
-        })
-      })
-      .then(res => res.json())
-      .then(text => {
-        document.getElementById("solution").innerText = text;
-      });
-  };
+    document.getElementById("buttonCheck").onclick = () => {
+        fetch("/api/equation/solution",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    answer: document.getElementById("answer").value,
+                    quiz: quiz,
+                })
+            })
+            .then(res => res.json())
+            .then(text => {
+                document.getElementById("solution").innerText = text;
+            });
+    };
 </script>
-
+<script>
+    document.getElementById("accountPage").onclick = () => {
+        window.location.replace("/account.html?")
+    };
+</script>
+<script>
+    document.getElementById("homeButton").onclick = () => {
+        window.location.replace("/")
+    };
+</script>
 </html>

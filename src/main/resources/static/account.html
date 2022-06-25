@@ -2,70 +2,124 @@
 <html lang="en">
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <title>Title</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<style>
-  #output {
-    width: 35px;
-    height: auto;
-  }
-
-  button {
-    margin-top: 15px;
-  }
-</style>
-
 <body>
-<h1>Account info</h1>
-<div id="loggedIn"></div>
-<form>
-    <p>Write your username</p><input id="Username">
-    <p>Select avatar</p>
-    <main>
-        <input type="file" accept="image/*" onchange="encodeImageFileAsURL(this)">
-        <img id="output" />
-    </main>
-    <button id="confirm">Confirm changes</button>
-</form>
+<div class="bigPad">
+    <div class="navigationBar">
+        <div id="homeButton">Home</div>
+        <div id="accountPage">Account</div>
+    </div>
+    <div class="accountPad">
+        <div class="accountPadTitle"><h1>Account <br>info</h1></div>
+        <div id="loggedIn"></div>
+        <form>
+            <div id="accountInfo">
+                <div id="accountName"></div>
+                <img id="accountAvatar">
+            </div>
+            <h2>Write your username</h2><input id="username">
+            <h2>Select your avatar</h2>
+            <main>
+
+                <input type="file" id="file" accept="image/*" onchange="encodeImageFileAsURL(this)">
+                <label for="file">
+                    Choose file
+                </label>
+                <img id="output"/>
+            </main>
+            <button id="confirmChanges">Confirm</button>
+        </form>
+    </div>
+</div>
 <script>
     function encodeImageFileAsURL(element) {
-      var output = element.files[0];
-      var reader = new FileReader();
-      reader.onloadend = function () {
-        var byte64Image = reader.result;
-        sessionStorage.setItem('byte64Image', byte64Image);
-      }
-      reader.readAsDataURL(output);
+        var output = element.files[0];
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            var byte64Image = reader.result;
+            sessionStorage.setItem('byte64Image', byte64Image);
+        }
+        reader.readAsDataURL(output);
     }
-  </script>
-<script>
-    document.getElementById("confirm").onclick = () => {
+</script>
+<script type="module">
+    import Auth from "/auth.js";
 
-      fetch("/api/auth/account",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: tokenData.email,
-            accountName: document.getElementById("Username").value,
-            avatar: sessionStorage.getItem('byte64Image')
-          })
-        })
+    document.getElementById("confirmChanges").onclick = () => {
+
+        fetch("/api/auth/account",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: Auth.getEmail(),
+                    accountName: document.getElementById("Username").value,
+                    avatar: sessionStorage.getItem('byte64Image')
+                })
+            })
     };
 
-  </script>
+</script>
 
+<script type="module">
+    import Auth from "/auth.js";
+
+    fetch(`/api/auth/accountInfo/${Auth.getEmail()}`)
+        .then(res => {
+            if (res.ok) return res.json();
+            throw "Not found";
+        })
+        .then(accountInfo => {
+            document.getElementById("accountName").innerText = accountInfo.accountName;
+            document.getElementById("accountAvatar").src = accountInfo.avatar;
+        });
+
+</script>
+<script>
+    const image = document.getElementById("image");
+    fetch("api/equation/random")
+        .then(res => res.text())
+        .then(text => {
+            image.src = `/api/image/equation/${text}`;
+            quiz = text;
+        });
+
+</script>
 <script>
     const token = localStorage.getItem('token');
     const tokenData = JSON.parse(atob(token.split('.')[1]));
-    if (localStorage.getItem('token') !== null) {
-      document.getElementById("loggedIn").innerText = "Welcome " + tokenData.email + ", good to see you here :)";
-    }
+</script>
 
-  </script>
+<script>
+    document.getElementById("accountName").onclick = () => {
+        window.location.replace("/account.html")
+    };
+</script>
+
+<script>
+    if (document.getElementById("accountName").innerText === undefined) {
+        document.getElementById("accountName").style.display = "none";
+    }
+    if (document.getElementById("accountAvatar").src === undefined) {
+        document.getElementById("accountAvatar").style.display = "none";
+    }
+</script>
+<script>
+    document.getElementById("accountPage").onclick = () => {
+        window.location.replace("/account.html?")
+    };
+</script>
+<script>
+    document.getElementById("homeButton").onclick = () => {
+        window.location.replace("/")
+    };
+</script>
 </body>
+
 
 </html>

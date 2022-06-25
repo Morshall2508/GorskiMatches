@@ -1,0 +1,231 @@
+button {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 90%;
+    background-color: rgb(250, 250, 255);
+    padding: 1.9%;
+    margin: 0.5%;
+    border-color: aliceblue;
+    box-shadow: none;
+    color: rgb(95, 95, 97);
+    border-radius: 0.2em;
+}
+
+#confirmChanges {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 90%;
+    background-color: rgb(250, 250, 255);
+    padding: 0.9%;
+    margin: 0.4%;
+    border-color: aliceblue;
+    box-shadow: none;
+    color: rgb(95, 95, 97);
+    border-radius: 0.2em;
+    width: 50%;
+}
+
+#username {
+    border-radius: 0.2em;
+    width: 50%;
+}
+
+input {
+    font-size: 110%;
+    border-color: rgb(250, 245, 255);
+    border-radius: 0.1em;
+}
+
+label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 2em;
+    width: 50%;
+    color: rgb(95, 95, 97);
+    background-color: rgb(245, 245, 255);
+    cursor: pointer;
+    border-radius: 0.2em;
+    border-color: aliceblue;
+    border-width: 2px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+main {
+    margin: 0;
+}
+
+form {
+    margin: 1.2em;
+    display: grid;
+    width: 60%;
+}
+
+h1 {
+    margin: 1em;
+}
+
+h2 {
+    font-size: 1em;
+}
+
+p {
+    color: rgb(255, 255, 255);
+    font-size: 0.8em;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 140%;
+    background-color: rgb(248, 255, 255);
+    color: rgb(255, 255, 255);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.accountPad {
+    width: auto;
+    height: 20em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(112, 145, 177);
+    flex-direction: row;
+}
+
+#solution {
+    color: rgb(248, 255, 255);
+    font-size: 2em;
+}
+
+#image {
+    padding: 1.5em;
+    margin: 1.5em;
+    width: 75%;
+}
+
+#indexPad {
+    width: auto;
+    height: 20em;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: rgb(112, 145, 177);
+    flex-direction: column;
+    padding: 40px;
+}
+
+#equationPad {
+    width: auto;
+    height: auto;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: rgb(112, 145, 177);
+    flex-direction: column;
+    padding: 40px;
+}
+
+.navigationBar {
+    color: white;
+    background-color: rgba(18, 91, 157, 0.53);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0.3em;
+}
+
+.bigiPad {
+    width: 55%;
+}
+
+#accountName {
+    font-size: 1.5em;
+}
+
+#accountInfo {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#accountAvatar {
+    height: 2em;
+}
+
+#homeButton {
+    cursor: pointer;
+}
+
+#accountPage {
+    cursor: pointer;
+}
+#answer{
+    margin: 10px;
+}
+
+@media only screen and (max-width: 650px) {
+
+    #image {
+        padding: 0.2em;
+        margin: 0.2em;
+    }
+
+    #loggedIn {
+        font-size: medium;
+    }
+
+    .accountPad {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 15em;
+    }
+
+    h1 {
+        margin: 0.2em 0.6em 0.2em 0.6em;
+        font-size: 2em;
+    }
+
+    input {
+        font-size: small;
+    }
+
+    h2 {
+        font-size: medium;
+    }
+
+    form {
+        margin: 0.4em 1.2em 1.2em 1.2em;
+    }
+
+    #equationPad {
+        padding: 10px;
+        height: 10em;
+        width: auto;
+    }
+
+    #solution {
+        font-size: medium;
+    }
+
+    #confirmChanges {
+        width: 5em;
+    }
+
+    label {
+        width: 6em;
+        font-size: 0.9em;
+        height: 1.5em;
+    }
+
+    #username {
+        width: 13em;
+    }
+    #answer{
+        font-size: 14px;
+        margin: 5px;
+    }
+}
