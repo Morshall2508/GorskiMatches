@@ -8,13 +8,20 @@
 </head>
 
 <body>
-<div id="equationPad">
-    <img id="image">
-    <div id="quiz"></div>
-    <input id="answer">
-    <button id="buttonCheck">Check!</button>
-    <div id="solution"></div>
+<div class="bigiPad">
+    <div class="navigationBar">
+        <div id="homeButton">Home</div>
+        <div id="accountPage">Account</div>
+    </div>
+    <div id="equationPad">
+        <img id="image">
+        <div id="quiz"></div>
+        <input id="answer">
+        <button id="buttonCheck">Check!</button>
+        <div id="solution"></div>
+    </div>
 </div>
+
 </body>
 
 <script>
@@ -46,5 +53,14 @@
             });
     };
 </script>
-
+<script>
+    document.getElementById("accountPage").onclick = () => {
+        window.location.replace("/account.html?")
+    };
+</script>
+<script>
+    document.getElementById("homeButton").onclick = () => {
+        window.location.replace("/")
+    };
+</script>
 </html>

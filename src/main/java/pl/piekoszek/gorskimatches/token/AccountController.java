@@ -27,8 +27,8 @@ class AccountController {
         accountRepository.save(accountInfo);
     }
 
-    @PostMapping("accountInfo")
-    AccountInfo fetchAccountInfo(@RequestBody AccountInfo accountInfo) {
+    @GetMapping("accountInfo/{email}")
+    AccountInfo fetchAccountInfo(@PathVariable("email") AccountInfo accountInfo) {
         return accountRepository.findById(accountInfo.getEmail()).get();
     }
 }

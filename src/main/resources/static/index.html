@@ -7,15 +7,21 @@
 </head>
 
 <body>
-<div id="indexPad">
-    <h2>For a random equation click the button bellow</h2>
-    <div id="equation"></div>
-    <button id="button">Random equation</button>
-    <h2>To register, write your email below</h2>
-    <input id="email">
-    <button id="confirm">Register</button>
-    <button id="logOut">Logout</button>
-    <div id="loggedIn"></div>
+<div class="bigPad">
+    <div class="navigationBar">
+        <div id="homeButton">Home</div>
+        <div id="accountPage">Account</div>
+    </div>
+    <div id="indexPad">
+        <h2>For a random equation click the button bellow</h2>
+        <div id="equation"></div>
+        <button id="button">Random equation</button>
+        <h2>To register, write your email below</h2>
+        <input id="email">
+        <button id="confirm">Register</button>
+        <button id="logOut">Logout</button>
+        <div id="loggedIn"></div>
+    </div>
 </div>
 
 <script>
@@ -51,7 +57,16 @@
         document.getElementById("loggedIn").style.display = 'none';
     };
 </script>
-
+<script>
+    document.getElementById("accountPage").onclick = () => {
+        window.location.replace("/account.html?")
+    };
+</script>
+<script>
+    document.getElementById("homeButton").onclick = () => {
+        window.location.replace("/")
+    };
+</script>
 </body>
 
 </html>

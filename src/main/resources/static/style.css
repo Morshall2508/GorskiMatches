@@ -86,7 +86,6 @@ body {
 }
 
 .accountPad {
-    margin-top: 8%;
     width: auto;
     height: 20em;
     display: flex;
@@ -94,7 +93,6 @@ body {
     align-items: center;
     background-color: rgb(112, 145, 177);
     flex-direction: row;
-    border-radius: 5%;
 }
 
 #solution {
@@ -109,7 +107,6 @@ body {
 }
 
 #indexPad {
-    margin-top: 8%;
     width: auto;
     height: 20em;
     display: flex;
@@ -118,23 +115,58 @@ body {
     background-color: rgb(112, 145, 177);
     flex-direction: column;
     padding: 40px;
-    border-radius: 5%;
 }
 
 #equationPad {
-    margin-top: 8%;
-    width: 50%;
-    height: 26em;
+    width: auto;
+    height: auto;
     display: flex;
     justify-content: space-around;
     align-items: center;
     background-color: rgb(112, 145, 177);
     flex-direction: column;
     padding: 40px;
-    border-radius: 5%;
 }
 
-@media only screen and (max-width: 480px) {
+.navigationBar {
+    color: white;
+    background-color: rgba(18, 91, 157, 0.53);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0.3em;
+}
+
+.bigiPad {
+    width: 55%;
+}
+
+#accountName {
+    font-size: 1.5em;
+}
+
+#accountInfo {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#accountAvatar {
+    height: 2em;
+}
+
+#homeButton {
+    cursor: pointer;
+}
+
+#accountPage {
+    cursor: pointer;
+}
+#answer{
+    margin: 10px;
+}
+
+@media only screen and (max-width: 650px) {
 
     #image {
         padding: 0.2em;
@@ -172,7 +204,7 @@ body {
     #equationPad {
         padding: 10px;
         height: 10em;
-        width: 13em;
+        width: auto;
     }
 
     #solution {
@@ -192,8 +224,8 @@ body {
     #Username {
         width: 13em;
     }
+    #answer{
+        font-size: 14px;
+        margin: 5px;
+    }
 }
-/*TO DO :
-Ostylizować navigation bar - może się wysuwać z dołu na górę - strzałka ku górze po najechaniu się rozwija a potem przemienia na strzałkę w dół - kliknięcie do zwinięcia
-na navigation barze : Home - AccountName - prowadzi do account info; Ostylizowanie cąłości plus pomniejszenie image do rozmiaró odpowiadających navigation barowi
-*/

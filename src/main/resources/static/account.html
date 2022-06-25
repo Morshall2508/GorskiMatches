@@ -7,27 +7,32 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="navigationBar">
-    <div id="homeButton">Home</div>
-    <div id="accountName"></div>
-    <img id="accountAvatar">
-</div>
-<div class="accountPad">
-    <div class="accountPadTitle"><h1>Account <br>info</h1></div>
-    <div id="loggedIn"></div>
-    <form>
-        <h2>Write your username</h2><input id="Username">
-        <h2>Select your avatar</h2>
-        <main>
+<div class="bigPad">
+    <div class="navigationBar">
+        <div id="homeButton">Home</div>
+        <div id="accountPage">Account</div>
+    </div>
+    <div class="accountPad">
+        <div class="accountPadTitle"><h1>Account <br>info</h1></div>
+        <div id="loggedIn"></div>
+        <form>
+            <div id="accountInfo">
+                <div id="accountName"></div>
+                <img id="accountAvatar">
+            </div>
+            <h2>Write your username</h2><input id="Username">
+            <h2>Select your avatar</h2>
+            <main>
 
-            <input type="file" id="file" accept="image/*" onchange="encodeImageFileAsURL(this)">
-            <label for="file">
-                Choose file
-            </label>
-            <img id="output"/>
-        </main>
-        <button id="confirmChanges">Confirm</button>
-    </form>
+                <input type="file" id="file" accept="image/*" onchange="encodeImageFileAsURL(this)">
+                <label for="file">
+                    Choose file
+                </label>
+                <img id="output"/>
+            </main>
+            <button id="confirmChanges">Confirm</button>
+        </form>
+    </div>
 </div>
 <script>
     function encodeImageFileAsURL(element) {
@@ -64,20 +69,24 @@
 <script type="module">
     import Auth from "/auth.js";
 
-    fetch("/api/auth/accountInfo",
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                email: Auth.getEmail(),
-            })
+    fetch(`/api/auth/accountInfo/${Auth.getEmail()}`)
+        .then(res => {
+            if (res.ok) return res.json();
+            throw "Not found";
         })
-        .then(res => res.json())
         .then(accountInfo => {
             document.getElementById("accountName").innerText = accountInfo.accountName;
             document.getElementById("accountAvatar").src = accountInfo.avatar;
+        });
+
+</script>
+<script>
+    const image = document.getElementById("image");
+    fetch("api/equation/random")
+        .then(res => res.text())
+        .then(text => {
+            image.src = `/api/image/equation/${text}`;
+            quiz = text;
         });
 
 </script>
@@ -91,11 +100,26 @@
         window.location.replace("/account.html")
     };
 </script>
+
+<script>
+    if (document.getElementById("accountName").innerText === undefined) {
+        document.getElementById("accountName").style.display = "none";
+    }
+    if (document.getElementById("accountAvatar").src === undefined) {
+        document.getElementById("accountAvatar").style.display = "none";
+    }
+</script>
+<script>
+    document.getElementById("accountPage").onclick = () => {
+        window.location.replace("/account.html?")
+    };
+</script>
 <script>
     document.getElementById("homeButton").onclick = () => {
         window.location.replace("/")
     };
 </script>
 </body>
+
 
 </html>
