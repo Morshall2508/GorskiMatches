@@ -23,7 +23,7 @@ button {
     width: 50%;
 }
 
-#Username {
+#username {
     border-radius: 0.2em;
     width: 50%;
 }
@@ -221,7 +221,7 @@ body {
         height: 1.5em;
     }
 
-    #Username {
+    #username {
         width: 13em;
     }
     #answer{
