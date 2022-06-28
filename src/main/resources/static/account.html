@@ -23,7 +23,6 @@
             <h2>Write your username</h2><input id="username">
             <h2>Select your avatar</h2>
             <main>
-
                 <input type="file" id="file" accept="image/*" onchange="encodeImageFileAsURL(this)">
                 <label for="file">
                     Choose file
@@ -58,7 +57,7 @@
                 },
                 body: JSON.stringify({
                     email: Auth.getEmail(),
-                    accountName: document.getElementById("Username").value,
+                    accountName: document.getElementById("username").value,
                     avatar: sessionStorage.getItem('byte64Image')
                 })
             })
@@ -81,34 +80,11 @@
 
 </script>
 <script>
-    const image = document.getElementById("image");
-    fetch("api/equation/random")
-        .then(res => res.text())
-        .then(text => {
-            image.src = `/api/image/equation/${text}`;
-            quiz = text;
-        });
-
-</script>
-<script>
     const token = localStorage.getItem('token');
     const tokenData = JSON.parse(atob(token.split('.')[1]));
 </script>
 
-<script>
-    document.getElementById("accountName").onclick = () => {
-        window.location.replace("/account.html")
-    };
-</script>
 
-<script>
-    if (document.getElementById("accountName").innerText === undefined) {
-        document.getElementById("accountName").style.display = "none";
-    }
-    if (document.getElementById("accountAvatar").src === undefined) {
-        document.getElementById("accountAvatar").style.display = "none";
-    }
-</script>
 <script>
     document.getElementById("accountPage").onclick = () => {
         window.location.replace("/account.html?")
