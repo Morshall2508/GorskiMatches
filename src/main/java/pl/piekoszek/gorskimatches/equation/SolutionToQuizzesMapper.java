@@ -8,6 +8,9 @@ import java.util.*;
 public class SolutionToQuizzesMapper {
     private final CharacterChanger characterChanger;
     private final Map<Character, List<Character>> numberOrSymbolChangeableToOther = new HashMap<>();
+    private final Map<Character, List<Character>> takeOneMatchFromNumberOrSymbol = new HashMap<>();
+    private final Map<Character, List<Character>> giveOneMatchFromNumberOrSymbol = new HashMap<>();
+
     SolutionToQuizzesMapper(CharacterChanger characterChanger) {
         this.characterChanger = characterChanger;
     }
@@ -17,6 +20,7 @@ public class SolutionToQuizzesMapper {
         numberOrSymbolChangeableToOther.put('1', new ArrayList<>());
         numberOrSymbolChangeableToOther.put('2', new ArrayList<>());
         numberOrSymbolChangeableToOther.put('3', new ArrayList<>());
+        numberOrSymbolChangeableToOther.put('4', new ArrayList<>());
         numberOrSymbolChangeableToOther.put('5', new ArrayList<>());
         numberOrSymbolChangeableToOther.put('6', new ArrayList<>());
         numberOrSymbolChangeableToOther.put('7', new ArrayList<>());
@@ -25,17 +29,63 @@ public class SolutionToQuizzesMapper {
         numberOrSymbolChangeableToOther.put('+', new ArrayList<>());
         numberOrSymbolChangeableToOther.put('-', new ArrayList<>());
         numberOrSymbolChangeableToOther.put('=', new ArrayList<>());
-        numberOrSymbolChangeableToOther.put('4', new ArrayList<>());
         numberOrSymbolChangeableToOther.get('0').add('6');
         numberOrSymbolChangeableToOther.get('0').add('9');
         numberOrSymbolChangeableToOther.get('6').add('0');
         numberOrSymbolChangeableToOther.get('6').add('9');
         numberOrSymbolChangeableToOther.get('9').add('0');
         numberOrSymbolChangeableToOther.get('9').add('6');
-        numberOrSymbolChangeableToOther.get('3').add('5');
         numberOrSymbolChangeableToOther.get('3').add('2');
+        numberOrSymbolChangeableToOther.get('3').add('5');
         numberOrSymbolChangeableToOther.get('5').add('3');
         numberOrSymbolChangeableToOther.get('2').add('3');
+    }
+
+    {
+        takeOneMatchFromNumberOrSymbol.put('0', new ArrayList<>());
+        takeOneMatchFromNumberOrSymbol.put('1', new ArrayList<>());
+        takeOneMatchFromNumberOrSymbol.put('2', new ArrayList<>());
+        takeOneMatchFromNumberOrSymbol.put('3', new ArrayList<>());
+        takeOneMatchFromNumberOrSymbol.put('4', new ArrayList<>());
+        takeOneMatchFromNumberOrSymbol.put('5', new ArrayList<>());
+        takeOneMatchFromNumberOrSymbol.put('6', new ArrayList<>());
+        takeOneMatchFromNumberOrSymbol.put('7', new ArrayList<>());
+        takeOneMatchFromNumberOrSymbol.put('8', new ArrayList<>());
+        takeOneMatchFromNumberOrSymbol.put('9', new ArrayList<>());
+        takeOneMatchFromNumberOrSymbol.put('+', new ArrayList<>());
+        takeOneMatchFromNumberOrSymbol.put('-', new ArrayList<>());
+        takeOneMatchFromNumberOrSymbol.put('=', new ArrayList<>());
+        takeOneMatchFromNumberOrSymbol.get('6').add('5');
+        takeOneMatchFromNumberOrSymbol.get('7').add('1');
+        takeOneMatchFromNumberOrSymbol.get('8').add('0');
+        takeOneMatchFromNumberOrSymbol.get('8').add('6');
+        takeOneMatchFromNumberOrSymbol.get('8').add('9');
+        takeOneMatchFromNumberOrSymbol.get('9').add('5');
+        takeOneMatchFromNumberOrSymbol.get('+').add('-');
+    }
+
+    {
+        giveOneMatchFromNumberOrSymbol.put('0', new ArrayList<>());
+        giveOneMatchFromNumberOrSymbol.put('1', new ArrayList<>());
+        giveOneMatchFromNumberOrSymbol.put('2', new ArrayList<>());
+        giveOneMatchFromNumberOrSymbol.put('3', new ArrayList<>());
+        giveOneMatchFromNumberOrSymbol.put('4', new ArrayList<>());
+        giveOneMatchFromNumberOrSymbol.put('5', new ArrayList<>());
+        giveOneMatchFromNumberOrSymbol.put('6', new ArrayList<>());
+        giveOneMatchFromNumberOrSymbol.put('7', new ArrayList<>());
+        giveOneMatchFromNumberOrSymbol.put('8', new ArrayList<>());
+        giveOneMatchFromNumberOrSymbol.put('9', new ArrayList<>());
+        giveOneMatchFromNumberOrSymbol.put('+', new ArrayList<>());
+        giveOneMatchFromNumberOrSymbol.put('-', new ArrayList<>());
+        giveOneMatchFromNumberOrSymbol.put('=', new ArrayList<>());
+        giveOneMatchFromNumberOrSymbol.get('0').add('8');
+        giveOneMatchFromNumberOrSymbol.get('1').add('7');
+        giveOneMatchFromNumberOrSymbol.get('3').add('9');
+        giveOneMatchFromNumberOrSymbol.get('5').add('6');
+        giveOneMatchFromNumberOrSymbol.get('5').add('9');
+        giveOneMatchFromNumberOrSymbol.get('6').add('8');
+        giveOneMatchFromNumberOrSymbol.get('9').add('8');
+        giveOneMatchFromNumberOrSymbol.get('-').add('+');
     }
 
     public Map<String, Set<String>> insideSingleNumber(String solution) {
@@ -51,5 +101,27 @@ public class SolutionToQuizzesMapper {
             }
         }
         return quizzesAndSolutions;
+    }
+
+    public Map<String, Set<String>> insideEquation(String solution) {
+        Map<String, Set<String>> quizzesAndSolutions2 = new HashMap<>();
+        for (int i = 0; i < solution.length(); i++) {
+            char numberOrSymbolToBeReplaced = solution.charAt(i);
+            var numbersAndSymbolsToBeTakenFrom = takeOneMatchFromNumberOrSymbol.get(numberOrSymbolToBeReplaced);
+            var numbersAndSymbolsToBeAddedTo = giveOneMatchFromNumberOrSymbol.get(numberOrSymbolToBeReplaced);
+
+            for (Character takeMatchFrom : numbersAndSymbolsToBeTakenFrom) {
+                String quizWithTakenMatch = characterChanger.changeCharactersInString(solution, i, takeMatchFrom);
+                quizzesAndSolutions2.put(quizWithTakenMatch, new HashSet<>());
+                quizzesAndSolutions2.get(quizWithTakenMatch).add(solution);
+                break;}
+                for (Character giveMatchTo : numbersAndSymbolsToBeAddedTo) {
+                    String quizWithGivenMatch = characterChanger.changeCharactersInString(solution, i, giveMatchTo);
+                    quizzesAndSolutions2.put(quizWithGivenMatch, new HashSet<>());
+
+                    quizzesAndSolutions2.get(quizWithGivenMatch).add(solution);
+                }
+            }
+        return quizzesAndSolutions2;
     }
 }
