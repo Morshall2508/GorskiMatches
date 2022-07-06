@@ -105,23 +105,35 @@ public class SolutionToQuizzesMapper {
 
     public Map<String, Set<String>> insideEquation(String solution) {
         Map<String, Set<String>> quizzesAndSolutions2 = new HashMap<>();
+        Map<String, Integer> quizzesAndSolutions3 = new HashMap<>();
+
         for (int i = 0; i < solution.length(); i++) {
             char numberOrSymbolToBeReplaced = solution.charAt(i);
             var numbersAndSymbolsToBeTakenFrom = takeOneMatchFromNumberOrSymbol.get(numberOrSymbolToBeReplaced);
-            var numbersAndSymbolsToBeAddedTo = giveOneMatchFromNumberOrSymbol.get(numberOrSymbolToBeReplaced);
 
-            for (Character takeMatchFrom : numbersAndSymbolsToBeTakenFrom) {
-                String quizWithTakenMatch = characterChanger.changeCharactersInString(solution, i, takeMatchFrom);
-                quizzesAndSolutions2.put(quizWithTakenMatch, new HashSet<>());
-                quizzesAndSolutions2.get(quizWithTakenMatch).add(solution);
-                break;}
-                for (Character giveMatchTo : numbersAndSymbolsToBeAddedTo) {
-                    String quizWithGivenMatch = characterChanger.changeCharactersInString(solution, i, giveMatchTo);
-                    quizzesAndSolutions2.put(quizWithGivenMatch, new HashSet<>());
+            for (Character numberWithTakenMatch : numbersAndSymbolsToBeTakenFrom) {
+                String quizWithTakenMatch = characterChanger.changeCharactersInString(solution, i, numberWithTakenMatch);
+                quizzesAndSolutions3.put(quizWithTakenMatch, i);
 
-                    quizzesAndSolutions2.get(quizWithGivenMatch).add(solution);
+//                if (quizzesAndSolutions3.containsValue(i)) {
+                    for (String entry : quizzesAndSolutions3.keySet()) {
+                        for (int k = 0; k < entry.length(); k++) {
+                            if (k != i) {
+                                char numberOrSymbolToBeReplaced2 = entry.charAt(k);
+                                var numbersAndSymbolsToBeAddedTo = giveOneMatchFromNumberOrSymbol.get(numberOrSymbolToBeReplaced2);
+                                for (Character giveMatchTo : numbersAndSymbolsToBeAddedTo) {
+                                    String quizWithGivenMatch = characterChanger.changeCharactersInString(entry, k, giveMatchTo);
+                                    quizzesAndSolutions2.put(quizWithGivenMatch, new HashSet<>());
+                                    quizzesAndSolutions2.get(quizWithGivenMatch).add(solution);
+                                    quizzesAndSolutions2.remove(solution);
+                                }
+                            }
+                        }
+                    }
                 }
             }
+
+//        }
         return quizzesAndSolutions2;
     }
 }
