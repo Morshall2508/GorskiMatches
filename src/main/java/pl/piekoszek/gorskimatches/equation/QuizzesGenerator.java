@@ -17,6 +17,12 @@ public class QuizzesGenerator {
                 solutionsByQuiz.get(quiz).addAll(solution);
             });
         }
+        for (String correctEquation : mathematicallyCorrectEquations.mathematicallyCorrectEquations()) {
+            solutionToQuizzesMapper.insideEquation(correctEquation).forEach((quiz, solution) -> {
+                solutionsByQuiz.putIfAbsent(quiz, new HashSet<>());
+                solutionsByQuiz.get(quiz).addAll(solution);
+            });
+        }
     }
 
     public Map<String, Set<String>> getAllSolutionsByQuiz() {

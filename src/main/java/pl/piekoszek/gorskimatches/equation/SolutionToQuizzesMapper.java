@@ -7,12 +7,14 @@ import java.util.*;
 @Component
 public class SolutionToQuizzesMapper {
     private final CharacterChanger characterChanger;
+    private final EquationMathChecker equationMathChecker;
     private final Map<Character, List<Character>> numberOrSymbolChangeableToOther = new HashMap<>();
     private final Map<Character, List<Character>> takeOneMatchFromNumberOrSymbol = new HashMap<>();
     private final Map<Character, List<Character>> giveOneMatchFromNumberOrSymbol = new HashMap<>();
 
-    SolutionToQuizzesMapper(CharacterChanger characterChanger) {
+    SolutionToQuizzesMapper(CharacterChanger characterChanger, EquationMathChecker equationMathChecker) {
         this.characterChanger = characterChanger;
+        this.equationMathChecker = equationMathChecker;
     }
 
     {
@@ -104,8 +106,7 @@ public class SolutionToQuizzesMapper {
     }
 
     public Map<String, Set<String>> insideEquation(String solution) {
-        Map<String, Set<String>> quizzesAndSolutions2 = new HashMap<>();
-        Map<String, Integer> quizzesAndSolutions3 = new HashMap<>();
+        Map<String, Set<String>> quizzesAndSolutionsWithinEquation = new HashMap<>();
 
         for (int i = 0; i < solution.length(); i++) {
             char numberOrSymbolToBeReplaced = solution.charAt(i);
@@ -113,27 +114,23 @@ public class SolutionToQuizzesMapper {
 
             for (Character numberWithTakenMatch : numbersAndSymbolsToBeTakenFrom) {
                 String quizWithTakenMatch = characterChanger.changeCharactersInString(solution, i, numberWithTakenMatch);
-                quizzesAndSolutions3.put(quizWithTakenMatch, i);
-
-//                if (quizzesAndSolutions3.containsValue(i)) {
-                    for (String entry : quizzesAndSolutions3.keySet()) {
-                        for (int k = 0; k < entry.length(); k++) {
-                            if (k != i) {
-                                char numberOrSymbolToBeReplaced2 = entry.charAt(k);
-                                var numbersAndSymbolsToBeAddedTo = giveOneMatchFromNumberOrSymbol.get(numberOrSymbolToBeReplaced2);
-                                for (Character giveMatchTo : numbersAndSymbolsToBeAddedTo) {
-                                    String quizWithGivenMatch = characterChanger.changeCharactersInString(entry, k, giveMatchTo);
-                                    quizzesAndSolutions2.put(quizWithGivenMatch, new HashSet<>());
-                                    quizzesAndSolutions2.get(quizWithGivenMatch).add(solution);
-                                    quizzesAndSolutions2.remove(solution);
-                                }
+                for (int k = 0; k < quizWithTakenMatch.length(); k++) {
+                    if (k != i) {
+                        char numberOrSymbolToAddMatchTo = quizWithTakenMatch.charAt(k);
+                        var numbersAndSymbolsToBeAddedTo = giveOneMatchFromNumberOrSymbol.get(numberOrSymbolToAddMatchTo);
+                        for (Character matchReceiver : numbersAndSymbolsToBeAddedTo) {
+                            String quizWithGivenMatch = characterChanger.changeCharactersInString(quizWithTakenMatch, k, matchReceiver);
+                            quizzesAndSolutionsWithinEquation.put(quizWithGivenMatch, new HashSet<>());
+                            quizzesAndSolutionsWithinEquation.get(quizWithGivenMatch).add(solution);
+                            quizzesAndSolutionsWithinEquation.remove(solution);
+                            if (equationMathChecker.isMathematicallyCorrect(quizWithGivenMatch)) {
+                                quizzesAndSolutionsWithinEquation.remove(quizWithGivenMatch);
                             }
                         }
                     }
                 }
             }
-
-//        }
-        return quizzesAndSolutions2;
+        }
+        return quizzesAndSolutionsWithinEquation;
     }
 }

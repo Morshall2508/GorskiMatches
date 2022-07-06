@@ -2,14 +2,12 @@ package pl.piekoszek.gorskimatches.equation;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SolutionToQuizzesMapperTest {
 
-    private final SolutionToQuizzesMapper solutionToQuizzesMapper = new SolutionToQuizzesMapper(new CharacterChanger());
+    private final SolutionToQuizzesMapper solutionToQuizzesMapper = new SolutionToQuizzesMapper(new CharacterChanger(), new EquationMathChecker());
 
     @Test
     void shouldCreateQuizzesFromSolutionByMovingMatchInsideOneCharacter() {
@@ -75,6 +73,32 @@ public class SolutionToQuizzesMapperTest {
         assertThat(quizSolutionMap.get("8-3=9")).containsExactly("6+3=9");
         assertThat(quizSolutionMap.get("6-9=9")).containsExactly("6+3=9");
         assertThat(quizSolutionMap.get("6-3=8")).containsExactly("6+3=9");
+
+    }
+
+    @Test
+    void shouldCreateQuizzesFromSolutionByMovingMatchInsideWholeEquation4() {
+        var quizSolutionMap = solutionToQuizzesMapper.insideEquation("7-1=6");
+        assertThat(quizSolutionMap).hasSize(5);
+        assertThat(quizSolutionMap.get("1+1=6")).containsExactly("7-1=6");
+        assertThat(quizSolutionMap.get("1-7=6")).containsExactly("7-1=6");
+        assertThat(quizSolutionMap.get("1-1=8")).containsExactly("7-1=6");
+        assertThat(quizSolutionMap.get("7-7=5")).containsExactly("7-1=6");
+        assertThat(quizSolutionMap.get("7+1=5")).containsExactly("7-1=6");
+
+    }
+
+    @Test
+    void shouldCreateQuizzesFromSolutionByMovingMatchInsideWholeEquation5() {
+        var quizSolutionMap = solutionToQuizzesMapper.insideEquation("0+8=8");
+        assertThat(quizSolutionMap).hasSize(7);
+        assertThat(quizSolutionMap.get("8+6=8")).containsExactly("0+8=8");
+        assertThat(quizSolutionMap.get("8+9=8")).containsExactly("0+8=8");
+        assertThat(quizSolutionMap.get("8+0=8")).containsExactly("0+8=8");
+        assertThat(quizSolutionMap.get("8-8=8")).containsExactly("0+8=8");
+        assertThat(quizSolutionMap.get("8+8=6")).containsExactly("0+8=8");
+        assertThat(quizSolutionMap.get("8+8=9")).containsExactly("0+8=8");
+        assertThat(quizSolutionMap.get("8+8=9")).containsExactly("0+8=8");
 
     }
 }
