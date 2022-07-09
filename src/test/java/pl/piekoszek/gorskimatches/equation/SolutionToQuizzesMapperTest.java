@@ -37,7 +37,7 @@ public class SolutionToQuizzesMapperTest {
     @Test
     void shouldCreateQuizzesFromSolutionByMovingMatchInsideWholeEquation() {
         var quizSolutionMap = solutionToQuizzesMapper.insideEquation("5+3=8");
-        assertThat(quizSolutionMap).hasSize(12);
+        assertThat(quizSolutionMap).hasSize(11);
         assertThat(quizSolutionMap.get("9-3=8")).containsExactly("5+3=8");
         assertThat(quizSolutionMap.get("6-3=8")).containsExactly("5+3=8");
         assertThat(quizSolutionMap.get("5-9=8")).containsExactly("5+3=8");
@@ -45,7 +45,6 @@ public class SolutionToQuizzesMapperTest {
         assertThat(quizSolutionMap.get("6+3=0")).containsExactly("5+3=8");
         assertThat(quizSolutionMap.get("5+9=0")).containsExactly("5+3=8");
         assertThat(quizSolutionMap.get("9+3=9")).containsExactly("5+3=8");
-        assertThat(quizSolutionMap.get("6+3=9")).containsExactly("5+3=8");
         assertThat(quizSolutionMap.get("5+9=9")).containsExactly("5+3=8");
         assertThat(quizSolutionMap.get("9+3=6")).containsExactly("5+3=8");
         assertThat(quizSolutionMap.get("6+3=6")).containsExactly("5+3=8");
@@ -65,9 +64,8 @@ public class SolutionToQuizzesMapperTest {
     @Test
     void shouldCreateQuizzesFromSolutionByMovingMatchInsideWholeEquation3() {
         var quizSolutionMap = solutionToQuizzesMapper.insideEquation("6+3=9");
-        assertThat(quizSolutionMap).hasSize(7);
+        assertThat(quizSolutionMap).hasSize(6);
         assertThat(quizSolutionMap.get("5+9=9")).containsExactly("6+3=9");
-        assertThat(quizSolutionMap.get("5+3=8")).containsExactly("6+3=9");
         assertThat(quizSolutionMap.get("8+3=5")).containsExactly("6+3=9");
         assertThat(quizSolutionMap.get("6+9=5")).containsExactly("6+3=9");
         assertThat(quizSolutionMap.get("8-3=9")).containsExactly("6+3=9");
@@ -91,10 +89,9 @@ public class SolutionToQuizzesMapperTest {
     @Test
     void shouldCreateQuizzesFromSolutionByMovingMatchInsideWholeEquation5() {
         var quizSolutionMap = solutionToQuizzesMapper.insideEquation("0+8=8");
-        assertThat(quizSolutionMap).hasSize(7);
+        assertThat(quizSolutionMap).hasSize(6);
         assertThat(quizSolutionMap.get("8+6=8")).containsExactly("0+8=8");
         assertThat(quizSolutionMap.get("8+9=8")).containsExactly("0+8=8");
-        assertThat(quizSolutionMap.get("8+0=8")).containsExactly("0+8=8");
         assertThat(quizSolutionMap.get("8-8=8")).containsExactly("0+8=8");
         assertThat(quizSolutionMap.get("8+8=6")).containsExactly("0+8=8");
         assertThat(quizSolutionMap.get("8+8=9")).containsExactly("0+8=8");

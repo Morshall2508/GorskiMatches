@@ -18,29 +18,19 @@ public class SolutionToQuizzesMapper {
     }
 
     {
-        numberOrSymbolChangeableToOther.put('0', new ArrayList<>());
+        numberOrSymbolChangeableToOther.put('0', List.of('6', '9'));
         numberOrSymbolChangeableToOther.put('1', new ArrayList<>());
-        numberOrSymbolChangeableToOther.put('2', new ArrayList<>());
-        numberOrSymbolChangeableToOther.put('3', new ArrayList<>());
+        numberOrSymbolChangeableToOther.put('2', List.of('2'));
+        numberOrSymbolChangeableToOther.put('3', List.of('2', '5'));
         numberOrSymbolChangeableToOther.put('4', new ArrayList<>());
-        numberOrSymbolChangeableToOther.put('5', new ArrayList<>());
-        numberOrSymbolChangeableToOther.put('6', new ArrayList<>());
+        numberOrSymbolChangeableToOther.put('5', List.of('3'));
+        numberOrSymbolChangeableToOther.put('6', List.of('0', '9'));
         numberOrSymbolChangeableToOther.put('7', new ArrayList<>());
         numberOrSymbolChangeableToOther.put('8', new ArrayList<>());
-        numberOrSymbolChangeableToOther.put('9', new ArrayList<>());
+        numberOrSymbolChangeableToOther.put('9', List.of('0', '6'));
         numberOrSymbolChangeableToOther.put('+', new ArrayList<>());
         numberOrSymbolChangeableToOther.put('-', new ArrayList<>());
         numberOrSymbolChangeableToOther.put('=', new ArrayList<>());
-        numberOrSymbolChangeableToOther.get('0').add('6');
-        numberOrSymbolChangeableToOther.get('0').add('9');
-        numberOrSymbolChangeableToOther.get('6').add('0');
-        numberOrSymbolChangeableToOther.get('6').add('9');
-        numberOrSymbolChangeableToOther.get('9').add('0');
-        numberOrSymbolChangeableToOther.get('9').add('6');
-        numberOrSymbolChangeableToOther.get('3').add('2');
-        numberOrSymbolChangeableToOther.get('3').add('5');
-        numberOrSymbolChangeableToOther.get('5').add('3');
-        numberOrSymbolChangeableToOther.get('2').add('3');
     }
 
     {
@@ -50,44 +40,29 @@ public class SolutionToQuizzesMapper {
         takeOneMatchFromNumberOrSymbol.put('3', new ArrayList<>());
         takeOneMatchFromNumberOrSymbol.put('4', new ArrayList<>());
         takeOneMatchFromNumberOrSymbol.put('5', new ArrayList<>());
-        takeOneMatchFromNumberOrSymbol.put('6', new ArrayList<>());
-        takeOneMatchFromNumberOrSymbol.put('7', new ArrayList<>());
-        takeOneMatchFromNumberOrSymbol.put('8', new ArrayList<>());
-        takeOneMatchFromNumberOrSymbol.put('9', new ArrayList<>());
-        takeOneMatchFromNumberOrSymbol.put('+', new ArrayList<>());
+        takeOneMatchFromNumberOrSymbol.put('6', List.of('5'));
+        takeOneMatchFromNumberOrSymbol.put('7', List.of('1'));
+        takeOneMatchFromNumberOrSymbol.put('8', List.of('0', '6', '9'));
+        takeOneMatchFromNumberOrSymbol.put('9', List.of('5'));
+        takeOneMatchFromNumberOrSymbol.put('+', List.of('-'));
         takeOneMatchFromNumberOrSymbol.put('-', new ArrayList<>());
         takeOneMatchFromNumberOrSymbol.put('=', new ArrayList<>());
-        takeOneMatchFromNumberOrSymbol.get('6').add('5');
-        takeOneMatchFromNumberOrSymbol.get('7').add('1');
-        takeOneMatchFromNumberOrSymbol.get('8').add('0');
-        takeOneMatchFromNumberOrSymbol.get('8').add('6');
-        takeOneMatchFromNumberOrSymbol.get('8').add('9');
-        takeOneMatchFromNumberOrSymbol.get('9').add('5');
-        takeOneMatchFromNumberOrSymbol.get('+').add('-');
     }
 
     {
-        giveOneMatchFromNumberOrSymbol.put('0', new ArrayList<>());
-        giveOneMatchFromNumberOrSymbol.put('1', new ArrayList<>());
+        giveOneMatchFromNumberOrSymbol.put('0', List.of('8'));
+        giveOneMatchFromNumberOrSymbol.put('1', List.of('7'));
         giveOneMatchFromNumberOrSymbol.put('2', new ArrayList<>());
-        giveOneMatchFromNumberOrSymbol.put('3', new ArrayList<>());
+        giveOneMatchFromNumberOrSymbol.put('3', List.of('9'));
         giveOneMatchFromNumberOrSymbol.put('4', new ArrayList<>());
-        giveOneMatchFromNumberOrSymbol.put('5', new ArrayList<>());
-        giveOneMatchFromNumberOrSymbol.put('6', new ArrayList<>());
+        giveOneMatchFromNumberOrSymbol.put('5', List.of('6', '9'));
+        giveOneMatchFromNumberOrSymbol.put('6', List.of('8'));
         giveOneMatchFromNumberOrSymbol.put('7', new ArrayList<>());
         giveOneMatchFromNumberOrSymbol.put('8', new ArrayList<>());
-        giveOneMatchFromNumberOrSymbol.put('9', new ArrayList<>());
+        giveOneMatchFromNumberOrSymbol.put('9', List.of('8'));
         giveOneMatchFromNumberOrSymbol.put('+', new ArrayList<>());
-        giveOneMatchFromNumberOrSymbol.put('-', new ArrayList<>());
+        giveOneMatchFromNumberOrSymbol.put('-', List.of('+'));
         giveOneMatchFromNumberOrSymbol.put('=', new ArrayList<>());
-        giveOneMatchFromNumberOrSymbol.get('0').add('8');
-        giveOneMatchFromNumberOrSymbol.get('1').add('7');
-        giveOneMatchFromNumberOrSymbol.get('3').add('9');
-        giveOneMatchFromNumberOrSymbol.get('5').add('6');
-        giveOneMatchFromNumberOrSymbol.get('5').add('9');
-        giveOneMatchFromNumberOrSymbol.get('6').add('8');
-        giveOneMatchFromNumberOrSymbol.get('9').add('8');
-        giveOneMatchFromNumberOrSymbol.get('-').add('+');
     }
 
     public Map<String, Set<String>> insideSingleNumber(String solution) {
@@ -110,22 +85,21 @@ public class SolutionToQuizzesMapper {
 
         for (int i = 0; i < solution.length(); i++) {
             char numberOrSymbolToBeReplaced = solution.charAt(i);
-            var numbersAndSymbolsToBeTakenFrom = takeOneMatchFromNumberOrSymbol.get(numberOrSymbolToBeReplaced);
+            var numbersAndSymbolsWithTakenMatch = takeOneMatchFromNumberOrSymbol.get(numberOrSymbolToBeReplaced);
 
-            for (Character numberWithTakenMatch : numbersAndSymbolsToBeTakenFrom) {
+            for (Character numberWithTakenMatch : numbersAndSymbolsWithTakenMatch) {
                 String quizWithTakenMatch = characterChanger.changeCharactersInString(solution, i, numberWithTakenMatch);
                 for (int k = 0; k < quizWithTakenMatch.length(); k++) {
                     if (k != i) {
                         char numberOrSymbolToAddMatchTo = quizWithTakenMatch.charAt(k);
-                        var numbersAndSymbolsToBeAddedTo = giveOneMatchFromNumberOrSymbol.get(numberOrSymbolToAddMatchTo);
-                        for (Character matchReceiver : numbersAndSymbolsToBeAddedTo) {
+                        var numbersAndSymbolsWithAddedMatch = giveOneMatchFromNumberOrSymbol.get(numberOrSymbolToAddMatchTo);
+                        for (Character matchReceiver : numbersAndSymbolsWithAddedMatch) {
                             String quizWithGivenMatch = characterChanger.changeCharactersInString(quizWithTakenMatch, k, matchReceiver);
-                            quizzesAndSolutionsWithinEquation.put(quizWithGivenMatch, new HashSet<>());
-                            quizzesAndSolutionsWithinEquation.get(quizWithGivenMatch).add(solution);
-                            quizzesAndSolutionsWithinEquation.remove(solution);
                             if (equationMathChecker.isMathematicallyCorrect(quizWithGivenMatch)) {
-                                quizzesAndSolutionsWithinEquation.remove(quizWithGivenMatch);
+                                continue;
                             }
+                            quizzesAndSolutionsWithinEquation.putIfAbsent(quizWithGivenMatch, new HashSet<>());
+                            quizzesAndSolutionsWithinEquation.get(quizWithGivenMatch).add(solution);
                         }
                     }
                 }
