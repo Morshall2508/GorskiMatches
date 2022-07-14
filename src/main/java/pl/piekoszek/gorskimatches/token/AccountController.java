@@ -1,5 +1,7 @@
 package pl.piekoszek.gorskimatches.token;
 
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
 import org.springframework.web.bind.annotation.*;
 import pl.piekoszek.gorskimatches.repository.AccountRepository;
 
@@ -23,9 +25,8 @@ class AccountController {
     }
 
     @PostMapping("account")
-    void changeAccountInfo(@RequestBody AccountInfo accountInfo) {
-        accountRepository.save(accountInfo);
-    }
+    void changeAccountInfo(@Email String email, @RequestBody AccountInfo accountInfo) {
+        accountRepository.save(accountInfo);}
 
     @GetMapping("accountInfo/{email}")
     AccountInfo fetchAccountInfo(@PathVariable("email") AccountInfo accountInfo) {
