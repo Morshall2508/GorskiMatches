@@ -3,11 +3,15 @@ package pl.piekoszek.gorskimatches.equation;
 import org.junit.jupiter.api.Test;
 
 
+import java.util.Collections;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SolutionToQuizzesMapperTest {
 
     private final SolutionToQuizzesMapper solutionToQuizzesMapper = new SolutionToQuizzesMapper(new CharacterChanger(), new EquationMathChecker());
+    private final EquationMathChecker equationMathChecker = new EquationMathChecker();
+    private final EquationGenerator equationGenerator = new EquationGenerator(equationMathChecker);
 
     @Test
     void shouldCreateQuizzesFromSolutionByMovingMatchInsideOneCharacter() {
@@ -97,5 +101,20 @@ public class SolutionToQuizzesMapperTest {
         assertThat(quizSolutionMap.get("8+8=9")).containsExactly("0+8=8");
         assertThat(quizSolutionMap.get("8+8=9")).containsExactly("0+8=8");
 
+    }
+
+    @Test
+    void shouldNotHaveAnyMatchematicallyCorrectQuizzes() {
+        var allGeneratedQuizzes = new QuizzesGenerator(solutionToQuizzesMapper, equationGenerator);
+        var allEquations = allGeneratedQuizzes.getAllSolutionsByQuiz();
+        var quizzes = allEquations.keySet();
+        for (String quiz : quizzes) {
+            var result = equationMathChecker.isMathematicallyCorrect(quiz);
+//            assertThat(result).isTrue();
+            if (equationMathChecker.isMathematicallyCorrect(quiz)) {
+
+                System.out.println(quiz);
+            }
+        }
     }
 }
