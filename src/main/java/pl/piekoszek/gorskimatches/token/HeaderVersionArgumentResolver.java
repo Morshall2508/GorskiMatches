@@ -8,7 +8,9 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import javax.servlet.http.HttpServletRequest;
 
+
 public class HeaderVersionArgumentResolver implements HandlerMethodArgumentResolver {
+
     private final TokenDecoder tokenDecoder;
     public HeaderVersionArgumentResolver(TokenDecoder tokenDecoder) {
         this.tokenDecoder = tokenDecoder;

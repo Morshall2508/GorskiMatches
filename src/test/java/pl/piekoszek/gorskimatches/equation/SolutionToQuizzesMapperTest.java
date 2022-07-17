@@ -102,19 +102,4 @@ public class SolutionToQuizzesMapperTest {
         assertThat(quizSolutionMap.get("8+8=9")).containsExactly("0+8=8");
 
     }
-
-    @Test
-    void shouldNotHaveAnyMatchematicallyCorrectQuizzes() {
-        var allGeneratedQuizzes = new QuizzesGenerator(solutionToQuizzesMapper, equationGenerator);
-        var allEquations = allGeneratedQuizzes.getAllSolutionsByQuiz();
-        var quizzes = allEquations.keySet();
-        for (String quiz : quizzes) {
-            var result = equationMathChecker.isMathematicallyCorrect(quiz);
-//            assertThat(result).isTrue();
-            if (equationMathChecker.isMathematicallyCorrect(quiz)) {
-
-                System.out.println(quiz);
-            }
-        }
-    }
 }
