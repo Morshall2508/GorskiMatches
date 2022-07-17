@@ -2,6 +2,8 @@ package pl.piekoszek.gorskimatches.token;
 
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.piekoszek.gorskimatches.repository.AccountRepository;
 
@@ -14,9 +16,12 @@ class AccountController {
     private AccountRepository accountRepository;
     private EmailService emailService;
 
-    AccountController(EmailService emailService, AccountRepository accountRepository) {
+    private TokenDecoder tokenDecoder;
+
+    AccountController(EmailService emailService, AccountRepository accountRepository, TokenDecoder tokenDecoder) {
         this.emailService = emailService;
         this.accountRepository = accountRepository;
+        this.tokenDecoder = tokenDecoder;
     }
 
     @PostMapping("email")
@@ -26,7 +31,11 @@ class AccountController {
 
     @PostMapping("account")
     void changeAccountInfo(@Email String email, @RequestBody AccountInfo accountInfo) {
-        accountRepository.save(accountInfo);}
+        try {
+            if (email.equals())
+                accountRepository.save(accountInfo);
+        } catch ()
+    }
 
     @GetMapping("accountInfo/{email}")
     AccountInfo fetchAccountInfo(@PathVariable("email") AccountInfo accountInfo) {

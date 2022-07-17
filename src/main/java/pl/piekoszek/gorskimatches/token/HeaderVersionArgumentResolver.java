@@ -10,6 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 
 public class HeaderVersionArgumentResolver implements HandlerMethodArgumentResolver {
 
+    private final TokenDecoder tokenDecoder;
+
+    public HeaderVersionArgumentResolver(TokenDecoder tokenDecoder) {
+        this.tokenDecoder = tokenDecoder;
+    }
+
     @Override
     public boolean supportsParameter(MethodParameter methodParameter) {
         return methodParameter.hasParameterAnnotation(Email.class);
@@ -23,6 +29,9 @@ public class HeaderVersionArgumentResolver implements HandlerMethodArgumentResol
 
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
 
-        return request.getHeader("email");
+        var authorizationHeaderValue = request.getHeader("authorization");
+        var token = authorizationHeaderValue.split(" ")[1];
+
+        return TokenDecoder.tokenDecoder(token).email;
     }
 }

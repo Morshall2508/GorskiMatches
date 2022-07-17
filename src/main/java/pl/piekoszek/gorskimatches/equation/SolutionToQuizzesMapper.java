@@ -20,7 +20,7 @@ public class SolutionToQuizzesMapper {
     {
         numberOrSymbolChangeableToOther.put('0', List.of('6', '9'));
         numberOrSymbolChangeableToOther.put('1', Collections.emptyList());
-        numberOrSymbolChangeableToOther.put('2', List.of('2'));
+        numberOrSymbolChangeableToOther.put('2', List.of('3'));
         numberOrSymbolChangeableToOther.put('3', List.of('2', '5'));
         numberOrSymbolChangeableToOther.put('4', Collections.emptyList());
         numberOrSymbolChangeableToOther.put('5', List.of('3'));
