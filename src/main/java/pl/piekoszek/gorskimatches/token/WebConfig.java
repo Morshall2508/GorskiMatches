@@ -8,9 +8,16 @@ import java.util.List;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+
+    private final TokenDecoder tokenDecoder;
+
+    public WebConfig(TokenDecoder tokenDecoder) {
+        this.tokenDecoder = tokenDecoder;
+    }
+
     @Override
     public void addArgumentResolvers(
             List<HandlerMethodArgumentResolver> argumentResolvers) {
-        argumentResolvers.add(new HeaderVersionArgumentResolver());
+        argumentResolvers.add(new HeaderVersionArgumentResolver(tokenDecoder));
     }
 }
