@@ -1,12 +1,15 @@
 package pl.piekoszek.gorskimatches.token;
 
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.stereotype.Component;
 
+@Component
 public class TokenDecoder {
 
-    static TokenData tokenDecoder(String jwsString) {
+    TokenData decode(String jwsString) {
         var jws = Jwts.parserBuilder()
-                .setSigningKey("oih5jireonjdgfssdgfs3atoigef1312321312nw4agf4w")
+                .setSigningKey(Keys.hmacShaKeyFor("oih5jireonjdgfssdgfs3atoigef1312321312nw4agf4w".getBytes()))
                 .build()
                 .parseClaimsJws(jwsString);
 
