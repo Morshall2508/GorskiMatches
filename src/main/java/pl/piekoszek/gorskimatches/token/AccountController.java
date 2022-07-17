@@ -3,12 +3,9 @@ package pl.piekoszek.gorskimatches.token;
 import org.springframework.web.bind.annotation.*;
 import pl.piekoszek.gorskimatches.repository.AccountRepository;
 
-import java.util.Optional;
-
 @RestController
 @RequestMapping("api/auth")
 class AccountController {
-
     private AccountRepository accountRepository;
     private EmailService emailService;
 
@@ -23,7 +20,10 @@ class AccountController {
     }
 
     @PostMapping("account")
-    void changeAccountInfo(@RequestBody AccountInfo accountInfo) {
+    void changeAccountInfo(@Email String email, @RequestBody AccountInfo accountInfo) {
+        if (!email.equals(accountInfo.getEmail())) {
+            throw new ForbiddenException("Incorrect email");
+        }
         accountRepository.save(accountInfo);
     }
 
