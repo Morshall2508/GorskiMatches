@@ -17,4 +17,13 @@ public class EquationRandomizer {
         var quizzes = new ArrayList<>(equationGenerator.getAllSolutionsByQuiz().keySet());
         return quizzes.get(new Random().nextInt(quizzes.size()));
     }
+
+    public List<String> equationsForChallenge() {
+        var quizzes = new ArrayList<>(equationGenerator.getAllSolutionsByQuiz().keySet());
+        List<String> fiveQuizzesForChallenge = new ArrayList<>();
+        for (int i = 0; i <= 5; i++) {
+            fiveQuizzesForChallenge.add(quizzes.get(new Random().nextInt(quizzes.size())));
+        }
+        return fiveQuizzesForChallenge;
+    }
 }
