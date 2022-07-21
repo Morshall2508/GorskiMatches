@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="bigiPad">
+    <div class="navigationBar">
+        <div id="homeButton">Home</div>
+        <div id="accountPage">Account</div>
+    </div>
+    <div id="equationPad">
+        <p>You've been challenged to solve the quizzes. Your goal is to move one match inside equation - you have 30
+            seconds.There are 5 quizzes. You get 1 point for correct answer and 0 if you run out of time or give
+            incorrect
+            answer</p>
+        <button id="buttonStart">Start!</button>
+        <p id="countdownTimer"></p>
+        <img id="image">
+        <div id="quiz"></div>
+        <div id="done"></div>
+        <input id="answer">
+        <button id="buttonCheck">Check!</button>
+        <div id="solution"></div>
+    </div>
+</div>
+
+</body>
+
+<script>
+
+    document.getElementById("buttonStart").onclick = () => {
+
+        fetch("api/challenge/equations")
+            .then(res => res.json())
+            .then(fiveQuizzes => {
+
+                image.src = `/api/image/equation/${fiveQuizzes[0]}`;
+
+                sessionStorage.setItem('fiveQuizzes', fiveQuizzes);
+
+                let index = 0;
+                quiz = fiveQuizzes[index];
+
+                document.getElementById("buttonCheck").onclick = () => {
+                    image.src = `/api/image/equation/${fiveQuizzes[++index]}`;
+                    quiz = fiveQuizzes[index];
+                    if (index > 4) {
+                        image.src = null;
+                        document.getElementById("done").innerText = "All done :)";
+                    }
+                    fetch("/api/equation/solution",
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({
+                                answer: document.getElementById("answer").value,
+                                quiz: quiz,
+                            })
+                        })
+                        .then(res => res.json())
+                        .then(text => {
+                            document.getElementById("solution").innerText = text;
+                        });
+                };
+
+            });
+
+        let timeLeft = 30;
+        const element = document.getElementById('countdownTimer');
+        const timerId = setInterval(countdown, 1000);
+
+        function countdown() {
+            if (timeLeft === -1) {
+                clearTimeout(timerId);
+                element.innerHTML = "Time's up";
+
+            } else {
+                element.innerHTML = timeLeft + 's remaining';
+                timeLeft--;
+            }
+        }
+    }
+</script>
+
+</html>
