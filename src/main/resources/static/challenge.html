@@ -24,6 +24,7 @@
         <input id="answer">
         <button id="buttonCheck">Check!</button>
         <div id="solution"></div>
+        <div id="allDone"></div>
     </div>
 </div>
 
@@ -37,20 +38,37 @@
             .then(res => res.json())
             .then(fiveQuizzes => {
 
+                const timeOnStart = performance.now();
+
                 image.src = `/api/image/equation/${fiveQuizzes[0]}`;
 
                 sessionStorage.setItem('fiveQuizzes', fiveQuizzes);
 
+                var score = 0;
+
                 let index = 0;
+
                 quiz = fiveQuizzes[index];
+                console.log(quiz);
+
+                let timeLeft = 30;
+                const element = document.getElementById('countdownTimer');
+                const timerId = setInterval(countdown, 1000);
+
+                function countdown() {
+                    if (timeLeft === -1) {
+                        clearTimeout(timerId);
+                        element.innerHTML = "Time's up";
+
+                    } else {
+                        element.innerHTML = timeLeft + 's remaining';
+                        timeLeft--;
+                    }
+                }
 
                 document.getElementById("buttonCheck").onclick = () => {
-                    image.src = `/api/image/equation/${fiveQuizzes[++index]}`;
-                    quiz = fiveQuizzes[index];
-                    if (index > 4) {
-                        image.src = null;
-                        document.getElementById("done").innerText = "All done :)";
-                    }
+
+                    timeLeft = 30;
                     fetch("/api/equation/solution",
                         {
                             method: "POST",
@@ -65,25 +83,42 @@
                         .then(res => res.json())
                         .then(text => {
                             document.getElementById("solution").innerText = text;
+                            console.log(text);
+                            if (text === true) {
+                                score++;
+                                console.log(score);
+                            }
+                            console.log(score);
                         });
+                    image.src = `/api/image/equation/${fiveQuizzes[++index]}`;
+                    quiz = fiveQuizzes[index];
+                    console.log(quiz);
+                    if (index > 4) {
+                        image.src = null;
+                        document.getElementById("done").innerText = "All done :)";
+                        const timeOnEnd = performance.now();
+                        let totalTimeToSolve = (+timeOnEnd) - (+timeOnStart);
+                        console.log(totalTimeToSolve);
+                        fetch("/api/challenge/score",
+                            {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                },
+                                body: JSON.stringify({
+                                    score: score,
+                                    time: totalTimeToSolve,
+                                })
+                            })
+                        // .then(res => res.json())
+                        // .then(text => {
+                        //     document.getElementById("allDone").innerText = text;
+                        //
+                        // });
+                    }
                 };
-
             });
 
-        let timeLeft = 30;
-        const element = document.getElementById('countdownTimer');
-        const timerId = setInterval(countdown, 1000);
-
-        function countdown() {
-            if (timeLeft === -1) {
-                clearTimeout(timerId);
-                element.innerHTML = "Time's up";
-
-            } else {
-                element.innerHTML = timeLeft + 's remaining';
-                timeLeft--;
-            }
-        }
     }
 </script>
 
