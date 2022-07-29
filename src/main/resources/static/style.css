@@ -94,6 +94,12 @@ body {
     background-color: rgb(112, 145, 177);
     flex-direction: row;
 }
+#registrationAndLogoutPad{
+    display: flex;
+    width: 500px;
+    margin: 20px;
+    justify-content: center;
+}
 
 #solution {
     color: rgb(248, 255, 255);
@@ -209,7 +215,9 @@ img[src="null"] {
         height: 10em;
         width: auto;
     }
-
+    #registrationAndLogoutPad{
+        width: 250px;
+    }
     #solution {
         font-size: medium;
     }

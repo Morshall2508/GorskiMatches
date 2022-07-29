@@ -18,8 +18,11 @@
         <button id="button">Random equation</button>
         <h2>To register, write your email below</h2>
         <input id="email">
+        <div id="registrationAndLogoutPad">
         <button id="confirm">Register</button>
         <button id="logOut">Logout</button>
+        </div>
+        <button id="challengeLink">Get a challenge link</button>
         <div id="loggedIn"></div>
     </div>
 </div>
@@ -44,6 +47,19 @@
                 })
             })
     };
+</script>
+
+<script>
+    document.getElementById("challengeLink").onclick = () => {
+        fetch("api/challenge/generate")
+            .then(res => res.text()
+            .then(text => {
+                uuid = text;
+                sessionStorage.setItem('uuid', uuid);
+            })
+        )
+        window.location.replace("/challenge.html?/")
+    }
 </script>
 
 <script type="module">
