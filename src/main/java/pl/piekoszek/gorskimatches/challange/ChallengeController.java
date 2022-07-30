@@ -34,8 +34,8 @@ public class ChallengeController {
         return equationRandomizer.equationsForChallenge();
     }
 
-    @PostMapping("postScoreAndData")
-    void createChallenge (@RequestBody Challenge challenge){
+    @PostMapping("data")
+    void createData (@RequestBody Challenge challenge){
             challengeRepository.save(challenge);
     }
 }

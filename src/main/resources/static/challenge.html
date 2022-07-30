@@ -32,10 +32,9 @@
 
 <script type="module">
     import Auth from "/auth.js";
-
+    import Chall from "/chall.js";
     document.getElementById("buttonStart").onclick = () => {
-
-        fetch("/api/equation/postScoreAndData",
+        fetch("/api/challenge/data",
             {
                 method: "POST",
                 headers: {
@@ -44,11 +43,12 @@
                 body: JSON.stringify({
                     uuid: sessionStorage.getItem('uuid'),
                     email: Auth.getEmail(),
-                    score1: null,
-                    score2: null
-
+                    registeredUserScore: "1",
+                    nonRegisteredUserScore: "3"
                 })
             })
+
+    };
 
         fetch("api/challenge/equations")
             .then(res => res.json())
@@ -57,8 +57,8 @@
                 const timeOnStart = performance.now();
 
                 image.src = `/api/image/equation/${fiveQuizzes[0]}`;
-
                 sessionStorage.setItem('fiveQuizzes', fiveQuizzes);
+                // Chall.saveQuizzes();
 
                 var score = 0;
 
@@ -135,7 +135,7 @@
                 };
             });
 
-    }
+
 </script>
 
 <script>
