@@ -16,7 +16,7 @@ public class ChallengeController {
 
     private final GenerateUUID generateUUID;
 
-    private ChallengeRepository challengeRepository;
+    private  ChallengeRepository challengeRepository;
 
     public ChallengeController(EquationRandomizer equationRandomizer, GenerateUUID generateUUID, ChallengeRepository challengeRepository) {
         this.equationRandomizer = equationRandomizer;

@@ -33,6 +33,7 @@
 <script type="module">
     import Auth from "/auth.js";
     import Chall from "/chall.js";
+
     document.getElementById("buttonStart").onclick = () => {
         fetch("/api/challenge/data",
             {
@@ -48,94 +49,92 @@
                 })
             })
 
-    };
 
         fetch("api/challenge/equations")
-            .then(res => res.json())
-            .then(fiveQuizzes => {
+            .then(res => res.json()
+                .then(fiveQuizzes => {
 
-                const timeOnStart = performance.now();
+                    const timeOnStart = performance.now();
 
-                image.src = `/api/image/equation/${fiveQuizzes[0]}`;
-                sessionStorage.setItem('fiveQuizzes', fiveQuizzes);
-                // Chall.saveQuizzes();
+                    image.src = `/api/image/equation/${fiveQuizzes[0]}`;
+                    sessionStorage.setItem('fiveQuizzes', fiveQuizzes);
+                    // Chall.saveQuizzes();
 
-                var score = 0;
+                    var score = 0;
 
-                let index = 0;
+                    let index = 0;
 
-                var quiz = fiveQuizzes[index];
-                console.log(quiz);
-
-                let timeLeft = 30;
-                const element = document.getElementById('countdownTimer');
-                const timerId = setInterval(countdown, 1000);
-
-                function countdown() {
-                    if (timeLeft === -1) {
-                        clearTimeout(timerId);
-                        element.innerHTML = "Time's up";
-
-                    } else {
-                        element.innerHTML = timeLeft + 's remaining';
-                        timeLeft--;
-                    }
-                }
-
-                document.getElementById("buttonCheck").onclick = () => {
-
-                    timeLeft = 30;
-                    fetch("/api/equation/solution",
-                        {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
-                            body: JSON.stringify({
-                                answer: document.getElementById("answer").value,
-                                quiz: quiz,
-                            })
-                        })
-                        .then(res => res.json())
-                        .then(text => {
-                            document.getElementById("solution").innerText = text;
-                            console.log(text);
-                            if (text === true) {
-                                score++;
-                                console.log(score);
-                            }
-                            console.log(score);
-                        });
-                    image.src = `/api/image/equation/${fiveQuizzes[++index]}`;
-                    quiz = fiveQuizzes[index];
+                    var quiz = fiveQuizzes[index];
                     console.log(quiz);
-                    if (index > 4) {
-                        image.src = null;
-                        document.getElementById("done").innerText = "All done :)";
-                        const timeOnEnd = performance.now();
-                        let totalTimeToSolve = (+timeOnEnd) - (+timeOnStart);
-                        console.log(totalTimeToSolve);
-                        fetch("/api/challenge/score",
+
+                    let timeLeft = 30;
+                    const element = document.getElementById('countdownTimer');
+                    const timerId = setInterval(countdown, 1000);
+
+                    function countdown() {
+                        if (timeLeft === -1) {
+                            clearTimeout(timerId);
+                            element.innerHTML = "Time's up";
+
+                        } else {
+                            element.innerHTML = timeLeft + 's remaining';
+                            timeLeft--;
+                        }
+                    }
+
+                    document.getElementById("buttonCheck").onclick = () => {
+
+                        timeLeft = 30;
+                        fetch("/api/equation/solution",
                             {
                                 method: "POST",
                                 headers: {
                                     "Content-Type": "application/json",
                                 },
                                 body: JSON.stringify({
-                                    score: score,
-                                    time: totalTimeToSolve,
+                                    answer: document.getElementById("answer").value,
+                                    quiz: quiz,
                                 })
                             })
-                        // .then(res => res.json())
-                        // .then(text => {
-                        //     document.getElementById("allDone").innerText = text;
-                        //
-                        // });
-                    }
-                };
-            });
-
-
+                            .then(res => res.json())
+                            .then(text => {
+                                document.getElementById("solution").innerText = text;
+                                console.log(text);
+                                if (text === true) {
+                                    score++;
+                                    console.log(score);
+                                }
+                                console.log(score);
+                            });
+                        image.src = `/api/image/equation/${fiveQuizzes[++index]}`;
+                        quiz = fiveQuizzes[index];
+                        console.log(quiz);
+                        if (index > 4) {
+                            image.src = null;
+                            document.getElementById("done").innerText = "All done :)";
+                            const timeOnEnd = performance.now();
+                            let totalTimeToSolve = (+timeOnEnd) - (+timeOnStart);
+                            console.log(totalTimeToSolve);
+                            fetch("/api/challenge/score",
+                                {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                    },
+                                    body: JSON.stringify({
+                                        score: score,
+                                        time: totalTimeToSolve,
+                                    })
+                                })
+                            // .then(res => res.json())
+                            // .then(text => {
+                            //     document.getElementById("allDone").innerText = text;
+                            //
+                        }
+                    };
+                })
+            );
+    }
 </script>
 
 <script>

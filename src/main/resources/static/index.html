@@ -54,7 +54,7 @@
         fetch("api/challenge/generate")
             .then(res => res.text()
             .then(text => {
-                uuid = text;
+                uuid = toString(text);
                 sessionStorage.setItem('uuid', uuid);
                 console.log(uuid);
             })
