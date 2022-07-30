@@ -30,9 +30,25 @@
 
 </body>
 
-<script>
+<script type="module">
+    import Auth from "/auth.js";
 
     document.getElementById("buttonStart").onclick = () => {
+
+        fetch("/api/equation/postScoreAndData",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    uuid: sessionStorage.getItem('uuid'),
+                    email: Auth.getEmail(),
+                    score1: null,
+                    score2: null
+
+                })
+            })
 
         fetch("api/challenge/equations")
             .then(res => res.json())
@@ -48,7 +64,7 @@
 
                 let index = 0;
 
-                quiz = fiveQuizzes[index];
+                var quiz = fiveQuizzes[index];
                 console.log(quiz);
 
                 let timeLeft = 30;
@@ -120,6 +136,17 @@
             });
 
     }
+</script>
+
+<script>
+    document.getElementById("accountPage").onclick = () => {
+        window.location.replace("/account.html?")
+    };
+</script>
+<script>
+    document.getElementById("homeButton").onclick = () => {
+        window.location.replace("/")
+    };
 </script>
 
 </html>

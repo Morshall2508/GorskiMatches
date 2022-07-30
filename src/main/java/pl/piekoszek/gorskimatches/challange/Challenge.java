@@ -9,14 +9,46 @@ import java.util.UUID;
 @Entity
 public class Challenge {
     @Id
-    public UUID uuid;
+    private UUID uuid;
 
-    public String email;
+    private String email;
 
-    @OneToMany
-    public List<ChallengeQuiz> challengeQuizzes;
+//    @OneToMany
+//    private List<ChallengeQuiz> challengeQuizzes;
 
-    public int score1;
+    private int registeredUserScore;
 
-    public int score2;
+    private int nonRegisteredUserScore;
+
+    public Challenge(String email, int registeredUserScore, int nonRegisteredUserScore) {
+        this.email = email;
+
+        this.registeredUserScore = registeredUserScore;
+        this.nonRegisteredUserScore = nonRegisteredUserScore;
+    }
+
+    public Challenge() {
+
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+//    public List<ChallengeQuiz> getChallengeQuizzes(){
+//        return challengeQuizzes;
+//    }
+
+    public int getRegisteredUserScore() {
+        return registeredUserScore;
+    }
+
+    public int getNonRegisteredUserScore() {
+        return nonRegisteredUserScore;
+    }
+
 }

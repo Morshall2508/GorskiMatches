@@ -56,9 +56,10 @@
             .then(text => {
                 uuid = text;
                 sessionStorage.setItem('uuid', uuid);
+                console.log(uuid);
             })
         )
-        window.location.replace("/challenge.html?/")
+        window.location.replace("/challenge.html?")
     }
 </script>
 
