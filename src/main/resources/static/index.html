@@ -19,14 +19,18 @@
         <h2>To register, write your email below</h2>
         <input id="email">
         <div id="registrationAndLogoutPad">
-        <button id="confirm">Register</button>
-        <button id="logOut">Logout</button>
+            <button id="confirm">Register</button>
+            <button id="logOut">Logout</button>
         </div>
         <button id="challengeLink">Get a challenge link</button>
+        <a id="challenge" href="" style="display: none">Get your link here</a>
         <div id="loggedIn"></div>
     </div>
 </div>
+<script>
+    document.getElementById("challenge").onload
 
+</script>
 <script>
     document.getElementById("button").onclick = () => {
         location.href = "equation.html";
@@ -53,14 +57,15 @@
     document.getElementById("challengeLink").onclick = () => {
         fetch("api/challenge/generate")
             .then(res => res.json()
-            .then(json => {
-                let uuid = json.toString();
+                .then(json => {
+                    let uuid = json.toString();
 
-                sessionStorage.setItem('uuid', uuid);
-                console.log(uuid);
-            })
-        )
-        window.location.replace("/challenge.html?")
+                    sessionStorage.setItem('uuid', uuid);
+                    console.log(uuid);
+                })
+            )
+        document.getElementById("challenge").href = "/challenge.html?uuid=" + sessionStorage.getItem('uuid');
+        document.getElementById("challenge").style.display = 'block';
     }
 </script>
 

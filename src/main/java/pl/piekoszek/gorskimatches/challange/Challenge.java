@@ -22,6 +22,8 @@ public class Challenge {
         this.nonRegisteredUserScore = nonRegisteredUserScore;
     }
 
+    public Challenge() {
+    }
     public UUID getUuid() {
         return uuid;
     }
@@ -36,9 +38,6 @@ public class Challenge {
 
     public int getNonRegisteredUserScore() {
         return nonRegisteredUserScore;
-    }
-
-    public Challenge() {
     }
 
     public void setUuid(UUID uuid) {

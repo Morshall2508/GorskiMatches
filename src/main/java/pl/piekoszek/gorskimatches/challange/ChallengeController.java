@@ -43,7 +43,8 @@ public class ChallengeController {
         if (challenge.getEmail() != null) {
             challengeRepository.save(challenge);
         } var nonRegisterScore = challengeRepository.findById(challenge.getUuid());
-        nonRegisterScore.setNonRegisteredUserScore(challenge.getNonRegisteredUserScore());
-        challengeRepository.save(nonRegisterScore);
+        var nonRegister = nonRegisterScore.get();
+        nonRegister.setNonRegisteredUserScore(challenge.getNonRegisteredUserScore());
+        challengeRepository.save(nonRegister);
         }
     }
