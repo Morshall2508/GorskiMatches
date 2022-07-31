@@ -1,8 +1,8 @@
 export default class Chall {
-    static saveQuizzes(){
+    static saveQuizzes() {
         sessionStorage.setItem('fiveQuizzes', fiveQuizzes);
     }
-    static countdown(){
+    static countdown() {
         let timeLeft = 30;
         const element = document.getElementById('countdownTimer');
         const timerId = setInterval(countdown, 1000);

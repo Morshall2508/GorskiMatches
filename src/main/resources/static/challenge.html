@@ -33,23 +33,9 @@
 <script type="module">
     import Auth from "/auth.js";
     import Chall from "/chall.js";
-``
+
+    ``
     document.getElementById("buttonStart").onclick = () => {
-        fetch("/api/challenge/data",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    uuid: sessionStorage.getItem('uuid'),
-                    email: Auth.getEmail(),
-                    registeredUserScore: "1",
-                    nonRegisteredUserScore: "3"
-                })
-            })
-
-
         fetch("api/challenge/equations")
             .then(res => res.json()
                 .then(fiveQuizzes => {
@@ -60,7 +46,7 @@
                     sessionStorage.setItem('fiveQuizzes', fiveQuizzes);
                     // Chall.saveQuizzes();
 
-                    var score = 0;
+                    let score = 0;
 
                     let index = 0;
 
@@ -103,33 +89,45 @@
                                 if (text === true) {
                                     score++;
                                     console.log(score);
+                                    sessionStorage.setItem('score', score.toString());
                                 }
                                 console.log(score);
                             });
                         image.src = `/api/image/equation/${fiveQuizzes[++index]}`;
                         quiz = fiveQuizzes[index];
                         console.log(quiz);
-                        if (index > 4) {
+                        if (index >= 4) {
                             image.src = null;
                             document.getElementById("done").innerText = "All done :)";
                             const timeOnEnd = performance.now();
                             let totalTimeToSolve = (+timeOnEnd) - (+timeOnStart);
                             console.log(totalTimeToSolve);
-                            fetch("/api/challenge/score",
-                                {
-                                    method: "POST",
-                                    headers: {
-                                        "Content-Type": "application/json",
-                                    },
-                                    body: JSON.stringify({
-                                        score: score,
-                                        time: totalTimeToSolve,
+                            if (Auth.isLoggedIn())
+                                fetch("/api/challenge/score",
+                                    {
+                                        method: "POST",
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                        },
+                                        body: JSON.stringify({
+                                            uuid: sessionStorage.getItem('uuid'),
+                                            email: Auth.getEmail(),
+                                            registeredUserScore: sessionStorage.getItem('score')
+                                        })
                                     })
-                                })
-                            // .then(res => res.json())
-                            // .then(text => {
-                            //     document.getElementById("allDone").innerText = text;
-                            //
+                            else {
+                                fetch("/api/challenge/score",
+                                    {
+                                        method: "POST",
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                        },
+                                        body: JSON.stringify({
+                                            uuid: sessionStorage.getItem('uuid'),
+                                            nonRegisteredUserScore: sessionStorage.getItem('score')
+                                        })
+                                    })
+                            }
                         }
                     };
                 })
