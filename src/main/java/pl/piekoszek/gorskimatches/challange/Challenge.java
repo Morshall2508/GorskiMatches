@@ -15,15 +15,22 @@ public class Challenge {
 
     private int nonRegisteredUserScore;
 
-    public Challenge(String email, int registeredUserScore, int nonRegisteredUserScore) {
+    private float nonRegisteredUserTime;
+
+    private float registeredUserTime;
+
+    public Challenge(String email, int registeredUserScore, int nonRegisteredUserScore, long nonRegisteredUserTime, long registeredUserTime) {
         this.email = email;
 
         this.registeredUserScore = registeredUserScore;
         this.nonRegisteredUserScore = nonRegisteredUserScore;
+        this.nonRegisteredUserTime = nonRegisteredUserTime;
+        this.registeredUserTime = registeredUserTime;
     }
 
     public Challenge() {
     }
+
     public UUID getUuid() {
         return uuid;
     }
@@ -38,6 +45,14 @@ public class Challenge {
 
     public int getNonRegisteredUserScore() {
         return nonRegisteredUserScore;
+    }
+
+    public float getNonRegisteredUserTime() {
+        return nonRegisteredUserTime;
+    }
+
+    public float getRegisteredUserTime() {
+        return registeredUserTime;
     }
 
     public void setUuid(UUID uuid) {
@@ -56,4 +71,11 @@ public class Challenge {
         this.nonRegisteredUserScore = nonRegisteredUserScore;
     }
 
+    public void setNonRegisteredUserTime(float nonRegisteredUserTime) {
+        this.nonRegisteredUserTime = nonRegisteredUserTime;
+    }
+
+    public void setRegisteredUserTime(float registeredUserTime) {
+        this.registeredUserTime = registeredUserTime;
+    }
 }

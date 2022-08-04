@@ -29,19 +29,16 @@
 </div>
 
 </body>
-
 <script>
-
     const urlParams = new URLSearchParams(window.location.search);
     const uuid = urlParams.get('uuid');
-    // sessionStorage.setItem(uuid,'uuid');
-    console.log(uuid);
+    sessionStorage.setItem('uuid', uuid);
 </script>
+
 <script type="module">
     import Auth from "/auth.js";
-    import Chall from "/chall.js";
 
-    ``
+
     document.getElementById("buttonStart").onclick = () => {
         fetch("api/challenge/equations")
             .then(res => res.json()
@@ -53,7 +50,7 @@
                     sessionStorage.setItem('fiveQuizzes', fiveQuizzes);
                     // Chall.saveQuizzes();
 
-                    let score = 0;
+                    var score = 0;
 
                     let index = 0;
 
@@ -119,7 +116,8 @@
                                         body: JSON.stringify({
                                             uuid: sessionStorage.getItem('uuid'),
                                             email: Auth.getEmail(),
-                                            registeredUserScore: sessionStorage.getItem('score')
+                                            registeredUserScore: sessionStorage.getItem('score'),
+                                            registeredUserTime: totalTimeToSolve
                                         })
                                     })
                             else {
@@ -131,7 +129,8 @@
                                         },
                                         body: JSON.stringify({
                                             uuid: sessionStorage.getItem('uuid'),
-                                            nonRegisteredUserScore: sessionStorage.getItem('score')
+                                            nonRegisteredUserScore: sessionStorage.getItem('score'),
+                                            nonRegisteredUserTime: totalTimeToSolve
                                         })
                                     })
                             }

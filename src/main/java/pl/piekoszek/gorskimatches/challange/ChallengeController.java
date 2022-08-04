@@ -42,9 +42,15 @@ public class ChallengeController {
     void getScore(@RequestBody Challenge challenge) {
         if (challenge.getEmail() != null) {
             challengeRepository.save(challenge);
-        } var nonRegisterScore = challengeRepository.findById(challenge.getUuid());
+        }
+        var nonRegisterScore = challengeRepository.findById(challenge.getUuid());
         var nonRegister = nonRegisterScore.get();
         nonRegister.setNonRegisteredUserScore(challenge.getNonRegisteredUserScore());
+        nonRegister.setRegisteredUserTime(challenge.getNonRegisteredUserTime());
         challengeRepository.save(nonRegister);
-        }
     }
+    @PostMapping("info")
+    void getInfo(@RequestBody ChallengeQuiz challengeQuiz){
+        challengeRepository.save(challengeQuiz);
+    }
+}
