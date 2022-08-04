@@ -59,13 +59,10 @@
             .then(res => res.json()
                 .then(json => {
                     let uuid = json.toString();
-
-                    sessionStorage.setItem('uuid', uuid);
-                    console.log(uuid);
+                    document.getElementById("challenge").href = "/challenge.html?uuid=" + uuid;
+                    document.getElementById("challenge").style.display = 'block';
                 })
             )
-        document.getElementById("challenge").href = "/challenge.html?uuid=" + sessionStorage.getItem('uuid');
-        document.getElementById("challenge").style.display = 'block';
     }
 </script>
 
