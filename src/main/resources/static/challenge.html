@@ -12,7 +12,7 @@
         <div id="accountPage">Account</div>
     </div>
     <div id="equationPad">
-        <p>You've been challenged to solve the quizzes. Your goal is to move one match inside equation - you have 30
+        <p id="text">You've been challenged to solve the quizzes. Your goal is to move one match inside equation - you have 30
             seconds.There are 5 quizzes. You get 1 point for correct answer and 0 if you run out of time or give
             incorrect
             answer</p>
@@ -25,6 +25,7 @@
         <button id="buttonCheck">Check!</button>
         <div id="solution"></div>
         <div id="allDone"></div>
+        <div id="result"></div>
     </div>
 </div>
 
@@ -40,22 +41,19 @@
 
 
     document.getElementById("buttonStart").onclick = () => {
-        fetch("api/challenge/equations")
+        fetch(`api/challenge/quizzes/${uuid}`)
             .then(res => res.json()
                 .then(fiveQuizzes => {
 
                     const timeOnStart = performance.now();
-
                     image.src = `/api/image/equation/${fiveQuizzes[0]}`;
                     sessionStorage.setItem('fiveQuizzes', fiveQuizzes);
-                    // Chall.saveQuizzes();
 
                     var score = 0;
 
                     let index = 0;
 
                     var quiz = fiveQuizzes[index];
-                    console.log(quiz);
 
                     let timeLeft = 30;
                     const element = document.getElementById('countdownTimer');
@@ -100,12 +98,17 @@
                         image.src = `/api/image/equation/${fiveQuizzes[++index]}`;
                         quiz = fiveQuizzes[index];
                         console.log(quiz);
-                        if (index >= 4) {
+                        if (index === 5) {
                             image.src = null;
                             document.getElementById("done").innerText = "All done :)";
+                            document.getElementById("text").style.display = "none";
+                            document.getElementById("buttonStart").style.display = "none";
+                            document.getElementById("countdownTimer").style.display = "none";
+                            document.getElementById("buttonCheck").style.display = "none";
+                            document.getElementById("solution").style.display = "none";
+                            document.getElementById("answer").style.display = "none";
                             const timeOnEnd = performance.now();
                             let totalTimeToSolve = (+timeOnEnd) - (+timeOnStart);
-                            console.log(totalTimeToSolve);
                             if (Auth.isLoggedIn())
                                 fetch("/api/challenge/score",
                                     {
@@ -120,6 +123,8 @@
                                             registeredUserTime: totalTimeToSolve
                                         })
                                     })
+                                fetch("/api/challenge/resultForRegisteredUser")
+
                             else {
                                 fetch("/api/challenge/score",
                                     {
@@ -133,6 +138,11 @@
                                             nonRegisteredUserTime: totalTimeToSolve
                                         })
                                     })
+                                fetch("/api/challenge/resultForNonRegistered")
+                                    .then(res => res.text())
+                                    .then(text => {
+                                        document.getElementById("result").innerText = text;
+                                    });
                             }
                         }
                     };

@@ -25,4 +25,22 @@ public class EmailService {
         message.setText("To register click on this link: " + server + "auth/login.html?token=" + TokenCreator.jwtToken(to));
         mailSender.send(message);
     }
+
+    public void sendChallengeWon(String to) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("gorskimatchesserver@gmail.com");
+        message.setTo(to);
+        message.setSubject("Challenge result");
+        message.setText("Congratulations you've won the challenge");
+        mailSender.send(message);
+    }
+
+    public void sendChallengeLos(String to) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("gorskimatchesserver@gmail.com");
+        message.setTo(to);
+        message.setSubject("Challenge result");
+        message.setText("Unfortunately you've lost the challenge");
+        mailSender.send(message);
+    }
 }

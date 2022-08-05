@@ -17,12 +17,11 @@ public class ChallengeQuiz {
 
     public String quiz;
 
-    public ChallengeQuiz(long id, Challenge challenge, String quiz){
-        this.id = id;
+    public ChallengeQuiz(Challenge challenge, String quiz){
         this.challenge = challenge;
         this.quiz = quiz;
-
     }
+
     public ChallengeQuiz(){}
 
     public long getId() {

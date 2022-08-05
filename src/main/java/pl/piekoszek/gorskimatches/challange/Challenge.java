@@ -1,7 +1,10 @@
 package pl.piekoszek.gorskimatches.challange;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -19,16 +22,15 @@ public class Challenge {
 
     private float registeredUserTime;
 
-    public Challenge(String email, int registeredUserScore, int nonRegisteredUserScore, long nonRegisteredUserTime, long registeredUserTime) {
-        this.email = email;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<ChallengeQuiz> challengeQuizzes;
 
-        this.registeredUserScore = registeredUserScore;
-        this.nonRegisteredUserScore = nonRegisteredUserScore;
-        this.nonRegisteredUserTime = nonRegisteredUserTime;
-        this.registeredUserTime = registeredUserTime;
+    public List<ChallengeQuiz> getChallengeQuizzes() {
+        return challengeQuizzes;
     }
 
-    public Challenge() {
+    public void setChallengeQuizzes(List<ChallengeQuiz> challengeQuizzes) {
+        this.challengeQuizzes = challengeQuizzes;
     }
 
     public UUID getUuid() {
