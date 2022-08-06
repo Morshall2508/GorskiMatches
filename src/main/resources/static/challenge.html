@@ -25,7 +25,6 @@
         <button id="buttonCheck">Check!</button>
         <div id="solution"></div>
         <div id="allDone"></div>
-        <div id="result"></div>
     </div>
 </div>
 
@@ -46,6 +45,9 @@
                 .then(fiveQuizzes => {
 
                     const timeOnStart = performance.now();
+                    console.log(fiveQuizzes);
+                    var fiveQuizzes1 = fiveQuizzes.join();
+                    console.log(fiveQuizzes1);
                     image.src = `/api/image/equation/${fiveQuizzes[0]}`;
                     sessionStorage.setItem('fiveQuizzes', fiveQuizzes);
 
@@ -54,6 +56,7 @@
                     let index = 0;
 
                     var quiz = fiveQuizzes[index];
+                    console.log(quiz);
 
                     let timeLeft = 30;
                     const element = document.getElementById('countdownTimer');
@@ -109,6 +112,7 @@
                             document.getElementById("answer").style.display = "none";
                             const timeOnEnd = performance.now();
                             let totalTimeToSolve = (+timeOnEnd) - (+timeOnStart);
+                            console.log(totalTimeToSolve);
                             if (Auth.isLoggedIn())
                                 fetch("/api/challenge/score",
                                     {
@@ -123,9 +127,9 @@
                                             registeredUserTime: totalTimeToSolve
                                         })
                                     })
-                                fetch("/api/challenge/resultForRegisteredUser")
+                            // fetch("/api/challenge/resultForRegisteredUser")
 
-                            else {
+                        else {
                                 fetch("/api/challenge/score",
                                     {
                                         method: "POST",
