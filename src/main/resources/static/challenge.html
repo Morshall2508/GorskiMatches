@@ -25,6 +25,7 @@
         <button id="buttonCheck">Check!</button>
         <div id="solution"></div>
         <div id="allDone"></div>
+        <div id="result"></div>
     </div>
 </div>
 
@@ -142,9 +143,10 @@
                                             nonRegisteredUserTime: totalTimeToSolve
                                         })
                                     })
-                                fetch("/api/challenge/resultForNonRegistered")
+                                fetch(`api/challenge/resultForNonRegistered/${uuid}`)
                                     .then(res => res.text())
                                     .then(text => {
+                                        console.log(text);
                                         document.getElementById("result").innerText = text;
                                     });
                             }

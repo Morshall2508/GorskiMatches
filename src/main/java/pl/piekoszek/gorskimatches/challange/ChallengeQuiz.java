@@ -1,9 +1,6 @@
 package pl.piekoszek.gorskimatches.challange;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 public class ChallengeQuiz {

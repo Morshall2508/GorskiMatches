@@ -1,14 +1,10 @@
 package pl.piekoszek.gorskimatches.challange;
 
-import org.springframework.jdbc.core.SqlReturnType;
 import org.springframework.web.bind.annotation.*;
 import pl.piekoszek.gorskimatches.equation.EquationRandomizer;
-import pl.piekoszek.gorskimatches.token.Email;
 import pl.piekoszek.gorskimatches.token.EmailService;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -43,26 +39,20 @@ public class ChallengeController {
         return challenge.getUuid();
     }
 
-    @PostMapping("data")
-    void createData(@RequestBody Challenge challenge) {
-        challengeRepository.save(challenge);
-    }
-
     @PostMapping("score")
     void getScore(@RequestBody Challenge challenge) {
         if (challenge.getEmail() != null) {
-            challengeRepository.save(challenge);
+            var registerScore = challengeRepository.findById(challenge.getUuid());
+            var register = registerScore.get();
+            register.setNonRegisteredUserScore(challenge.getNonRegisteredUserScore());
+            register.setNonRegisteredUserTime(challenge.getNonRegisteredUserTime());
+            challengeRepository.save(register);
         }
         var nonRegisterScore = challengeRepository.findById(challenge.getUuid());
         var nonRegister = nonRegisterScore.get();
         nonRegister.setNonRegisteredUserScore(challenge.getNonRegisteredUserScore());
         nonRegister.setNonRegisteredUserTime(challenge.getNonRegisteredUserTime());
         challengeRepository.save(nonRegister);
-    }
-
-    @PostMapping("info")
-    void getInfo(@RequestBody Challenge challenge) {
-        challengeRepository.save(challenge);
     }
 
     @GetMapping("quizzes/{uuid}")
@@ -72,8 +62,8 @@ public class ChallengeController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("resultForNonRegistered")
-    String getResultForNonRegisteredUser(Challenge challenge) {
+    @GetMapping("resultForNonRegistered/{uuid}")
+    String getResultForNonRegisteredUser(@PathVariable("uuid") Challenge challenge) {
         var challengeData = challengeRepository.findById(challenge.getUuid());
         var challengeInfo = challengeData.get();
         if (challengeInfo.getRegisteredUserScore() != challengeInfo.getRegisteredUserScore()) {
@@ -82,7 +72,10 @@ public class ChallengeController {
             }
             return "Unfortunately you've lost :(";
         }
-        return null;
+        if (challengeInfo.getNonRegisteredUserTime() < challengeInfo.getRegisteredUserTime()) {
+            return "Congratulations you've won!";
+        }
+        return "Unfortunately you've lost :(";
     }
 
     @GetMapping("resultForRegisteredUser")
