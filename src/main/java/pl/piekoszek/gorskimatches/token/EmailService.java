@@ -35,7 +35,7 @@ public class EmailService {
         mailSender.send(message);
     }
 
-    public void sendChallengeLos(String to) {
+    public void sendChallengeLost(String to) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("gorskimatchesserver@gmail.com");
         message.setTo(to);

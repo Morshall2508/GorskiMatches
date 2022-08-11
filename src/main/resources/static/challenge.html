@@ -12,7 +12,8 @@
         <div id="accountPage">Account</div>
     </div>
     <div id="equationPad">
-        <p id="text">You've been challenged to solve the quizzes. Your goal is to move one match inside equation - you have 30
+        <p id="text">You've been challenged to solve the quizzes. Your goal is to move one match inside equation - you
+            have 30
             seconds.There are 5 quizzes. You get 1 point for correct answer and 0 if you run out of time or give
             incorrect
             answer</p>
@@ -113,8 +114,7 @@
                             document.getElementById("answer").style.display = "none";
                             const timeOnEnd = performance.now();
                             let totalTimeToSolve = (+timeOnEnd) - (+timeOnStart);
-                            console.log(totalTimeToSolve);
-                            if (Auth.isLoggedIn())
+                            if (Auth.isLoggedIn()) {
                                 fetch("/api/challenge/score",
                                     {
                                         method: "POST",
@@ -128,9 +128,9 @@
                                             registeredUserTime: totalTimeToSolve
                                         })
                                     })
-                            // fetch("/api/challenge/resultForRegisteredUser")
+                                fetch(`/api/challenge/resultForRegisteredUser/${uuid}`)
 
-                        else {
+                            } else {
                                 fetch("/api/challenge/score",
                                     {
                                         method: "POST",
