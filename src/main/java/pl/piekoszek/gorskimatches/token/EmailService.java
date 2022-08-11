@@ -31,7 +31,7 @@ public class EmailService {
         message.setFrom("gorskimatchesserver@gmail.com");
         message.setTo(to);
         message.setSubject("Challenge result");
-        message.setText("Congratulations you've won the challenge");
+        message.setText("Congratulations you've won the challenge!");
         mailSender.send(message);
     }
 
@@ -40,7 +40,7 @@ public class EmailService {
         message.setFrom("gorskimatchesserver@gmail.com");
         message.setTo(to);
         message.setSubject("Challenge result");
-        message.setText("Unfortunately you've lost the challenge");
+        message.setText("Unfortunately you've lost the challenge :(");
         mailSender.send(message);
     }
 }

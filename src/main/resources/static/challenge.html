@@ -47,20 +47,11 @@
                 .then(fiveQuizzes => {
 
                     const timeOnStart = performance.now();
-                    console.log(fiveQuizzes);
-                    var fiveQuizzes1 = fiveQuizzes.join();
-                    console.log(fiveQuizzes1);
                     image.src = `/api/image/equation/${fiveQuizzes[0]}`;
-                    sessionStorage.setItem('fiveQuizzes', fiveQuizzes);
-
-                    var score = 0;
-
+                    let score = 0;
                     let index = 0;
-
                     var quiz = fiveQuizzes[index];
-                    console.log(quiz);
-
-                    let timeLeft = 30;
+                    let timeLeft = 2;
                     const element = document.getElementById('countdownTimer');
                     const timerId = setInterval(countdown, 1000);
 
@@ -68,6 +59,7 @@
                         if (timeLeft === -1) {
                             clearTimeout(timerId);
                             element.innerHTML = "Time's up";
+                            image.src = `/api/image/equation/${fiveQuizzes[++index]}`;
 
                         } else {
                             element.innerHTML = timeLeft + 's remaining';
@@ -92,17 +84,14 @@
                             .then(res => res.json())
                             .then(text => {
                                 document.getElementById("solution").innerText = text;
-                                console.log(text);
                                 if (text === true) {
                                     score++;
-                                    console.log(score);
                                     sessionStorage.setItem('score', score.toString());
                                 }
-                                console.log(score);
                             });
                         image.src = `/api/image/equation/${fiveQuizzes[++index]}`;
                         quiz = fiveQuizzes[index];
-                        console.log(quiz);
+                        document.getElementById("answer").value = '';
                         if (index === 5) {
                             image.src = null;
                             document.getElementById("done").innerText = "All done :)";
@@ -128,7 +117,6 @@
                                             registeredUserTime: totalTimeToSolve
                                         })
                                     })
-                                fetch(`/api/challenge/resultForRegisteredUser/${uuid}`)
 
                             } else {
                                 fetch("/api/challenge/score",
@@ -146,7 +134,6 @@
                                 fetch(`api/challenge/resultForNonRegistered/${uuid}`)
                                     .then(res => res.text())
                                     .then(text => {
-                                        console.log(text);
                                         document.getElementById("result").innerText = text;
                                     });
                             }

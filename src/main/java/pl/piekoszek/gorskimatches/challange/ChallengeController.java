@@ -2,7 +2,6 @@ package pl.piekoszek.gorskimatches.challange;
 
 import org.springframework.web.bind.annotation.*;
 import pl.piekoszek.gorskimatches.equation.EquationRandomizer;
-import pl.piekoszek.gorskimatches.token.AccountInfo;
 import pl.piekoszek.gorskimatches.token.EmailService;
 
 import java.util.List;
@@ -42,19 +41,35 @@ public class ChallengeController {
 
     @PostMapping("score")
     void getScore(@RequestBody Challenge challenge) {
+        var challengeInfoData = challengeRepository.findById(challenge.getUuid());
+        var challengeInfo = challengeInfoData.get();
+
         if (challenge.getEmail() != null) {
-            var registerScore = challengeRepository.findById(challenge.getUuid());
-            var register = registerScore.get();
-            register.setEmail(challenge.getEmail());
-            register.setRegisteredUserScore(challenge.getRegisteredUserScore());
-            register.setRegisteredUserTime(challenge.getRegisteredUserTime());
-            challengeRepository.save(register);
+            challengeInfo.setEmail(challenge.getEmail());
+            challengeInfo.setRegisteredUserScore(challenge.getRegisteredUserScore());
+            challengeInfo.setRegisteredUserTime(challenge.getRegisteredUserTime());
+            challengeRepository.save(challengeInfo);
+
+        } else {
+            challengeInfo.setNonRegisteredUserScore(challenge.getNonRegisteredUserScore());
+            challengeInfo.setNonRegisteredUserTime(challenge.getNonRegisteredUserTime());
+            challengeRepository.save(challengeInfo);
+
+            if (challengeInfo.getNonRegisteredUserTime() != challengeInfo.getRegisteredUserTime()) {
+                if (challengeInfo.getRegisteredUserScore() > challengeInfo.getNonRegisteredUserScore()) {
+                    emailService.sendChallengeWon(challengeInfo.getEmail());
+                } else {
+                    emailService.sendChallengeLost(challengeInfo.getEmail());
+                }
+            }
+            if (challengeInfo.getRegisteredUserScore() == challengeInfo.getNonRegisteredUserScore()) {
+                if (challengeInfo.getRegisteredUserTime() < challengeInfo.getNonRegisteredUserTime()) {
+                    emailService.sendChallengeWon(challengeInfo.getEmail());
+                } else {
+                    emailService.sendChallengeLost(challengeInfo.getEmail());
+                }
+            }
         }
-        var nonRegisterScore = challengeRepository.findById(challenge.getUuid());
-        var nonRegister = nonRegisterScore.get();
-        nonRegister.setNonRegisteredUserScore(challenge.getNonRegisteredUserScore());
-        nonRegister.setNonRegisteredUserTime(challenge.getNonRegisteredUserTime());
-        challengeRepository.save(nonRegister);
     }
 
     @GetMapping("quizzes/{uuid}")
@@ -66,8 +81,8 @@ public class ChallengeController {
 
     @GetMapping("resultForNonRegistered/{uuid}")
     String getResultForNonRegisteredUser(@PathVariable("uuid") Challenge challenge) {
-        var challengeData = challengeRepository.findById(challenge.getUuid());
-        var challengeInfo = challengeData.get();
+        var challengeInfoData = challengeRepository.findById(challenge.getUuid());
+        var challengeInfo = challengeInfoData.get();
         if (challengeInfo.getRegisteredUserScore() != challengeInfo.getNonRegisteredUserScore()) {
             if (challengeInfo.getNonRegisteredUserScore() > challengeInfo.getRegisteredUserScore()) {
                 return "Congratulations you've won!";
@@ -80,24 +95,5 @@ public class ChallengeController {
             }
         }
         return "Unfortunately you've lost :(";
-    }
-
-
-    @GetMapping("resultForRegisteredUser/{uuid}")
-    void getResultForRegisteredUser(@PathVariable("uuid") Challenge challenge) {
-        var challengeData = challengeRepository.findById(challenge.getUuid());
-        var challengeInfo = challengeData.get();
-        if (challengeInfo.getRegisteredUserScore() != challengeInfo.getNonRegisteredUserScore()) {
-            if (challengeInfo.getRegisteredUserScore() > challengeInfo.getNonRegisteredUserScore()) {
-                emailService.sendChallengeWon(challenge.getEmail());
-            }
-            emailService.sendChallengeLost(challenge.getEmail());
-        }
-        if (challengeInfo.getRegisteredUserScore() == challengeInfo.getNonRegisteredUserScore()) {
-            if (challengeInfo.getNonRegisteredUserTime() < challengeInfo.getRegisteredUserTime()) {
-                emailService.sendChallengeWon(challenge.getEmail());
-            }
-        }
-        emailService.sendChallengeLost(challenge.getEmail());
     }
 }

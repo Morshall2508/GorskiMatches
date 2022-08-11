@@ -54,6 +54,10 @@
 </script>
 
 <script>
+    sessionStorage.removeItem('score');
+</script>
+
+<script>
     document.getElementById("challengeLink").onclick = () => {
         fetch("api/challenge/generate")
             .then(res => res.json()
