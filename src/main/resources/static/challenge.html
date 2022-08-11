@@ -39,8 +39,13 @@
 
 <script type="module">
     import Auth from "/auth.js";
+    import CountdownTimer from "/countdownTimer.js";
 
+    const countdownTimer = new CountdownTimer(2,
+        document.getElementById("countdownTimer"), () => {
 
+        countdownTimer.reset();
+    });
     document.getElementById("buttonStart").onclick = () => {
         fetch(`api/challenge/quizzes/${uuid}`)
             .then(res => res.json()
@@ -51,25 +56,9 @@
                     let score = 0;
                     let index = 0;
                     var quiz = fiveQuizzes[index];
-                    let timeLeft = 2;
-                    const element = document.getElementById('countdownTimer');
-                    const timerId = setInterval(countdown, 1000);
-
-                    function countdown() {
-                        if (timeLeft === -1) {
-                            clearTimeout(timerId);
-                            element.innerHTML = "Time's up";
-                            image.src = `/api/image/equation/${fiveQuizzes[++index]}`;
-
-                        } else {
-                            element.innerHTML = timeLeft + 's remaining';
-                            timeLeft--;
-                        }
-                    }
 
                     document.getElementById("buttonCheck").onclick = () => {
 
-                        timeLeft = 30;
                         fetch("/api/equation/solution",
                             {
                                 method: "POST",
