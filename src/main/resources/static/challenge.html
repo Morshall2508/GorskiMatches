@@ -41,16 +41,17 @@
     import Auth from "/auth.js";
     import CountdownTimer from "/countdownTimer.js";
 
-    const countdownTimer = new CountdownTimer(2,
-        document.getElementById("countdownTimer"), () => {
 
-        countdownTimer.reset();
-    });
     document.getElementById("buttonStart").onclick = () => {
+
         fetch(`api/challenge/quizzes/${uuid}`)
             .then(res => res.json()
                 .then(fiveQuizzes => {
-
+                    const countdownTimer = new CountdownTimer(31, document.getElementById("countdownTimer"), () => {
+                        image.src = `/api/image/equation/${fiveQuizzes[++index]}`
+                        countdownTimer.reset();
+                    })
+                    countdownTimer.start();
                     const timeOnStart = performance.now();
                     image.src = `/api/image/equation/${fiveQuizzes[0]}`;
                     let score = 0;
@@ -58,7 +59,7 @@
                     var quiz = fiveQuizzes[index];
 
                     document.getElementById("buttonCheck").onclick = () => {
-
+                        countdownTimer.reset();
                         fetch("/api/equation/solution",
                             {
                                 method: "POST",
@@ -78,11 +79,14 @@
                                     sessionStorage.setItem('score', score.toString());
                                 }
                             });
+
                         image.src = `/api/image/equation/${fiveQuizzes[++index]}`;
                         quiz = fiveQuizzes[index];
                         document.getElementById("answer").value = '';
+
                         if (index === 5) {
                             image.src = null;
+                            countdownTimer.stop();
                             document.getElementById("done").innerText = "All done :)";
                             document.getElementById("text").style.display = "none";
                             document.getElementById("buttonStart").style.display = "none";
