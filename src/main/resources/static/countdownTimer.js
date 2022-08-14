@@ -3,7 +3,7 @@ export default class CountdownTimer {
     maxTimeSeconds;
     currentTimeSeconds = 0;
     intervalId;
-    startingElement = document.getElementById("buttonStart");
+    startingElement;
     displayElement = document.getElementById("countdownTimer");
     onFinish;
 
@@ -14,7 +14,6 @@ export default class CountdownTimer {
     }
 
     start() {
-        this.startingElement.onclick = () => {
             this.currentTimeSeconds = this.maxTimeSeconds;
             this.intervalId = setInterval(() => {
                 this.currentTimeSeconds--;
@@ -25,9 +24,7 @@ export default class CountdownTimer {
                 if (this.currentTimeSeconds === 0) {
                     this.onFinish();
                 }
-
             }, 1000);
-        }
     }
     reset() {
         this.currentTimeSeconds = this.maxTimeSeconds;
