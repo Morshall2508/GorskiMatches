@@ -3,7 +3,6 @@ export default class CountdownTimer {
     maxTimeSeconds;
     currentTimeSeconds = 0;
     intervalId;
-    startingElement;
     displayElement = document.getElementById("countdownTimer");
     onFinish;
 

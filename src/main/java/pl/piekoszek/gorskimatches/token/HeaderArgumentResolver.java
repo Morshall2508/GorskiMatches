@@ -6,13 +6,15 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+
 import javax.servlet.http.HttpServletRequest;
 
 
-public class HeaderVersionArgumentResolver implements HandlerMethodArgumentResolver {
+public class HeaderArgumentResolver implements HandlerMethodArgumentResolver {
 
     private final TokenDecoder tokenDecoder;
-    public HeaderVersionArgumentResolver(TokenDecoder tokenDecoder) {
+
+    public HeaderArgumentResolver(TokenDecoder tokenDecoder) {
         this.tokenDecoder = tokenDecoder;
     }
 
@@ -27,11 +29,19 @@ public class HeaderVersionArgumentResolver implements HandlerMethodArgumentResol
                                   NativeWebRequest webRequest,
                                   WebDataBinderFactory binderFactory) throws Exception {
 
+        var email = parameter.getParameterAnnotation(Email.class);
+
+        var required = email.required();
+
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
 
         var authorizationHeaderValue = request.getHeader("authorization");
         if (authorizationHeaderValue == null) {
-            throw new UnauthorizedException("Missing Authorization Header");
+            if (required) {
+                throw new UnauthorizedException("Missing Authorization Header");
+            } else {
+                return null;
+            }
         }
         var token = authorizationHeaderValue.split(" ")[1];
 

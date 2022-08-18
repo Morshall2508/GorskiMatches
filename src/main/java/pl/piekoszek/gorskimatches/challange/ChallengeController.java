@@ -2,7 +2,7 @@ package pl.piekoszek.gorskimatches.challange;
 
 import org.springframework.web.bind.annotation.*;
 import pl.piekoszek.gorskimatches.equation.EquationRandomizer;
-import pl.piekoszek.gorskimatches.token.EmailService;
+import pl.piekoszek.gorskimatches.token.Email;
 
 import java.util.List;
 import java.util.UUID;
@@ -16,19 +16,19 @@ public class ChallengeController {
 
     private final GenerateUUID generateUUID;
 
-    private EmailService emailService;
-
     private ChallengeRepository challengeRepository;
 
-    public ChallengeController(EquationRandomizer equationRandomizer, GenerateUUID generateUUID, ChallengeRepository challengeRepository, EmailService emailService) {
+    private ChallengeService challengeService;
+
+    public ChallengeController(EquationRandomizer equationRandomizer, GenerateUUID generateUUID, ChallengeRepository challengeRepository, ChallengeService challengeService) {
         this.equationRandomizer = equationRandomizer;
         this.generateUUID = generateUUID;
         this.challengeRepository = challengeRepository;
-        this.emailService = emailService;
+        this.challengeService = challengeService;
     }
 
     @GetMapping("generate")
-    UUID getUUID() {
+    UUID createChallenge() {
         var challenge = new Challenge();
         challenge.setChallengeQuizzes(
                 equationRandomizer.equationsForChallenge().stream()
@@ -40,36 +40,37 @@ public class ChallengeController {
     }
 
     @PostMapping("score")
-    void getScore(@RequestBody Challenge challenge) {
-        var challengeInfoData = challengeRepository.findById(challenge.getUuid());
+    void saveAndGetResultForRegisteredUser(@Email(required = false) String email, @RequestBody ChallengeResult challengeResult) {
+        var challengeInfoData = challengeRepository.findById(challengeResult.getUuid());
         var challengeInfo = challengeInfoData.get();
 
-        if (challenge.getEmail() != null) {
-            challengeInfo.setEmail(challenge.getEmail());
-            challengeInfo.setRegisteredUserScore(challenge.getRegisteredUserScore());
-            challengeInfo.setRegisteredUserTime(challenge.getRegisteredUserTime());
+        if (email != null) {
+            challengeInfo.setEmail(email);
+            challengeInfo.setRegisteredUserScore(challengeResult.getScore());
+            challengeInfo.setRegisteredUserTimeSeconds(challengeResult.getTime());
             challengeRepository.save(challengeInfo);
-
-        } else {
-            challengeInfo.setNonRegisteredUserScore(challenge.getNonRegisteredUserScore());
-            challengeInfo.setNonRegisteredUserTime(challenge.getNonRegisteredUserTime());
-            challengeRepository.save(challengeInfo);
-
-            if (challengeInfo.getNonRegisteredUserTime() != challengeInfo.getRegisteredUserTime()) {
-                if (challengeInfo.getRegisteredUserScore() > challengeInfo.getNonRegisteredUserScore()) {
-                    emailService.sendChallengeWon(challengeInfo.getEmail());
-                } else {
-                    emailService.sendChallengeLost(challengeInfo.getEmail());
-                }
-            }
-            if (challengeInfo.getRegisteredUserScore() == challengeInfo.getNonRegisteredUserScore()) {
-                if (challengeInfo.getRegisteredUserTime() < challengeInfo.getNonRegisteredUserTime()) {
-                    emailService.sendChallengeWon(challengeInfo.getEmail());
-                } else {
-                    emailService.sendChallengeLost(challengeInfo.getEmail());
-                }
-            }
+            return;
         }
+        challengeInfo.setNonRegisteredUserScore(challengeResult.getScore());
+        challengeInfo.setNonRegisteredUserTimeSeconds(challengeResult.getTime());
+        challengeRepository.save(challengeInfo);
+
+        challengeService.resultForRegisteredUser(challengeInfo,
+                challengeInfo.getRegisteredUserTimeSeconds(),
+                challengeInfo.getNonRegisteredUserTimeSeconds(),
+                challengeInfo.getRegisteredUserScore(),
+                challengeInfo.getNonRegisteredUserScore());
+    }
+
+    @GetMapping("resultForNonRegistered/{uuid}")
+    String getResultForNonRegisteredUser(@PathVariable("uuid") Challenge challenge) {
+        var challengeInfoData = challengeRepository.findById(challenge.getUuid());
+        var challengeInfo = challengeInfoData.get();
+        return challengeService.resultForNonRegisteredUser(challengeInfo.getRegisteredUserTimeSeconds(),
+                challengeInfo.getNonRegisteredUserTimeSeconds(),
+                challengeInfo.getRegisteredUserScore(),
+                challengeInfo.getNonRegisteredUserScore());
+
     }
 
     @GetMapping("quizzes/{uuid}")
@@ -79,21 +80,5 @@ public class ChallengeController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("resultForNonRegistered/{uuid}")
-    String getResultForNonRegisteredUser(@PathVariable("uuid") Challenge challenge) {
-        var challengeInfoData = challengeRepository.findById(challenge.getUuid());
-        var challengeInfo = challengeInfoData.get();
-        if (challengeInfo.getRegisteredUserScore() != challengeInfo.getNonRegisteredUserScore()) {
-            if (challengeInfo.getNonRegisteredUserScore() > challengeInfo.getRegisteredUserScore()) {
-                return "Congratulations you've won!";
-            }
-            return "Unfortunately you've lost :(";
-        }
-        if (challengeInfo.getRegisteredUserScore() == challengeInfo.getNonRegisteredUserScore()) {
-            if (challengeInfo.getNonRegisteredUserTime() < challengeInfo.getRegisteredUserTime()) {
-                return "Congratulations you've won!";
-            }
-        }
-        return "Unfortunately you've lost :(";
-    }
+
 }

@@ -5,12 +5,15 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 
 @Service
 public class EmailService {
 
     private final JavaMailSender mailSender;
     private final String server;
+
 
     EmailService(JavaMailSender mailSender, @Value("${matches.server.address}") String server) {
         this.mailSender = mailSender;
@@ -26,21 +29,12 @@ public class EmailService {
         mailSender.send(message);
     }
 
-    public void sendChallengeWon(String to) {
+    public void sendResultOfChallenge(String to, String result, UUID uuid) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("gorskimatchesserver@gmail.com");
         message.setTo(to);
-        message.setSubject("Challenge result");
-        message.setText("Congratulations you've won the challenge!");
-        mailSender.send(message);
-    }
-
-    public void sendChallengeLost(String to) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("gorskimatchesserver@gmail.com");
-        message.setTo(to);
-        message.setSubject("Challenge result");
-        message.setText("Unfortunately you've lost the challenge :(");
+        message.setSubject("Challenge: " + uuid +  " result");
+        message.setText(result);
         mailSender.send(message);
     }
 }

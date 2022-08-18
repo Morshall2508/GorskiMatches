@@ -32,6 +32,7 @@
 
 </body>
 <script>
+    const token = localStorage.getItem('token');
     const urlParams = new URLSearchParams(window.location.search);
     const uuid = urlParams.get('uuid');
     sessionStorage.setItem('uuid', uuid);
@@ -61,12 +62,13 @@
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
+                            'Authorization': 'bearer ' + localStorage.getItem('token'),
                         },
                         body: JSON.stringify({
                             uuid: sessionStorage.getItem('uuid'),
                             email: Auth.getEmail(),
-                            registeredUserScore: sessionStorage.getItem('score'),
-                            registeredUserTime: totalTimeToSolve
+                            score: sessionStorage.getItem('score'),
+                            time: totalTimeToSolve
                         })
                     })
 
@@ -79,8 +81,8 @@
                         },
                         body: JSON.stringify({
                             uuid: sessionStorage.getItem('uuid'),
-                            nonRegisteredUserScore: sessionStorage.getItem('score'),
-                            nonRegisteredUserTime: totalTimeToSolve
+                            score: sessionStorage.getItem('score'),
+                            time: totalTimeToSolve
                         })
                     })
                 fetch(`api/challenge/resultForNonRegistered/${uuid}`)

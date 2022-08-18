@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
+
 public class Challenge {
     @Id
     private UUID uuid;
@@ -18,9 +19,9 @@ public class Challenge {
 
     private int nonRegisteredUserScore;
 
-    private float nonRegisteredUserTime;
+    private float nonRegisteredUserTimeSeconds;
 
-    private float registeredUserTime;
+    private float registeredUserTimeSeconds;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<ChallengeQuiz> challengeQuizzes;
@@ -49,12 +50,12 @@ public class Challenge {
         return nonRegisteredUserScore;
     }
 
-    public float getNonRegisteredUserTime() {
-        return nonRegisteredUserTime;
+    public float getNonRegisteredUserTimeSeconds() {
+        return nonRegisteredUserTimeSeconds;
     }
 
-    public float getRegisteredUserTime() {
-        return registeredUserTime;
+    public float getRegisteredUserTimeSeconds() {
+        return registeredUserTimeSeconds;
     }
 
     public void setUuid(UUID uuid) {
@@ -73,11 +74,11 @@ public class Challenge {
         this.nonRegisteredUserScore = nonRegisteredUserScore;
     }
 
-    public void setNonRegisteredUserTime(float nonRegisteredUserTime) {
-        this.nonRegisteredUserTime = nonRegisteredUserTime;
+    public void setNonRegisteredUserTimeSeconds(float nonRegisteredUserTimeSeconds) {
+        this.nonRegisteredUserTimeSeconds = nonRegisteredUserTimeSeconds;
     }
 
-    public void setRegisteredUserTime(float registeredUserTime) {
-        this.registeredUserTime = registeredUserTime;
+    public void setRegisteredUserTimeSeconds(float registeredUserTimeSeconds) {
+        this.registeredUserTimeSeconds = registeredUserTimeSeconds;
     }
 }
