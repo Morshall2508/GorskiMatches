@@ -6,7 +6,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.util.List;
 import java.util.UUID;
-
 @Entity
 
 public class Challenge {
