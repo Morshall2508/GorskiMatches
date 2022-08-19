@@ -1,7 +1,6 @@
 package pl.piekoszek.gorskimatches.challange;
 
 import org.springframework.web.bind.annotation.*;
-import pl.piekoszek.gorskimatches.equation.EquationRandomizer;
 import pl.piekoszek.gorskimatches.token.Email;
 
 import java.util.List;
@@ -12,31 +11,18 @@ import java.util.stream.Collectors;
 @RequestMapping("api/challenge")
 public class ChallengeController {
 
-    private final EquationRandomizer equationRandomizer;
-
-    private final GenerateUUID generateUUID;
-
     private ChallengeRepository challengeRepository;
 
     private ChallengeService challengeService;
 
-    public ChallengeController(EquationRandomizer equationRandomizer, GenerateUUID generateUUID, ChallengeRepository challengeRepository, ChallengeService challengeService) {
-        this.equationRandomizer = equationRandomizer;
-        this.generateUUID = generateUUID;
+    public ChallengeController(ChallengeRepository challengeRepository, ChallengeService challengeService) {
         this.challengeRepository = challengeRepository;
         this.challengeService = challengeService;
     }
 
     @GetMapping("generate")
     UUID createChallenge() {
-        var challenge = new Challenge();
-        challenge.setChallengeQuizzes(
-                equationRandomizer.equationsForChallenge().stream()
-                        .map(quiz -> new ChallengeQuiz(challenge, quiz))
-                        .collect(Collectors.toList()));
-        challenge.setUuid(generateUUID.generateUUID());
-        challengeRepository.save(challenge);
-        return challenge.getUuid();
+        return challengeService.createChallenge();
     }
 
     @PostMapping("score")

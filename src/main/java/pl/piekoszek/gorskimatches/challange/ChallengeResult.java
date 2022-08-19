@@ -1,10 +1,8 @@
 package pl.piekoszek.gorskimatches.challange;
 
-import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
-@Component
 public class ChallengeResult {
 
     private UUID uuid;
@@ -25,11 +23,4 @@ public class ChallengeResult {
         return time;
     }
 
-
-    public ChallengeResult(UUID uuid, int score, float time) {
-        this.uuid = uuid;
-        this.score = score;
-        this.time = time;
-    }
-    public ChallengeResult(){}
 }

@@ -13,16 +13,16 @@ public class EquationRandomizer {
         this.quizzesGenerator = quizzesGenerator;
     }
 
+    List<String> quizzes = new ArrayList<>();
     public String randomEquation() {
-        var quizzes = new ArrayList<>(quizzesGenerator.getAllSolutionsByQuiz().keySet());
+        quizzes.addAll(quizzesGenerator.getAllSolutionsByQuiz().keySet());
         return quizzes.get(new Random().nextInt(quizzes.size()));
     }
 
     public Set<String> equationsForChallenge() {
-        var quizzes = new ArrayList<>(quizzesGenerator.getAllSolutionsByQuiz().keySet());
         Set<String> fiveQuizzesForChallenge = new HashSet<>();
         while (fiveQuizzesForChallenge.size() < 5) {
-            fiveQuizzesForChallenge.add(quizzes.get(new Random().nextInt(quizzes.size())));
+            fiveQuizzesForChallenge.add(randomEquation());
         }
         return fiveQuizzesForChallenge;
     }
