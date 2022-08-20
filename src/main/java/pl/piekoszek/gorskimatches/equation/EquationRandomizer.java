@@ -9,13 +9,13 @@ public class EquationRandomizer {
 
     private final QuizzesGenerator quizzesGenerator;
 
+    private final List<String> quizzes = new ArrayList<>();
     public EquationRandomizer(QuizzesGenerator quizzesGenerator) {
         this.quizzesGenerator = quizzesGenerator;
+        quizzes.addAll(quizzesGenerator.getAllSolutionsByQuiz().keySet());
     }
 
-    List<String> quizzes = new ArrayList<>();
     public String randomEquation() {
-        quizzes.addAll(quizzesGenerator.getAllSolutionsByQuiz().keySet());
         return quizzes.get(new Random().nextInt(quizzes.size()));
     }
 
