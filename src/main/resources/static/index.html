@@ -63,8 +63,7 @@
             .then(res => res.json()
                 .then(json => {
                     let uuid = json.toString();
-                    document.getElementById("challenge").href = "/challenge.html?uuid=" + uuid;
-                    document.getElementById("challenge").style.display = 'block';
+                    window.location.replace("/challenge.html?uuid=" + uuid);
                 })
             )
     }
