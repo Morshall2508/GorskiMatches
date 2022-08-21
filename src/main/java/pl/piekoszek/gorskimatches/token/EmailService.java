@@ -5,12 +5,15 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 
 @Service
 public class EmailService {
 
     private final JavaMailSender mailSender;
     private final String server;
+
 
     EmailService(JavaMailSender mailSender, @Value("${matches.server.address}") String server) {
         this.mailSender = mailSender;
@@ -23,6 +26,15 @@ public class EmailService {
         message.setTo(to);
         message.setSubject("Account registration");
         message.setText("To register click on this link: " + server + "auth/login.html?token=" + TokenCreator.jwtToken(to));
+        mailSender.send(message);
+    }
+
+    public void sendResultOfChallenge(String to, String result, UUID uuid) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("gorskimatchesserver@gmail.com");
+        message.setTo(to);
+        message.setSubject("Challenge: " + uuid +  " result");
+        message.setText(result);
         mailSender.send(message);
     }
 }

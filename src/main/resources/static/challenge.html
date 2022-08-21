@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="bigiPad">
+    <div class="navigationBar">
+        <div id="homeButton">Home</div>
+        <div id="accountPage">Account</div>
+    </div>
+    <div id="equationPad">
+        <p id="text">You've been challenged to solve the quizzes. Your goal is to move one match inside equation - you
+            have 30
+            seconds.There are 5 quizzes. You get 1 point for correct answer and 0 if you run out of time or give
+            incorrect
+            answer</p>
+        <button id="buttonStart">Start!</button>
+        <p id="countdownTimer"></p>
+        <img id="image">
+        <div id="quiz"></div>
+        <div id="done"></div>
+        <input id="answer">
+        <button id="buttonCheck">Check!</button>
+        <div id="solution"></div>
+        <div id="allDone"></div>
+        <div id="result"></div>
+    </div>
+</div>
+
+</body>
+<script>
+    const token = localStorage.getItem('token');
+    const urlParams = new URLSearchParams(window.location.search);
+    const uuid = urlParams.get('uuid');
+    sessionStorage.setItem('uuid', uuid);
+</script>
+
+<script type="module">
+    import Auth from "/auth.js";
+    import CountdownTimer from "/countdownTimer.js";
+
+
+    function endOfQuizzes(index, countdownTimer, timeOnStart) {
+        if (index === 5) {
+            image.src = null;
+            countdownTimer.stop();
+            document.getElementById("done").innerText = "All done :)";
+            document.getElementById("text").style.display = "none";
+            document.getElementById("buttonStart").style.display = "none";
+            document.getElementById("countdownTimer").style.display = "none";
+            document.getElementById("buttonCheck").style.display = "none";
+            document.getElementById("solution").style.display = "none";
+            document.getElementById("answer").style.display = "none";
+            const timeOnEnd = performance.now();
+            let totalTimeToSolve = (+timeOnEnd) - (+timeOnStart);
+            if (Auth.isLoggedIn()) {
+                fetch("/api/challenge/score",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            'Authorization': 'bearer ' + localStorage.getItem('token'),
+                        },
+                        body: JSON.stringify({
+                            uuid: sessionStorage.getItem('uuid'),
+                            score: sessionStorage.getItem('score'),
+                            time: totalTimeToSolve
+                        })
+                    })
+
+            } else {
+                fetch("/api/challenge/score",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            uuid: sessionStorage.getItem('uuid'),
+                            score: sessionStorage.getItem('score'),
+                            time: totalTimeToSolve
+                        })
+                    })
+                fetch(`api/challenge/resultForNonRegistered/${uuid}`)
+                    .then(res => res.text())
+                    .then(text => {
+                        document.getElementById("result").innerText = text;
+                    });
+            }
+        }
+    }
+
+    document.getElementById("buttonStart").onclick = () => {
+
+        fetch(`api/challenge/quizzes/${uuid}`)
+            .then(res => res.json()
+                .then(fiveQuizzes => {
+
+                    let score = 0;
+                    let index = 0;
+                    let quiz = fiveQuizzes[index];
+
+                    image.src = `/api/image/equation/${fiveQuizzes[0]}`;
+
+                    const countdownTimer = new CountdownTimer(31, document.getElementById("countdownTimer"), () => {
+
+                        countdownTimer.reset();
+
+                        endOfQuizzes(index, countdownTimer, timeOnStart);
+                    })
+
+                    countdownTimer.start();
+                    const timeOnStart = performance.now();
+
+                    document.getElementById("buttonCheck").onclick = () => {
+                        countdownTimer.reset();
+                        fetch("/api/equation/solution",
+                            {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                },
+                                body: JSON.stringify({
+                                    answer: document.getElementById("answer").value,
+                                    quiz: quiz,
+                                })
+                            })
+                            .then(res => res.json())
+                            .then(text => {
+                                document.getElementById("solution").innerText = text;
+                                if (text === true) {
+                                    score++;
+                                    sessionStorage.setItem('score', score.toString());
+                                }
+                            });
+
+                        image.src = `/api/image/equation/${fiveQuizzes[++index]}`;
+                        quiz = fiveQuizzes[index];
+                        document.getElementById("answer").value = '';
+
+                        endOfQuizzes(index, countdownTimer, timeOnStart);
+                    };
+                })
+            );
+    }
+</script>
+
+<script>
+    document.getElementById("accountPage").onclick = () => {
+        window.location.replace("/account.html?")
+    };
+</script>
+<script>
+    document.getElementById("homeButton").onclick = () => {
+        window.location.replace("/")
+    };
+</script>
+
+</html>

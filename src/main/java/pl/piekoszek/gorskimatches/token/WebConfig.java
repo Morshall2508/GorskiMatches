@@ -18,6 +18,6 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(
             List<HandlerMethodArgumentResolver> argumentResolvers) {
-        argumentResolvers.add(new HeaderVersionArgumentResolver(tokenDecoder));
+        argumentResolvers.add(new HeaderArgumentResolver(tokenDecoder));
     }
 }

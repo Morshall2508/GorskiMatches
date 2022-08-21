@@ -9,7 +9,9 @@ button {
     color: rgb(95, 95, 97);
     border-radius: 0.2em;
 }
+a:not([href]) {
 
+}
 #confirmChanges {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 90%;
@@ -94,6 +96,12 @@ body {
     background-color: rgb(112, 145, 177);
     flex-direction: row;
 }
+#registrationAndLogoutPad{
+    display: flex;
+    width: 500px;
+    margin: 20px;
+    justify-content: center;
+}
 
 #solution {
     color: rgb(248, 255, 255);
@@ -103,7 +111,10 @@ body {
 #image {
     padding: 1.5em;
     margin: 1.5em;
-    width: 75%;
+    width: 95%;
+}
+img[src="null"] {
+    display: none;
 }
 
 #indexPad {
@@ -203,10 +214,12 @@ body {
 
     #equationPad {
         padding: 10px;
-        height: 10em;
+        height: auto;
         width: auto;
     }
-
+    #registrationAndLogoutPad{
+        width: 250px;
+    }
     #solution {
         font-size: medium;
     }
@@ -225,7 +238,7 @@ body {
         width: 13em;
     }
     #answer{
-        font-size: 14px;
+        font-size: 8px;
         margin: 5px;
     }
 }
