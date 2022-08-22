@@ -108,7 +108,7 @@
                     const countdownTimer = new CountdownTimer(31, document.getElementById("countdownTimer"), () => {
 
                         countdownTimer.reset();
-
+                        image.src = `/api/image/equation/${fiveQuizzes[++index]}`;
                         endOfQuizzes(index, countdownTimer, timeOnStart);
                     })
 
