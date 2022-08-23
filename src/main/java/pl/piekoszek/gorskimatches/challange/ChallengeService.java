@@ -35,12 +35,11 @@ public class ChallengeService {
             }
             emailService.sendResultOfChallenge(challengeInfo.getEmail(), "Unfortunately you've lost :(", challengeResult.getUuid());
         }
-        if (challengeInfo.getRegisteredUserScore() == challengeInfo.getNonRegisteredUserScore()) {
-            if (challengeInfo.getRegisteredUserTimeSeconds() < challengeInfo.getNonRegisteredUserScore()) {
-                emailService.sendResultOfChallenge(challengeInfo.getEmail(), "Congratulations you've won!", challengeResult.getUuid());
-            }
+        if (challengeInfo.getRegisteredUserTimeSeconds() < challengeInfo.getNonRegisteredUserTimeSeconds()) {
+            emailService.sendResultOfChallenge(challengeInfo.getEmail(), "Congratulations you've won!", challengeResult.getUuid());
+        } else {
+            emailService.sendResultOfChallenge(challengeInfo.getEmail(), "Unfortunately you've lost :(", challengeResult.getUuid());
         }
-        emailService.sendResultOfChallenge(challengeInfo.getEmail(), "Unfortunately you've lost :(", challengeResult.getUuid());
     }
 
     public String resultForNonRegisteredUser(UUID uuid) {
