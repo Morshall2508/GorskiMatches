@@ -32,15 +32,16 @@ public class ChallengeService {
         if (challengeInfo.getRegisteredUserScore() != challengeInfo.getNonRegisteredUserScore()) {
             if (challengeInfo.getRegisteredUserScore() > challengeInfo.getNonRegisteredUserScore()) {
                 emailService.sendResultOfChallenge(challengeInfo.getEmail(), "Congratulations you've won!", challengeResult.getUuid());
+            } else {
+                emailService.sendResultOfChallenge(challengeInfo.getEmail(), "Unfortunately you've lost :(", challengeResult.getUuid());
             }
-            emailService.sendResultOfChallenge(challengeInfo.getEmail(), "Unfortunately you've lost :(", challengeResult.getUuid());
-        }
-        if (challengeInfo.getRegisteredUserScore() == challengeInfo.getNonRegisteredUserScore()) {
-            if (challengeInfo.getRegisteredUserTimeSeconds() < challengeInfo.getNonRegisteredUserScore()) {
+        } else {
+            if (challengeInfo.getRegisteredUserTimeSeconds() < challengeInfo.getNonRegisteredUserTimeSeconds()) {
                 emailService.sendResultOfChallenge(challengeInfo.getEmail(), "Congratulations you've won!", challengeResult.getUuid());
+            } else {
+                emailService.sendResultOfChallenge(challengeInfo.getEmail(), "Unfortunately you've lost :(", challengeResult.getUuid());
             }
         }
-        emailService.sendResultOfChallenge(challengeInfo.getEmail(), "Unfortunately you've lost :(", challengeResult.getUuid());
     }
 
     public String resultForNonRegisteredUser(UUID uuid) {
@@ -49,13 +50,15 @@ public class ChallengeService {
         if (challengeInfo.getRegisteredUserScore() != challengeInfo.getNonRegisteredUserScore()) {
             if (challengeInfo.getNonRegisteredUserScore() > challengeInfo.getRegisteredUserScore()) {
                 return "Congratulations you've won!";
+            } else {
+                return "Unfortunately you've lost :(";
+            }
+        } else {
+            if (challengeInfo.getNonRegisteredUserTimeSeconds() < challengeInfo.getRegisteredUserTimeSeconds()) {
+                return "Congratulations you've won!";
             }
             return "Unfortunately you've lost :(";
         }
-        if (challengeInfo.getNonRegisteredUserTimeSeconds() < challengeInfo.getRegisteredUserTimeSeconds()) {
-            return "Congratulations you've won!";
-        }
-        return "Unfortunately you've lost :(";
     }
 
     public UUID createChallenge() {

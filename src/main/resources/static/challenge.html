@@ -83,12 +83,12 @@
                             score: sessionStorage.getItem('score'),
                             time: totalTimeToSolve
                         })
-                    })
+                    }).then ( () =>
                 fetch(`api/challenge/resultForNonRegistered/${uuid}`)
                     .then(res => res.text())
                     .then(text => {
                         document.getElementById("result").innerText = text;
-                    });
+                    }));
             }
         }
     }

@@ -22,7 +22,7 @@ public class ChallengeController {
     }
 
     @PostMapping("score")
-    void saveAndGetResultForRegisteredUser(@Email(required = false) String email, @RequestBody ChallengeResult challengeResult) {
+    void saveRegisteredUserAndGetResults(@Email(required = false) String email, @RequestBody ChallengeResult challengeResult) {
 
         if (email != null) {
             challengeService.saveRegisteredUserResult(challengeResult, email);
