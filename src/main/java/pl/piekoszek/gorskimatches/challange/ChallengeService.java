@@ -36,7 +36,7 @@ public class ChallengeService {
                 emailService.sendResultOfChallenge(challengeInfo.getEmail(), "Unfortunately you've lost :(", challengeResult.getUuid());
             }
         } else {
-            if (challengeInfo.getRegisteredUserScore() == challengeInfo.getNonRegisteredUserScore() && challengeInfo.getRegisteredUserTimeSeconds() < challengeInfo.getNonRegisteredUserTimeSeconds()) {
+            if (challengeInfo.getRegisteredUserTimeSeconds() < challengeInfo.getNonRegisteredUserTimeSeconds()) {
                 emailService.sendResultOfChallenge(challengeInfo.getEmail(), "Congratulations you've won!", challengeResult.getUuid());
             } else {
                 emailService.sendResultOfChallenge(challengeInfo.getEmail(), "Unfortunately you've lost :(", challengeResult.getUuid());
@@ -54,7 +54,7 @@ public class ChallengeService {
                 return "Unfortunately you've lost :(";
             }
         } else {
-            if (challengeInfo.getRegisteredUserScore() == challengeInfo.getNonRegisteredUserScore() && challengeInfo.getNonRegisteredUserTimeSeconds() < challengeInfo.getRegisteredUserTimeSeconds()) {
+            if (challengeInfo.getNonRegisteredUserTimeSeconds() < challengeInfo.getRegisteredUserTimeSeconds()) {
                 return "Congratulations you've won!";
             }
             return "Unfortunately you've lost :(";
