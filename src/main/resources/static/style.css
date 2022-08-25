@@ -179,6 +179,9 @@ img[src="null"] {
 
 @media only screen and (max-width: 650px) {
 
+    p {
+        font-size: 0.5em;
+    }
     #image {
         padding: 0.2em;
         margin: 0.2em;
