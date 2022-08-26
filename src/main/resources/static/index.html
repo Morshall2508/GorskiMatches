@@ -18,6 +18,7 @@
         <button id="button">Random equation</button>
         <h2>To register, write your email below</h2>
         <input id="email">
+        <h2 id ="emailResponse"></h2>
         <div id="registrationAndLogoutPad">
             <button id="confirm">Register</button>
             <button id="logOut">Logout</button>
@@ -46,7 +47,10 @@
                 body: JSON.stringify({
                     email: document.getElementById("email").value
                 })
-            })
+            }).then (res => res.text()
+            .then(text => {
+                    document.getElementById("emailResponse").innerText = text;
+            }))
     };
 </script>
 

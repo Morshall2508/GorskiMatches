@@ -24,7 +24,15 @@
 </div>
 
 </body>
-
+<script>
+    function validateForm() {
+  let x = document.getElementById("answer").value;
+  if (x == "") {
+    alert("Answer cannot by empty");
+    return false;
+  }
+}
+</script>
 <script>
     const image = document.getElementById("image");
     fetch("api/equation/random")
@@ -37,6 +45,7 @@
 </script>
 <script>
     document.getElementById("buttonCheck").onclick = () => {
+        validateForm();
         fetch("/api/equation/solution",
             {
                 method: "POST",

@@ -67,7 +67,7 @@ h3 {
 }
 #username {
     border-radius: 0.2em;
-    width: 50%;
+    width: 90%;
 }
 
 input {
@@ -125,6 +125,9 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+#email {
+    width:70%;
 }
 
 .accountPad {
