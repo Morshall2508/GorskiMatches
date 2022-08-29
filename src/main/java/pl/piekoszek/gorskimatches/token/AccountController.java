@@ -1,8 +1,11 @@
 package pl.piekoszek.gorskimatches.token;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.piekoszek.gorskimatches.repository.AccountRepository;
 import pl.piekoszek.gorskimatches.validation.PatternMatches;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("api/auth")
@@ -18,7 +21,7 @@ class AccountController {
     }
 
     @PostMapping("email")
-    String sendRegistrationEmail(@RequestBody AccountInfo accountInfo) {
+    String sendRegistrationEmail(@Valid @RequestBody AccountInfo accountInfo) {
         if (patternMatches.checkIfPatternIsCorrect(accountInfo.getEmail(), "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
                 + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$")) {
             emailService.sendRegistrationOrLoginLink(accountInfo.getEmail());
