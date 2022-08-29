@@ -1,6 +1,6 @@
 package pl.piekoszek.gorskimatches.token;
 
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 import pl.piekoszek.gorskimatches.repository.AccountRepository;
 import pl.piekoszek.gorskimatches.validation.PatternMatches;
@@ -31,7 +31,7 @@ class AccountController {
     }
 
     @PostMapping("account")
-    void changeAccountInfo(@Email String email, @RequestBody AccountInfo accountInfo) {
+    void changeAccountInfo(@Valid @Email String email, @RequestBody AccountInfo accountInfo) {
         if (!email.equals(accountInfo.getEmail())) {
             throw new ForbiddenException("Incorrect email");
         }
