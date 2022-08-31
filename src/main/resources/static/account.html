@@ -24,6 +24,7 @@
                 <img id="accountAvatar">
             </div>
             <h2>Write your username</h2><input id="username">
+            <div id="usernameEmpty"></div>
             <h2>Select your avatar</h2>
             <main>
                 <input type="file" id="file" accept="image/*" onchange="encodeImageFileAsURL(this)">
@@ -52,6 +53,9 @@
 
     document.getElementById("confirmChanges").onclick = () => {
 
+        if (document.getElementById("username").value === "") {
+                document.getElementById("usernameEmpty").innerText = "username cannot be empty"
+                } else {
         fetch("/api/auth/account",
             {
                 method: "POST",
@@ -64,7 +68,7 @@
                     accountName: document.getElementById("username").value,
                     avatar: sessionStorage.getItem('byte64Image')
                 })
-            })
+            })}
     };
 
 </script>
@@ -80,6 +84,7 @@
         .then(accountInfo => {
             document.getElementById("accountName").innerText = accountInfo.accountName;
             document.getElementById("accountAvatar").src = accountInfo.avatar;
+            document.getElementById("username").value = accountInfo.accountName;
         });
 
 </script>

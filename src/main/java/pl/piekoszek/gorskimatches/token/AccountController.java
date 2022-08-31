@@ -21,17 +21,13 @@ class AccountController {
     }
 
     @PostMapping("email")
-    String sendRegistrationEmail(@Valid @RequestBody AccountInfo accountInfo) {
-        if (patternMatches.checkIfPatternIsCorrect(accountInfo.getEmail(), "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
-                + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$")) {
-            emailService.sendRegistrationOrLoginLink(accountInfo.getEmail());
+    String sendRegistrationEmail(@Valid @RequestBody RegistrationRequest sendRegistrationRequest) {
+            emailService.sendRegistrationOrLoginLink(sendRegistrationRequest.getEmail());
             return "Email has been sent";
-        }
-        return "Incorrect email";
     }
 
     @PostMapping("account")
-    void changeAccountInfo(@Valid @Email String email, @RequestBody AccountInfo accountInfo) {
+    void changeAccountInfo(@Email String email, @Valid @RequestBody AccountInfo accountInfo) {
         if (!email.equals(accountInfo.getEmail())) {
             throw new ForbiddenException("Incorrect email");
         }

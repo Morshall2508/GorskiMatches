@@ -22,19 +22,18 @@ import java.util.Map;
 public class GlobalExceptionHandler  {
 
     @ExceptionHandler(UnauthorizedException.class)
-    protected ResponseEntity<Object> handleUnauthorizedExceptions(
+    protected ResponseEntity<?> handleUnauthorizedExceptions(
             RuntimeException ex, WebRequest request) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
     }
     @ExceptionHandler(ForbiddenException.class)
-    protected ResponseEntity<Object> handleForbiddenExceptions(
+    protected ResponseEntity<?> handleForbiddenExceptions(
             RuntimeException ex, WebRequest request) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.FORBIDDEN);
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleValidationExceptions(
+    protected ResponseEntity<?> handleValidationExceptions(
             MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach((error) -> {
@@ -42,6 +41,6 @@ public class GlobalExceptionHandler  {
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
         });
-        return errors;
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 }

@@ -7,7 +7,6 @@ import javax.validation.constraints.NotBlank;
 public class AccountInfo {
 
     @Id
-    @NotBlank(message = "Email is mandatory")
     private String email;
     @NotBlank(message = "Account name is mandatory")
     private String accountName;
