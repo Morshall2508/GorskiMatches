@@ -1,7 +1,6 @@
 package pl.piekoszek.gorskimatches.equation;
 
 import org.springframework.stereotype.Component;
-
 import java.util.*;
 
 @Component

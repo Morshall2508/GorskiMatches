@@ -1,9 +1,7 @@
 package pl.piekoszek.gorskimatches.equation;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.piekoszek.gorskimatches.validation.PatternMatches;
-
 import javax.validation.Valid;
 
 @RestController
@@ -27,7 +25,6 @@ class EquationController {
 
     @PostMapping("solution")
     boolean checkAnswer(@Valid @RequestBody Equation equation) {
-
         return solvableEquations.checkForCorrectAnswer(equation.quiz, patternMatches.removeSpaces(equation.answer));
     }
 }

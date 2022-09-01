@@ -18,7 +18,7 @@
         <div id="challengeHistory"><h3>Check<br>Challenge history</h3></div>
         </div>
         <div id="loggedIn"></div>
-        <form>
+        <div>
             <div id="accountInfo">
                 <div id="accountName"></div>
                 <img id="accountAvatar">
@@ -34,7 +34,7 @@
                 <img id="output"/>
             </main>
             <button id="confirmChanges">Confirm</button>
-        </form>
+        </div>
     </div>
 </div>
 <script>
@@ -56,19 +56,23 @@
         if (document.getElementById("username").value === "") {
                 document.getElementById("usernameEmpty").innerText = "username cannot be empty"
                 } else {
-        fetch("/api/auth/account",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    'Authorization': 'bearer ' + token,
-                },
-                body: JSON.stringify({
-                    email: Auth.getEmail(),
-                    accountName: document.getElementById("username").value,
-                    avatar: sessionStorage.getItem('byte64Image')
-                })
-            })}
+
+                        document.getElementById("usernameEmpty").innerText = ""
+                    fetch("/api/auth/account",
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                'Authorization': 'bearer ' + token,
+                            },
+                            body: JSON.stringify({
+                                email: Auth.getEmail(),
+                                accountName: document.getElementById("username").value,
+                                avatar: sessionStorage.getItem('byte64Image')
+                            })
+                        })
+                        location.reload();
+                    }
     };
 
 </script>

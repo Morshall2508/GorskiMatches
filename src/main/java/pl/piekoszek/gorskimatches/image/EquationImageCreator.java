@@ -1,7 +1,6 @@
 package pl.piekoszek.gorskimatches.image;
 
 import org.springframework.stereotype.Component;
-import pl.piekoszek.gorskimatches.image.LineImageCreator;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

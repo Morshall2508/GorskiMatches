@@ -58,6 +58,12 @@
     sessionStorage.removeItem('totalScore');
 </script>
 
+<script type="module">
+    import Auth from "/auth.js";
+        if (!Auth.isLoggedIn())
+        document.getElementById("challengeLink").style.display = "none";
+</script>
+
 <script>
     document.getElementById("challengeLink").onclick = () => {
         fetch("api/challenge/generate")
@@ -79,6 +85,7 @@
     document.getElementById("logOut").onclick = () => {
         localStorage.clear();
         document.getElementById("loggedIn").style.display = 'none';
+        document.getElementById("challengeLink").style.display = "none";
     };
 </script>
 <script>
