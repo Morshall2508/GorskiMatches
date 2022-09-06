@@ -27,7 +27,7 @@
             <div id="usernameEmpty"></div>
             <h2>Select your avatar</h2>
             <main>
-                <input type="file" id="file" accept="image/*" onchange="encodeImageFileAsURL(this)">
+                <input type="file" id="file" accept="image/*" onchange="encodeImageFileAsURL(this), fileValidation()">
                 <label for="file">
                     Choose file
                 </label>
@@ -37,6 +37,26 @@
         </div>
     </div>
 </div>
+
+<script>
+    fileValidation = () => {
+        const fi = document.getElementById('file');
+        if (fi.files.length > 0) {
+            for (const i = 0; i <= fi.files.length - 1; i++) {
+
+                const fSize = fi.files.item(i).size;
+                const file = Math.round((fSize / 1024));
+                if (file >= 2048) {
+                    alert(
+                      "File is too big, please select a file less than 2Mb");
+                }  else {
+                    document.getElementById('size').innerHTML = '<b>'
+                    + file + '</b> KB';
+                }
+            }
+        }
+    }
+</script>
 <script>
     function encodeImageFileAsURL(element) {
         var output = element.files[0];
@@ -58,7 +78,6 @@
             if (document.getElementById("username").value === "") {
                     document.getElementById("usernameEmpty").innerText = "Username cannot be empty"
                     } else {
-
                             document.getElementById("usernameEmpty").innerText = ""
                             fetch("/api/auth/account",
                             {
