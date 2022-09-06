@@ -18,7 +18,7 @@
         <div id="challengeHistory"><h3>Check<br>Challenge history</h3></div>
         </div>
         <div id="loggedIn"></div>
-        <div>
+        <div id="accountInfoPad">
             <div id="accountInfo">
                 <div id="accountName"></div>
                 <img id="accountAvatar">
@@ -52,28 +52,30 @@
     import Auth from "/auth.js";
 
     document.getElementById("confirmChanges").onclick = () => {
+        if (!Auth.isLoggedIn()){
+            document.getElementById("usernameEmpty").innerText = "Please register first"
+        } else {
+            if (document.getElementById("username").value === "") {
+                    document.getElementById("usernameEmpty").innerText = "Username cannot be empty"
+                    } else {
 
-        if (document.getElementById("username").value === "") {
-                document.getElementById("usernameEmpty").innerText = "username cannot be empty"
-                } else {
-
-                        document.getElementById("usernameEmpty").innerText = ""
-                    fetch("/api/auth/account",
-                        {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                                'Authorization': 'bearer ' + token,
-                            },
-                            body: JSON.stringify({
-                                email: Auth.getEmail(),
-                                accountName: document.getElementById("username").value,
-                                avatar: sessionStorage.getItem('byte64Image')
-                            })
-                        })
-                        location.reload();
+                            document.getElementById("usernameEmpty").innerText = ""
+                            fetch("/api/auth/account",
+                            {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    'Authorization': 'bearer ' + token,
+                                },
+                                body: JSON.stringify({
+                                    email: Auth.getEmail(),
+                                    accountName: document.getElementById("username").value,
+                                    avatar: sessionStorage.getItem('byte64Image')
+                                })
+                            }).then (location.reload());
                     }
-    };
+            }
+        };
 
 </script>
 

@@ -1,7 +1,7 @@
 package pl.piekoszek.gorskimatches.equation;
 
 import org.springframework.web.bind.annotation.*;
-import pl.piekoszek.gorskimatches.validation.PatternMatches;
+import pl.piekoszek.gorskimatches.validation.StringEditor;
 import javax.validation.Valid;
 
 @RestController
@@ -9,9 +9,9 @@ import javax.validation.Valid;
 class EquationController {
 
     private final EquationRandomizer equationRandomizer;
-    private final PatternMatches patternMatches;
+    private final StringEditor patternMatches;
 
-    EquationController(EquationRandomizer equationRandomizer, QuizAnswerChecker solvableEquations, PatternMatches patternMatches) {
+    EquationController(EquationRandomizer equationRandomizer, QuizAnswerChecker solvableEquations, StringEditor patternMatches) {
         this.equationRandomizer = equationRandomizer;
         this.solvableEquations = solvableEquations;
         this.patternMatches = patternMatches;
