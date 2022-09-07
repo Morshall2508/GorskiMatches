@@ -31,6 +31,7 @@
                 <label for="file">
                     Choose file
                 </label>
+                <div id="info"></div>
                 <img id="output"/>
             </main>
             <button id="confirmChanges">Confirm</button>
@@ -50,8 +51,7 @@
                     alert(
                       "File is too big, please select a file less than 2Mb");
                 }  else {
-                    document.getElementById('size').innerHTML = '<b>'
-                    + file + '</b> KB';
+                    document.getElementById('info').innerHTML = "File has been selected";
                 }
             }
         }
@@ -91,7 +91,13 @@
                                     accountName: document.getElementById("username").value,
                                     avatar: sessionStorage.getItem('byte64Image')
                                 })
-                            }).then (location.reload());
+                            }).then (res => {
+                            if (res.ok) {
+                                window.location.reload();
+                                } else {
+                                alert("Something went wrong, please try again");
+                                }
+                            });
                     }
             }
         };
