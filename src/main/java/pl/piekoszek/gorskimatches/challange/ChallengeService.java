@@ -5,6 +5,7 @@ import pl.piekoszek.gorskimatches.equation.EquationRandomizer;
 import pl.piekoszek.gorskimatches.token.EmailService;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -20,7 +21,10 @@ public class ChallengeService {
     private ChallengeRepository challengeRepository;
 
 
-    public ChallengeService(EmailService emailService, EquationRandomizer equationRandomizer, GenerateUUID generateUUID, ChallengeRepository challengeRepository) {
+    public ChallengeService(EmailService emailService,
+                            EquationRandomizer equationRandomizer,
+                            GenerateUUID generateUUID,
+                            ChallengeRepository challengeRepository) {
         this.emailService = emailService;
         this.equationRandomizer = equationRandomizer;
         this.generateUUID = generateUUID;
@@ -77,6 +81,11 @@ public class ChallengeService {
                 .map(ChallengeQuiz::getQuiz)
                 .collect(Collectors.toList());
     }
+//    public Map<String, Integer> getQuizzesAndScore(UUID uuid) {
+//        return challengeRepository.findById(uuid).get().getChallengeQuizzes().stream()
+//                .map(ChallengeQuiz::getQuiz)
+//                .collect(Collectors.toMap());
+//    }
 
     public void saveNonRegisteredUserResult(ChallengeResult challengeResult) {
         var challengeInfo = getChallenge(challengeResult);

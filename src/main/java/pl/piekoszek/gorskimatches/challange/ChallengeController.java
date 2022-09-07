@@ -12,8 +12,11 @@ public class ChallengeController {
 
     private ChallengeService challengeService;
 
-    public ChallengeController(ChallengeService challengeService) {
+    private ChallengeQuiz challengeQuiz;
+
+    public ChallengeController(ChallengeService challengeService, ChallengeQuiz challengeQuiz) {
         this.challengeService = challengeService;
+        this.challengeQuiz = challengeQuiz;
     }
 
     @GetMapping("generate")
@@ -39,6 +42,11 @@ public class ChallengeController {
 
     @GetMapping("quizzes/{uuid}")
     List<String> fetchQuizzes(@PathVariable("uuid") UUID uuid) {
+        return challengeService.getQuizzes(uuid);
+    }
+
+    @GetMapping("challengeHistory")
+    List<String> getChallengeHistory(UUID uuid){
         return challengeService.getQuizzes(uuid);
     }
 }

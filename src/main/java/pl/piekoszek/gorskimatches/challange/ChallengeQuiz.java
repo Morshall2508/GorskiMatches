@@ -1,7 +1,9 @@
 package pl.piekoszek.gorskimatches.challange;
 
-import javax.persistence.*;
+import org.springframework.stereotype.Component;
 
+import javax.persistence.*;
+@Component
 @Entity
 public class ChallengeQuiz {
 

@@ -66,7 +66,7 @@
                         },
                         body: JSON.stringify({
                             uuid: sessionStorage.getItem('uuid'),
-                            score: sessionStorage.getItem('score'),
+                            score: sessionStorage.getItem('totalScore'),
                             time: totalTimeToSolve
                         })
                     })
@@ -80,7 +80,7 @@
                         },
                         body: JSON.stringify({
                             uuid: sessionStorage.getItem('uuid'),
-                            score: sessionStorage.getItem('score'),
+                            score: sessionStorage.getItem('totalScore'),
                             time: totalTimeToSolve
                         })
                     }).then ( () =>
@@ -99,10 +99,11 @@
             .then(res => res.json()
                 .then(fiveQuizzes => {
 
+                    var myMap = new Map();
                     let score = 0;
+                    let totalScore = 0;
                     let index = 0;
                     let quiz = fiveQuizzes[index];
-
                     image.src = `/api/image/equation/${fiveQuizzes[0]}`;
 
                     const countdownTimer = new CountdownTimer(31, document.getElementById("countdownTimer"), () => {
@@ -131,16 +132,22 @@
                             .then(res => res.json())
                             .then(text => {
                                 document.getElementById("solution").innerText = text;
-                                if (text === true) {
-                                    score++;
-                                    sessionStorage.setItem('score', score.toString());
-                                }
+                                    if (text === true) {
+                                        totalScore++;
+                                        sessionStorage.setItem('totalScore', totalScore.toString());
+                                        console.log(totalScore);
+                                        myMap.set(fiveQuizzes[index], text);
+                                    } else {
+                                    score = 0;
+                                    myMap.set(fiveQuizzes[index], text);
+                                    console.log(index);
+                                    }
                             });
 
                         image.src = `/api/image/equation/${fiveQuizzes[++index]}`;
                         quiz = fiveQuizzes[index];
                         document.getElementById("answer").value = '';
-
+                        console.log(myMap);
                         endOfQuizzes(index, countdownTimer, timeOnStart);
                     };
                 })
