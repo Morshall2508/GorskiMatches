@@ -32,138 +32,192 @@
 
 </body>
 <script>
-    const token = localStorage.getItem('token');
-    const urlParams = new URLSearchParams(window.location.search);
-    const uuid = urlParams.get('uuid');
-    sessionStorage.setItem('uuid', uuid);
+        const token = localStorage.getItem('token');
+        const urlParams = new URLSearchParams(window.location.search);
+        const uuid = urlParams.get('uuid');
+        sessionStorage.setItem('uuid', uuid);
 </script>
 
 <script type="module">
-    import Auth from "/auth.js";
-    import CountdownTimer from "/countdownTimer.js";
+        import Auth from "/auth.js";
+        import CountdownTimer from "/countdownTimer.js";
+                        const answersForEachQuiz = [];
+                        const scoreForEachQuiz = [];
 
-
-    function endOfQuizzes(index, countdownTimer, timeOnStart) {
-        if (index === 5) {
-            image.src = null;
-            countdownTimer.stop();
-            document.getElementById("done").innerText = "All done :)";
-            document.getElementById("text").style.display = "none";
-            document.getElementById("buttonStart").style.display = "none";
-            document.getElementById("countdownTimer").style.display = "none";
-            document.getElementById("buttonCheck").style.display = "none";
-            document.getElementById("solution").style.display = "none";
-            document.getElementById("answer").style.display = "none";
-            const timeOnEnd = performance.now();
-            let totalTimeToSolve = (+timeOnEnd) - (+timeOnStart);
-            if (Auth.isLoggedIn()) {
-                fetch("/api/challenge/score",
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            'Authorization': 'bearer ' + localStorage.getItem('token'),
-                        },
-                        body: JSON.stringify({
-                            uuid: sessionStorage.getItem('uuid'),
-                            score: sessionStorage.getItem('totalScore'),
-                            time: totalTimeToSolve
+        function endOfQuizzes(index, countdownTimer, timeOnStart) {
+            if (index === 5) {
+                image.src = null;
+                countdownTimer.stop();
+                document.getElementById("done").innerText = "All done :)";
+                document.getElementById("text").style.display = "none";
+                document.getElementById("buttonStart").style.display = "none";
+                document.getElementById("countdownTimer").style.display = "none";
+                document.getElementById("buttonCheck").style.display = "none";
+                document.getElementById("solution").style.display = "none";
+                document.getElementById("answer").style.display = "none";
+                const timeOnEnd = performance.now();
+                let totalTimeToSolve = (+timeOnEnd) - (+timeOnStart);
+                if (Auth.isLoggedIn()) {
+                    fetch("/api/challenge/score",
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                'Authorization': 'bearer ' + localStorage.getItem('token'),
+                            },
+                            body: JSON.stringify({
+                                uuid: sessionStorage.getItem('uuid'),
+                                score: sessionStorage.getItem('totalScore'),
+                                time: totalTimeToSolve
+                            })
                         })
-                    })
-
-            } else {
-                fetch("/api/challenge/score",
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            uuid: sessionStorage.getItem('uuid'),
-                            score: sessionStorage.getItem('totalScore'),
-                            time: totalTimeToSolve
+                        fetch(`/api/challenge/challengeQuizzesData/${uuid}`,
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                'Authorization': 'bearer ' + localStorage.getItem('token'),
+                            },
+                            body: JSON.stringify({
+                                scoreUser1: scoreForEachQuiz,
+                                answerUser1: answersForEachQuiz
+                            })
                         })
-                    }).then ( () =>
-                fetch(`api/challenge/resultForNonRegistered/${uuid}`)
-                    .then(res => res.text())
-                    .then(text => {
-                        document.getElementById("result").innerText = text;
-                    }));
+                } else {
+                    fetch("/api/challenge/score",
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({
+                                uuid: sessionStorage.getItem('uuid'),
+                                score: sessionStorage.getItem('totalScore'),
+                                time: totalTimeToSolve
+                            })
+                        })
+                        fetch(`/api/challenge/challengeQuizzesData/${uuid}`,
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({
+                                scoreUser2: scoreForEachQuiz,
+                                answerUser2: answersForEachQuiz
+                            })
+                        })
+                        .then ( () =>
+                        fetch(`api/challenge/resultForNonRegistered/${uuid}`)
+                        .then(res => res.text())
+                        .then(text => {
+                            document.getElementById("result").innerText = text;
+                        }));
+                }
             }
         }
-    }
 
-    document.getElementById("buttonStart").onclick = () => {
+        document.getElementById("buttonStart").onclick = () => {
 
-        fetch(`api/challenge/quizzes/${uuid}`)
-            .then(res => res.json()
-                .then(fiveQuizzes => {
+            fetch(`api/challenge/quizzes/${uuid}`)
+                .then(res => res.json()
+                    .then(fiveQuizzes => {
 
-                    var myMap = new Map();
-                    let score = 0;
-                    let totalScore = 0;
-                    let index = 0;
-                    let quiz = fiveQuizzes[index];
-                    image.src = `/api/image/equation/${fiveQuizzes[0]}`;
+                        let userAnswer = document.getElementById("answer").value;
 
-                    const countdownTimer = new CountdownTimer(31, document.getElementById("countdownTimer"), () => {
+                        let score = 0;
+                        let totalScore = 0;
+                        let index = 0;
+                        let quiz = fiveQuizzes[index];
+                        image.src = `/api/image/equation/${fiveQuizzes[0]}`;
 
-                        countdownTimer.reset();
-                        image.src = `/api/image/equation/${fiveQuizzes[++index]}`;
-                        endOfQuizzes(index, countdownTimer, timeOnStart);
-                    })
-
-                    countdownTimer.start();
-                    const timeOnStart = performance.now();
-
-                    document.getElementById("buttonCheck").onclick = () => {
-                        countdownTimer.reset();
-                        fetch("/api/equation/solution",
-                            {
-                                method: "POST",
-                                headers: {
-                                    "Content-Type": "application/json",
-                                },
-                                body: JSON.stringify({
-                                    answer: document.getElementById("answer").value,
-                                    quiz: quiz,
+                        const countdownTimer = new CountdownTimer(31, document.getElementById("countdownTimer"), () => {
+                            fetch("/api/equation/solution",
+                                {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                    },
+                                    body: JSON.stringify({
+                                        answer: document.getElementById("answer").value,
+                                        quiz: quiz,
+                                    })
                                 })
+                                .then(res => res.json())
+                                .then(text => {
+                                    document.getElementById("solution").innerText = text;
+                                        if (text === true) {
+                                            score = 1;
+                                            totalScore++;
+                                            sessionStorage.setItem('totalScore', totalScore.toString());
+                                            answersForEachQuiz.push(document.getElementById("answer").value);
+                                            scoreForEachQuiz.push(score);
+                                        } else {
+                                            score = 0;
+                                            answersForEachQuiz.push(document.getElementById("answer").value);
+                                            scoreForEachQuiz.push(score);
+                                        }
+                                }).then (res =>{
+                            countdownTimer.reset();
+                            image.src = `/api/image/equation/${fiveQuizzes[++index]}`;
+                            endOfQuizzes(index, countdownTimer, timeOnStart);
+                            document.getElementById("answer").value = ''
                             })
-                            .then(res => res.json())
-                            .then(text => {
-                                document.getElementById("solution").innerText = text;
-                                    if (text === true) {
-                                        totalScore++;
-                                        sessionStorage.setItem('totalScore', totalScore.toString());
-                                        console.log(totalScore);
-                                        myMap.set(fiveQuizzes[index], text);
-                                    } else {
-                                    score = 0;
-                                    myMap.set(fiveQuizzes[index], text);
-                                    console.log(index);
-                                    }
-                            });
+                        })
 
-                        image.src = `/api/image/equation/${fiveQuizzes[++index]}`;
-                        quiz = fiveQuizzes[index];
-                        document.getElementById("answer").value = '';
-                        console.log(myMap);
-                        endOfQuizzes(index, countdownTimer, timeOnStart);
-                    };
-                })
-            );
-    }
-</script>
+                        countdownTimer.start();
+                        const timeOnStart = performance.now();
+
+                        document.getElementById("buttonCheck").onclick = () => {
+                            countdownTimer.reset();
+                            fetch("/api/equation/solution",
+                                {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                    },
+                                    body: JSON.stringify({
+                                        answer: document.getElementById("answer").value,
+                                        quiz: quiz,
+                                    })
+                                })
+                                .then(res => res.json())
+                                .then(text => {
+                                    document.getElementById("solution").innerText = text;
+                                        if (text === true) {
+                                            score = 1;
+                                            totalScore++;
+                                            sessionStorage.setItem('totalScore', totalScore.toString());
+                                            answersForEachQuiz.push(document.getElementById("answer").value);
+                                            scoreForEachQuiz.push(score);
+                                        } else {
+                                            score = 0;
+                                            answersForEachQuiz.push(document.getElementById("answer").value);
+                                            scoreForEachQuiz.push(score);
+                                        }
+                                }).then (res => {
+                            console.log(answersForEachQuiz);
+                            console.log(scoreForEachQuiz);
+
+                            image.src = `/api/image/equation/${fiveQuizzes[++index]}`;
+                            quiz = fiveQuizzes[index];
+                            document.getElementById("answer").value = '';
+                            endOfQuizzes(index, countdownTimer, timeOnStart);
+                        })};
+                    })
+                );
+        }
+    </script>
 
 <script>
-    document.getElementById("accountPage").onclick = () => {
-        window.location.replace("/account.html?")
-    };
+        document.getElementById("accountPage").onclick = () => {
+            window.location.replace("/account.html?")
+        };
 </script>
 <script>
-    document.getElementById("homeButton").onclick = () => {
-        window.location.replace("/")
-    };
+        document.getElementById("homeButton").onclick = () => {
+            window.location.replace("/")
+        };
 </script>
 
 </html>

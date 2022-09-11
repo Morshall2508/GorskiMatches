@@ -12,6 +12,10 @@ button {
 a:not([href]) {
 
 }
+h3 {
+    margin-left: 1.65em;
+}
+
 #confirmChanges {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 90%;
@@ -152,6 +156,11 @@ img[src="null"] {
     width: 55%;
 }
 
+.bigiPadForChallengeHistory {
+    width: 85%;
+}
+
+
 #accountName {
     font-size: 1.5em;
 }
@@ -171,6 +180,9 @@ img[src="null"] {
 }
 
 #accountPage {
+    cursor: pointer;
+}
+#challengeHistory {
     cursor: pointer;
 }
 #answer{

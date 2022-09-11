@@ -5,6 +5,7 @@ import pl.piekoszek.gorskimatches.token.Email;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("api/challenge")
@@ -45,8 +46,31 @@ public class ChallengeController {
         return challengeService.getQuizzes(uuid);
     }
 
-    @GetMapping("challengeHistory")
-    List<String> getChallengeHistory(UUID uuid){
-        return challengeService.getQuizzes(uuid);
+    @PostMapping("challengeQuizzesData/{uuid}")
+    void saveChallengeData(@Email(required = false) String email, @PathVariable("uuid") UUID uuid, @RequestBody ChallengeHistory challengeHistory) {
+        if (email != null) {
+            challengeService.saveUser1ScoreAndAnswers(uuid, challengeHistory);
+            return;
+        }
+        challengeService.saveUser2ScoreAndAnswers(uuid, challengeHistory);
+    }
+
+    @GetMapping("challengeAnswersHistory/{uuid}")
+    List<String> getUser1ChallengesAnswersHistory(@PathVariable("uuid") UUID uuid) {
+        return challengeService.getUser1Answers(uuid);
+    }
+
+    @GetMapping("challengeScoresHistory/{uuid}")
+    List<Integer> getUser1ChallengesScoresHistory(@PathVariable("uuid") UUID uuid) {
+        return challengeService.getUser1Score(uuid);
+    }
+
+    @GetMapping("challengeGetAllUuid/{email}")
+    List<UUID> getEverything(@PathVariable("email") String email) {
+        return challengeService.getChallengesUUIDs();
+    }
+    @GetMapping("challengesBitches")
+    Stream<List<ChallengeQuiz>> returns(){
+        return challengeService.getInfoChallengeQuiz();
     }
 }

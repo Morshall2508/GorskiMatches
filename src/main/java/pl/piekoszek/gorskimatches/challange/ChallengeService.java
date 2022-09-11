@@ -5,9 +5,9 @@ import pl.piekoszek.gorskimatches.equation.EquationRandomizer;
 import pl.piekoszek.gorskimatches.token.EmailService;
 
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class ChallengeService {
@@ -20,15 +20,18 @@ public class ChallengeService {
 
     private ChallengeRepository challengeRepository;
 
+    private ChallengeQuiz challengeQuiz;
 
     public ChallengeService(EmailService emailService,
                             EquationRandomizer equationRandomizer,
                             GenerateUUID generateUUID,
-                            ChallengeRepository challengeRepository) {
+                            ChallengeRepository challengeRepository,
+                            ChallengeQuiz challengeQuiz) {
         this.emailService = emailService;
         this.equationRandomizer = equationRandomizer;
         this.generateUUID = generateUUID;
         this.challengeRepository = challengeRepository;
+        this.challengeQuiz = challengeQuiz;
     }
 
     public void resultForRegisteredUser(ChallengeResult challengeResult) {
@@ -76,16 +79,43 @@ public class ChallengeService {
         return challenge.getUuid();
     }
 
+    public void saveUser1ScoreAndAnswers(UUID uuid, ChallengeHistory challengeHistory) {
+        var challengeInfo = challengeRepository.findById(uuid).get();
+        for (int i = 0; i < 5; i++) {
+            var quiz = challengeInfo.getChallengeQuizzes().get(i);
+            quiz.setAnswerUser1(challengeHistory.getAnswerUser1().get(i));
+            quiz.setScoreUser1(challengeHistory.getScoreUser1().get(i));
+        }
+        challengeRepository.save(challengeInfo);
+    }
+
+    public void saveUser2ScoreAndAnswers(UUID uuid, ChallengeHistory challengeHistory) {
+        var challengeInfo = challengeRepository.findById(uuid).get();
+        for (int i = 0; i < 5; i++) {
+            var quiz = challengeInfo.getChallengeQuizzes().get(i);
+            quiz.setAnswerUser2(challengeHistory.getAnswerUser2().get(i));
+            quiz.setScoreUser2(challengeHistory.getScoreUser2().get(i));
+        }
+        challengeRepository.save(challengeInfo);
+    }
+
+    public List<String> getUser1Answers(UUID uuid) {
+        return challengeRepository.findById(uuid).get().getChallengeQuizzes().stream()
+                .map(ChallengeQuiz::getAnswerUser1)
+                .collect(Collectors.toList());
+    }
+
+    public List<Integer> getUser1Score(UUID uuid) {
+        return challengeRepository.findById(uuid).get().getChallengeQuizzes().stream()
+                .map(ChallengeQuiz::getScoreUser1)
+                .collect(Collectors.toList());
+    }
+
     public List<String> getQuizzes(UUID uuid) {
         return challengeRepository.findById(uuid).get().getChallengeQuizzes().stream()
                 .map(ChallengeQuiz::getQuiz)
                 .collect(Collectors.toList());
     }
-//    public Map<String, Integer> getQuizzesAndScore(UUID uuid) {
-//        return challengeRepository.findById(uuid).get().getChallengeQuizzes().stream()
-//                .map(ChallengeQuiz::getQuiz)
-//                .collect(Collectors.toMap());
-//    }
 
     public void saveNonRegisteredUserResult(ChallengeResult challengeResult) {
         var challengeInfo = getChallenge(challengeResult);
@@ -102,8 +132,18 @@ public class ChallengeService {
         challengeRepository.save(challengeInfo);
     }
 
-    private Challenge getChallenge(ChallengeResult challengeResult) {
+    public Challenge getChallenge(ChallengeResult challengeResult) {
         var challengeInfoData = challengeRepository.findById(challengeResult.getUuid());
         return challengeInfoData.get();
+    }
+
+    public List<UUID> getChallengesUUIDs() {
+        return challengeRepository.findAll().stream()
+                .map(Challenge::getUuid)
+                .collect(Collectors.toList());
+    }
+
+    public Stream<List<ChallengeQuiz>> getInfoChallengeQuiz() {
+        return challengeRepository.findAll().stream().map(Challenge::getChallengeQuizzes);
     }
 }

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="bigiPadForChallengeHistory">
+    <div class="navigationBar">
+        <div id="homeButton">Home</div>
+        <div id="accountPage">Account</div>
+    </div>
+    <div id="indexPad">
+        <p id="table"></p>
+        </div>
+    </div>
+
+
+<script type="module">
+    import Auth from "/auth.js";
+
+    fetch(`/api/challenge/challengeGetAllUuid/maciej.gorski.93@gmail.com)`)
+
+        .then(res => {
+            if (res.ok) { return res.json()};
+            {
+            throw "Not found";}
+        })
+        .then(json => {
+        console.log(json);
+        let html = "";
+        json.forEach(item => {
+        html += `<div> <div class = "listOfUUIDS"> document.getElementById("listOfUuid")> ${item}</div> </div>`
+        console.log(item);
+        })
+    document.getElementById("table").innerHtml = html;
+    console.log(html);
+    })
+
+</script>
+<script>
+    document.getElementById("accountPage").onclick = () => {
+        window.location.replace("/account.html?")
+    };
+</script>
+<script>
+    document.getElementById("homeButton").onclick = () => {
+        window.location.replace("/")
+    };
+</script>
+</body>
+</html>
