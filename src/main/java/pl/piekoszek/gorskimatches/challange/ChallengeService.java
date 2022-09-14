@@ -4,10 +4,10 @@ import org.springframework.stereotype.Service;
 import pl.piekoszek.gorskimatches.equation.EquationRandomizer;
 import pl.piekoszek.gorskimatches.token.EmailService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class ChallengeService {
@@ -143,7 +143,17 @@ public class ChallengeService {
                 .collect(Collectors.toList());
     }
 
-    public Stream<List<ChallengeQuiz>> getInfoChallengeQuiz() {
-        return challengeRepository.findAll().stream().map(Challenge::getChallengeQuizzes);
+    public List<ChallengeQuiz> getInfoChallengeQuiz() {
+        List<ChallengeQuiz> dupsko = new ArrayList<>();
+        var dupeczka =  challengeRepository.findAll();
+        for (Challenge challenge: dupeczka) {
+            var dupska = challenge.getChallengeQuizzes().stream().toList();
+            dupsko.addAll(dupska);
+        }
+        return dupsko;
+    }
+
+    public List<Challenge> getChallenges() {
+        return new ArrayList<>(challengeRepository.findAll());
     }
 }

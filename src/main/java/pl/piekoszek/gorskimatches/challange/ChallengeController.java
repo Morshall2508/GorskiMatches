@@ -5,7 +5,6 @@ import pl.piekoszek.gorskimatches.token.Email;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("api/challenge")
@@ -65,12 +64,8 @@ public class ChallengeController {
         return challengeService.getUser1Score(uuid);
     }
 
-    @GetMapping("challengeGetAllUuid/{email}")
-    List<UUID> getEverything(@PathVariable("email") String email) {
-        return challengeService.getChallengesUUIDs();
-    }
-    @GetMapping("challengesBitches")
-    Stream<List<ChallengeQuiz>> returns(){
-        return challengeService.getInfoChallengeQuiz();
+    @GetMapping("challenges")
+    List<Challenge> returnsChallenges(){
+        return challengeService.getChallenges();
     }
 }

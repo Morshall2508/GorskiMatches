@@ -24,7 +24,7 @@ public class Challenge {
     private float registeredUserTimeSeconds;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<ChallengeQuiz> challengeQuizzes;
+    public List<ChallengeQuiz> challengeQuizzes;
 
     public List<ChallengeQuiz> getChallengeQuizzes() {
         return challengeQuizzes;

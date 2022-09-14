@@ -1,5 +1,6 @@
 package pl.piekoszek.gorskimatches.challange;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ public class ChallengeQuiz {
     @GeneratedValue
     public long id;
 
+    @JsonIgnore
     @ManyToOne
     public Challenge challenge;
 

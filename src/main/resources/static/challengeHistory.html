@@ -10,32 +10,64 @@
         <div id="homeButton">Home</div>
         <div id="accountPage">Account</div>
     </div>
-    <div id="indexPad">
-        <p id="table"></p>
-        </div>
+    <div id="indexPadForChallengeHistory">
+        <div id = "table"></div>
     </div>
-
+</div>
 
 <script type="module">
     import Auth from "/auth.js";
 
-    fetch(`/api/challenge/challengeGetAllUuid/maciej.gorski.93@gmail.com)`)
+    fetch(`/api/challenge/challenges`)
 
         .then(res => {
             if (res.ok) { return res.json()};
-            {
-            throw "Not found";}
+            { throw "Not found";
+            }
         })
-        .then(json => {
-        console.log(json);
-        let html = "";
-        json.forEach(item => {
-        html += `<div> <div class = "listOfUUIDS"> document.getElementById("listOfUuid")> ${item}</div> </div>`
-        console.log(item);
+            .then(json => {
+            let html = "";
+            json.forEach(item => {
+            let scoreUser1 = item.registeredUserScore;
+            let scoreUser2 = item.nonRegisteredUserScore;
+            let timeUser2 = item.nonRegisteredUserTimeSeconds;
+            let timeUser1 = item.registeredUserTimeSeconds;
+
+                html += `<div class = "wrapperLeft">
+                <div class = "listOfUUIDS"> ${item.uuid}</div>
+                <div class = "header"> Quiz</div>
+                <div class = "header"> Answer</div>
+                <div class = "header"> Score</div>
+                </div>`
+
+                item.challengeQuizzes.forEach (innerItem => {
+
+                    if (timeUser2 === 0) {
+                    html += `<div class = "wrapper">
+                        <div class = "column"><div class = "rest"> ${innerItem.quiz} </div></div>
+                        <div class = "column"><div class = "rest"> ${innerItem.answerUser1} </div></div>
+                        <div class = "column"><div class = "rest"> ${innerItem.scoreUser1} </div></div>
+                        </div>`
+                    } else {
+
+                    if (scoreUser1>scoreUser2){
+                        html += `<div class = "wrapper">
+                        <div class = "column" style = "background-color:#54af54"><div class = "rest"> ${innerItem.quiz} </div></div>
+                        <div class = "column" style = "background-color:#54af54"><div class = "rest"> ${innerItem.answerUser1} </div></div>
+                        <div class = "column" style = "background-color:#54af54"><div class = "rest"> ${innerItem.scoreUser1} </div></div>
+                        </div>`
+                        } else {
+                        html += `<div class = "wrapper">
+                        <div class = "column" style = "background-color:#d54545"><div class = "rest"> ${innerItem.quiz} </div></div>
+                        <div class = "column" style = "background-color:#d54545"><div class = "rest"> ${innerItem.answerUser1} </div></div>
+                        <div class = "column" style = "background-color:#d54545"><div class = "rest"> ${innerItem.scoreUser1} </div></div>
+                        </div>`
+                    }
+                }
         })
-    document.getElementById("table").innerHtml = html;
-    console.log(html);
     })
+    document.getElementById("table").innerHTML = html;
+})
 
 </script>
 <script>
