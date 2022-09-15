@@ -20,18 +20,15 @@ public class ChallengeService {
 
     private ChallengeRepository challengeRepository;
 
-    private ChallengeQuiz challengeQuiz;
 
     public ChallengeService(EmailService emailService,
                             EquationRandomizer equationRandomizer,
                             GenerateUUID generateUUID,
-                            ChallengeRepository challengeRepository,
-                            ChallengeQuiz challengeQuiz) {
+                            ChallengeRepository challengeRepository) {
         this.emailService = emailService;
         this.equationRandomizer = equationRandomizer;
         this.generateUUID = generateUUID;
         this.challengeRepository = challengeRepository;
-        this.challengeQuiz = challengeQuiz;
     }
 
     public void resultForRegisteredUser(ChallengeResult challengeResult) {

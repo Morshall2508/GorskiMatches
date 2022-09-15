@@ -1,10 +1,8 @@
 package pl.piekoszek.gorskimatches.challange;
 
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
 public class ChallengeHistory {
 
     private List<String> answerUser1;
@@ -14,13 +12,6 @@ public class ChallengeHistory {
     private List<Integer> scoreUser1;
 
     private List<Integer> scoreUser2;
-
-    public ChallengeHistory(List<String> answerUser1, List<String> answerUser2, List<Integer> scoreUser1, List<Integer> scoreUser2) {
-        this.answerUser1 = answerUser1;
-        this.answerUser2 = answerUser2;
-        this.scoreUser1 = scoreUser1;
-        this.scoreUser2 = scoreUser2;
-    }
 
     public List<String> getAnswerUser1() {
         return answerUser1;
