@@ -124,6 +124,6 @@ public class ChallengeService {
 
 
     public List<Challenge> getChallenges() {
-        return new ArrayList<>(challengeRepository.findAll());
+        return challengeRepository.findAll();
     }
 }
