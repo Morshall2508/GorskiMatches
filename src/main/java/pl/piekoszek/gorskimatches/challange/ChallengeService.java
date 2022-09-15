@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import pl.piekoszek.gorskimatches.equation.EquationRandomizer;
 import pl.piekoszek.gorskimatches.token.EmailService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -20,7 +21,10 @@ public class ChallengeService {
     private ChallengeRepository challengeRepository;
 
 
-    public ChallengeService(EmailService emailService, EquationRandomizer equationRandomizer, GenerateUUID generateUUID, ChallengeRepository challengeRepository) {
+    public ChallengeService(EmailService emailService,
+                            EquationRandomizer equationRandomizer,
+                            GenerateUUID generateUUID,
+                            ChallengeRepository challengeRepository) {
         this.emailService = emailService;
         this.equationRandomizer = equationRandomizer;
         this.generateUUID = generateUUID;
@@ -72,6 +76,26 @@ public class ChallengeService {
         return challenge.getUuid();
     }
 
+    public void saveUser1ScoreAndAnswers(UUID uuid, ChallengeHistory challengeHistory) {
+        var challenge = challengeRepository.findById(uuid).get();
+        for (int i = 0; i < 5; i++) {
+            var challengeQuiz = challenge.getChallengeQuizzes().get(i);
+            challengeQuiz.setAnswerUser1(challengeHistory.getAnswerUser1().get(i));
+            challengeQuiz.setScoreUser1(challengeHistory.getScoreUser1().get(i));
+        }
+        challengeRepository.save(challenge);
+    }
+
+    public void saveUser2ScoreAndAnswers(UUID uuid, ChallengeHistory challengeHistory) {
+        var challenge = challengeRepository.findById(uuid).get();
+        for (int i = 0; i < 5; i++) {
+            var challengeQuiz = challenge.getChallengeQuizzes().get(i);
+            challengeQuiz.setAnswerUser2(challengeHistory.getAnswerUser2().get(i));
+            challengeQuiz.setScoreUser2(challengeHistory.getScoreUser2().get(i));
+        }
+        challengeRepository.save(challenge);
+    }
+
     public List<String> getQuizzes(UUID uuid) {
         return challengeRepository.findById(uuid).get().getChallengeQuizzes().stream()
                 .map(ChallengeQuiz::getQuiz)
@@ -93,8 +117,13 @@ public class ChallengeService {
         challengeRepository.save(challengeInfo);
     }
 
-    private Challenge getChallenge(ChallengeResult challengeResult) {
+    public Challenge getChallenge(ChallengeResult challengeResult) {
         var challengeInfoData = challengeRepository.findById(challengeResult.getUuid());
         return challengeInfoData.get();
+    }
+
+
+    public List<Challenge> getChallenges() {
+        return challengeRepository.findAll();
     }
 }

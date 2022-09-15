@@ -41,4 +41,18 @@ public class ChallengeController {
     List<String> fetchQuizzes(@PathVariable("uuid") UUID uuid) {
         return challengeService.getQuizzes(uuid);
     }
+
+    @PostMapping("challengeQuizzesData/{uuid}")
+    void saveChallengeData(@Email(required = false) String email, @PathVariable("uuid") UUID uuid, @RequestBody ChallengeHistory challengeHistory) {
+        if (email != null) {
+            challengeService.saveUser1ScoreAndAnswers(uuid, challengeHistory);
+            return;
+        }
+        challengeService.saveUser2ScoreAndAnswers(uuid, challengeHistory);
+    }
+
+    @GetMapping("challenges")
+    List<Challenge> returnsChallenges(){
+        return challengeService.getChallenges();
+    }
 }
