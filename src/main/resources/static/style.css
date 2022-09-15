@@ -142,7 +142,7 @@ body {
 #registrationAndLogoutPad{
     display: flex;
     width: 500px;
-    margin: 20px;
+    margin-bottom: 20px;
     justify-content: center;
 }
 
@@ -173,7 +173,7 @@ img[src="null"] {
 
 #indexPad {
     width: auto;
-    height: 20em;
+    height: auto;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -240,6 +240,10 @@ img[src="null"] {
 #answer{
     margin: 10px;
 }
+    #loggedIn {
+        padding: 10px;
+        margin-top: 15px;
+    }
 
 @media only screen and (max-width: 1150px) {
     .wrapper {
@@ -303,10 +307,13 @@ p {
 
     #loggedIn {
         font-size: medium;
+        padding: 10px;
     }
+
     #accountInfoPad{
     margin-left: 25px;
     }
+
     .accountPad {
         display: flex;
         flex-direction: column;
