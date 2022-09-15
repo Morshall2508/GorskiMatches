@@ -12,11 +12,8 @@ public class ChallengeController {
 
     private ChallengeService challengeService;
 
-    private ChallengeQuiz challengeQuiz;
-
-    public ChallengeController(ChallengeService challengeService, ChallengeQuiz challengeQuiz) {
+    public ChallengeController(ChallengeService challengeService) {
         this.challengeService = challengeService;
-        this.challengeQuiz = challengeQuiz;
     }
 
     @GetMapping("generate")
@@ -52,16 +49,6 @@ public class ChallengeController {
             return;
         }
         challengeService.saveUser2ScoreAndAnswers(uuid, challengeHistory);
-    }
-
-    @GetMapping("challengeAnswersHistory/{uuid}")
-    List<String> getUser1ChallengesAnswersHistory(@PathVariable("uuid") UUID uuid) {
-        return challengeService.getUser1Answers(uuid);
-    }
-
-    @GetMapping("challengeScoresHistory/{uuid}")
-    List<Integer> getUser1ChallengesScoresHistory(@PathVariable("uuid") UUID uuid) {
-        return challengeService.getUser1Score(uuid);
     }
 
     @GetMapping("challenges")

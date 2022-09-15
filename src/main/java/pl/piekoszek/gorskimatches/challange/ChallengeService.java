@@ -80,35 +80,23 @@ public class ChallengeService {
     }
 
     public void saveUser1ScoreAndAnswers(UUID uuid, ChallengeHistory challengeHistory) {
-        var challengeInfo = challengeRepository.findById(uuid).get();
+        var challenge = challengeRepository.findById(uuid).get();
         for (int i = 0; i < 5; i++) {
-            var quiz = challengeInfo.getChallengeQuizzes().get(i);
-            quiz.setAnswerUser1(challengeHistory.getAnswerUser1().get(i));
-            quiz.setScoreUser1(challengeHistory.getScoreUser1().get(i));
+            var challengeQuiz = challenge.getChallengeQuizzes().get(i);
+            challengeQuiz.setAnswerUser1(challengeHistory.getAnswerUser1().get(i));
+            challengeQuiz.setScoreUser1(challengeHistory.getScoreUser1().get(i));
         }
-        challengeRepository.save(challengeInfo);
+        challengeRepository.save(challenge);
     }
 
     public void saveUser2ScoreAndAnswers(UUID uuid, ChallengeHistory challengeHistory) {
-        var challengeInfo = challengeRepository.findById(uuid).get();
+        var challenge = challengeRepository.findById(uuid).get();
         for (int i = 0; i < 5; i++) {
-            var quiz = challengeInfo.getChallengeQuizzes().get(i);
-            quiz.setAnswerUser2(challengeHistory.getAnswerUser2().get(i));
-            quiz.setScoreUser2(challengeHistory.getScoreUser2().get(i));
+            var challengeQuiz = challenge.getChallengeQuizzes().get(i);
+            challengeQuiz.setAnswerUser2(challengeHistory.getAnswerUser2().get(i));
+            challengeQuiz.setScoreUser2(challengeHistory.getScoreUser2().get(i));
         }
-        challengeRepository.save(challengeInfo);
-    }
-
-    public List<String> getUser1Answers(UUID uuid) {
-        return challengeRepository.findById(uuid).get().getChallengeQuizzes().stream()
-                .map(ChallengeQuiz::getAnswerUser1)
-                .collect(Collectors.toList());
-    }
-
-    public List<Integer> getUser1Score(UUID uuid) {
-        return challengeRepository.findById(uuid).get().getChallengeQuizzes().stream()
-                .map(ChallengeQuiz::getScoreUser1)
-                .collect(Collectors.toList());
+        challengeRepository.save(challenge);
     }
 
     public List<String> getQuizzes(UUID uuid) {
@@ -137,21 +125,6 @@ public class ChallengeService {
         return challengeInfoData.get();
     }
 
-    public List<UUID> getChallengesUUIDs() {
-        return challengeRepository.findAll().stream()
-                .map(Challenge::getUuid)
-                .collect(Collectors.toList());
-    }
-
-    public List<ChallengeQuiz> getInfoChallengeQuiz() {
-        List<ChallengeQuiz> dupsko = new ArrayList<>();
-        var dupeczka =  challengeRepository.findAll();
-        for (Challenge challenge: dupeczka) {
-            var dupska = challenge.getChallengeQuizzes().stream().toList();
-            dupsko.addAll(dupska);
-        }
-        return dupsko;
-    }
 
     public List<Challenge> getChallenges() {
         return new ArrayList<>(challengeRepository.findAll());
