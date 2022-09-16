@@ -3,7 +3,6 @@ package pl.piekoszek.gorskimatches.token;
 
 import org.springframework.web.bind.annotation.*;
 import pl.piekoszek.gorskimatches.repository.AccountRepository;
-import pl.piekoszek.gorskimatches.validation.StringEditor;
 
 import javax.validation.Valid;
 
@@ -12,12 +11,10 @@ import javax.validation.Valid;
 class AccountController {
     private AccountRepository accountRepository;
     private EmailService emailService;
-    private StringEditor patternMatches;
 
-    AccountController(EmailService emailService, AccountRepository accountRepository, StringEditor patternMatches) {
+    AccountController(EmailService emailService, AccountRepository accountRepository) {
         this.emailService = emailService;
         this.accountRepository = accountRepository;
-        this.patternMatches = patternMatches;
     }
 
     @PostMapping("email")

@@ -16,7 +16,7 @@ import java.util.Map;
 
 @ControllerAdvice
 
-public class GlobalExceptionHandler  {
+public class GlobalExceptionHandler {
 
     @ExceptionHandler(UnauthorizedException.class)
     protected ResponseEntity<?> handleUnauthorizedExceptions(
