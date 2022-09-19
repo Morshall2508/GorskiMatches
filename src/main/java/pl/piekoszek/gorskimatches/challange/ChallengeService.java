@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import pl.piekoszek.gorskimatches.equation.EquationRandomizer;
 import pl.piekoszek.gorskimatches.token.EmailService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -20,47 +19,46 @@ public class ChallengeService {
 
     private ChallengeRepository challengeRepository;
 
+    private JudgeResult judgeResult;
+
 
     public ChallengeService(EmailService emailService,
                             EquationRandomizer equationRandomizer,
                             GenerateUUID generateUUID,
-                            ChallengeRepository challengeRepository) {
+                            ChallengeRepository challengeRepository,
+                            JudgeResult judgeResult) {
         this.emailService = emailService;
         this.equationRandomizer = equationRandomizer;
         this.generateUUID = generateUUID;
         this.challengeRepository = challengeRepository;
+        this.judgeResult = judgeResult;
     }
 
     public void resultForRegisteredUser(ChallengeResult challengeResult) {
         var challengeInfo = getChallenge(challengeResult);
-        if (challengeInfo.getRegisteredUserScore() != challengeInfo.getNonRegisteredUserScore()) {
-            if (challengeInfo.getRegisteredUserScore() > challengeInfo.getNonRegisteredUserScore()) {
-                emailService.sendResultOfChallenge(challengeInfo.getEmail(), "Congratulations you've won!", challengeResult.getUuid());
-            } else {
-                emailService.sendResultOfChallenge(challengeInfo.getEmail(), "Unfortunately you've lost :(", challengeResult.getUuid());
-            }
+        if (judgeResult.getResultForChallengeUser1(
+                challengeInfo.getRegisteredUserScore(),
+                challengeInfo.getNonRegisteredUserScore(),
+                challengeInfo.getRegisteredUserTimeSeconds(),
+                challengeInfo.getNonRegisteredUserTimeSeconds()) == Result.WINNER) {
+
+            emailService.sendResultOfChallenge(challengeInfo.getEmail(), "Congratulations you've won!", challengeResult.getUuid());
         } else {
-            if (challengeInfo.getRegisteredUserTimeSeconds() < challengeInfo.getNonRegisteredUserTimeSeconds()) {
-                emailService.sendResultOfChallenge(challengeInfo.getEmail(), "Congratulations you've won!", challengeResult.getUuid());
-            } else {
-                emailService.sendResultOfChallenge(challengeInfo.getEmail(), "Unfortunately you've lost :(", challengeResult.getUuid());
-            }
+            emailService.sendResultOfChallenge(challengeInfo.getEmail(), "Unfortunately you've lost :(", challengeResult.getUuid());
         }
     }
 
     public String resultForNonRegisteredUser(UUID uuid) {
         var challengeInfoData = challengeRepository.findById(uuid);
         var challengeInfo = challengeInfoData.get();
-        if (challengeInfo.getRegisteredUserScore() != challengeInfo.getNonRegisteredUserScore()) {
-            if (challengeInfo.getNonRegisteredUserScore() > challengeInfo.getRegisteredUserScore()) {
-                return "Congratulations you've won!";
-            } else {
-                return "Unfortunately you've lost :(";
-            }
+        if (judgeResult.getResultForChallengeUser2(
+                challengeInfo.getRegisteredUserScore(),
+                challengeInfo.getNonRegisteredUserScore(),
+                challengeInfo.getRegisteredUserTimeSeconds(),
+                challengeInfo.getNonRegisteredUserTimeSeconds()) == Result.WINNER) {
+
+            return "Congratulations you've won!";
         } else {
-            if (challengeInfo.getNonRegisteredUserTimeSeconds() < challengeInfo.getRegisteredUserTimeSeconds()) {
-                return "Congratulations you've won!";
-            }
             return "Unfortunately you've lost :(";
         }
     }
