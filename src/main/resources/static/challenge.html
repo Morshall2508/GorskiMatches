@@ -24,7 +24,7 @@
         <div id="quiz"></div>
         <div id="done"></div>
         <input id="answer" style="display:none">
-        <div id="answerEmpty"></div>
+        <div id="answerEmpty" style="text-align: center"></div>
         <button id="buttonCheck" style="display:none">Check!</button>
         <div id="solution" style="display:none"></div>
         <div id="allDone"></div>
@@ -99,7 +99,8 @@
                             score: sessionStorage.getItem('totalScore'),
                             time: totalTimeToSolve
                         })
-                    })
+                    }
+                )
                 fetch(`/api/challenge/challengeQuizzesData/${uuid}`,
                     {
                         method: "POST",
@@ -116,7 +117,8 @@
                             .then(res => res.text())
                             .then(text => {
                                 document.getElementById("result").innerText = text;
-                            }));
+                            })
+                    );
             }
         }
     }
@@ -142,9 +144,7 @@
 
                         const countdownTimer = new CountdownTimer(31, document.getElementById("countdownTimer"), () => {
 
-                            if (document.getElementById("answer").value === "") {
-                                document.getElementById("answerEmpty").innerText = " ";
-                            }
+
                             fetch(`/api/equation/solution`,
                                 {
                                     method: "POST",
@@ -155,10 +155,14 @@
                                         answer: document.getElementById("answer").value,
                                         quiz: quiz,
                                     })
-                                })
-                                .then(res => res.json())
+                                }).then(response => {
+                                if (response.ok) {
+                                    return response.json();
+                                }
+                                document.getElementById("solution").innerText = "";
+                            })
                                 .then(text => {
-                                    document.getElementById("solution").innerText = text;
+                                    document.getElementById("solution").innerText = text ? "Correct" : "Wrong";
                                     if (text === true) {
                                         score = 1;
                                         totalScore++;
@@ -170,7 +174,7 @@
                                         answersForEachQuiz.push(document.getElementById("answer").value);
                                         scoreForEachQuiz.push(score);
                                     }
-                                }).then(res => {
+                                }).then(() => {
                                 countdownTimer.reset();
                                 image.src = `/api/image/equation/${fiveQuizzes[++index]}`;
                                 endOfQuizzes(index, countdownTimer, timeOnStart);
@@ -184,59 +188,52 @@
 
                         document.getElementById("buttonCheck").onclick = () => {
 
-                            if (document.getElementById("answer").value === "") {
-                                document.getElementById("answerEmpty").innerText = "Answer cannot be empty"
-                            } else {
-
-                                countdownTimer.reset();
-
-                                fetch(`/api/equation/solution`,
-                                    {
-                                        method: "POST",
-                                        headers: {
-                                            "Content-Type": "application/json",
-                                        },
-                                        body: JSON.stringify({
-                                            answer: document.getElementById("answer").value,
-                                            quiz: quiz,
-                                        })
+                            fetch(`/api/equation/solution`,
+                                {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                    },
+                                    body: JSON.stringify({
+                                        answer: document.getElementById("answer").value,
+                                        quiz: quiz,
                                     })
-                                    .then(response => {
-                                        if (response.ok) {
-                                            return response.json();
-                                        }
-                                        throw new Error('Something went wrong')
-                                    }).catch((error) => {
-                                    console.log(error);
+                                })
+                                .then(response => {
+                                    if (response.ok) {
+                                        return response.json();
+                                    }
+                                    throw new Error('Incorrect answer format')
                                 })
 
-
-                                    .then(res => res.json())
-                                    .then(text => {
-                                        document.getElementById("solution").innerText = text;
-                                        if (text === true) {
-                                            score = 1;
-                                            totalScore++;
-                                            sessionStorage.setItem('totalScore', totalScore.toString());
-                                            answersForEachQuiz.push(document.getElementById("answer").value);
-                                            scoreForEachQuiz.push(score);
-                                        } else {
-                                            score = 0;
-                                            answersForEachQuiz.push(document.getElementById("answer").value);
-                                            scoreForEachQuiz.push(score);
-                                        }
-                                    })
-                                    .then(() => {
-                                        image.src = `/api/image/equation/${fiveQuizzes[++index]}`;
-                                        quiz = fiveQuizzes[index];
-                                        document.getElementById("answer").value = '';
-                                        endOfQuizzes(index, countdownTimer, timeOnStart);
-                                        document.getElementById("answerEmpty").innerText = "";
-                                    })
-                            }
+                                .then(text => {
+                                    document.getElementById("solution").innerText = text ? "Correct" : "Wrong";
+                                    if (text === true) {
+                                        score = 1;
+                                        totalScore++;
+                                        sessionStorage.setItem('totalScore', totalScore.toString());
+                                        answersForEachQuiz.push(document.getElementById("answer").value);
+                                        scoreForEachQuiz.push(score);
+                                    } else {
+                                        score = 0;
+                                        answersForEachQuiz.push(document.getElementById("answer").value);
+                                        scoreForEachQuiz.push(score);
+                                    }
+                                })
+                                .then(() => {
+                                    countdownTimer.reset();
+                                    image.src = `/api/image/equation/${fiveQuizzes[++index]}`;
+                                    quiz = fiveQuizzes[index];
+                                    document.getElementById("answer").value = '';
+                                    endOfQuizzes(index, countdownTimer, timeOnStart);
+                                    document.getElementById("answerEmpty").innerText = "";
+                                }).catch((error) => {
+                                document.getElementById("answerEmpty").innerText = "Answer cannot be empty and has to have a format: 0+0=0"
+                            })
                         };
                     }
-                ))
+                )
+            )
     }
 
 </script>

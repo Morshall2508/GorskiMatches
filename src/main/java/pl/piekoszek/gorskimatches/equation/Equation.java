@@ -9,7 +9,7 @@ public class Equation {
 
     @NotBlank(message = "Answer has to be provided")
     @Valid
-    @Pattern(regexp = "\\b\\d[+-]\\d[=]\\d\\b", message = "Incorrect answer format")
+    @Pattern(regexp = "\\b\\s*\\d\\s*[+-]\\s*\\d\\s*=\\s*\\d\\s*\\b\\s*", message = "Incorrect answer format")
     public String answer;
 
     public Equation(String quiz, String answer) {

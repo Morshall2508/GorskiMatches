@@ -18,7 +18,7 @@
         <img id="image">
         <div id="quiz"></div>
         <input id="answer">
-        <div id="answerEmpty"></div>
+        <div id="answerEmpty" style="text-align: center"></div>
         <button id="buttonCheck">Check!</button>
         <div id="solution"></div>
     </div>
@@ -37,28 +37,30 @@
 </script>
 <script>
     document.getElementById("buttonCheck").onclick = () => {
-        if (document.getElementById("answer").value === "") {
-            document.getElementById("answerEmpty").innerText = "Answer cannot be empty"
-        } else if (!document.getElementById("answer").value.match("\\b\\d[+-]\\d[=]\\d\\b")) {
-            document.getElementById("answerEmpty").innerText = "Answer has to have a proper format: 0+0=0"
-        } else {
-            fetch("/api/equation/solution",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        answer: document.getElementById("answer").value,
-                        quiz: quiz,
-                    })
+
+        fetch("/api/equation/solution",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    answer: document.getElementById("answer").value,
+                    quiz: quiz,
                 })
-                .then(res => res.json())
-                .then(correct => {
-                    document.getElementById("answerEmpty").innerText = "";
-                    document.getElementById("solution").innerText = correct ? "Correct" : "Wrong";
-                });
-        }
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Incorrect answer format')
+            })
+            .then(correct => {
+                document.getElementById("answerEmpty").innerText = "";
+                document.getElementById("solution").innerText = correct ? "Correct" : "Wrong";
+            }).catch((error) => {
+            document.getElementById("answerEmpty").innerText = "Answer cannot be empty and has to have a format: 0+0=0"
+        });
     };
 </script>
 <script>
