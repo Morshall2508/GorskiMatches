@@ -1,6 +1,7 @@
 package pl.piekoszek.gorskimatches.equation;
 
 import org.springframework.web.bind.annotation.*;
+import pl.piekoszek.gorskimatches.validation.StringEditor;
 
 import javax.validation.Valid;
 
@@ -10,11 +11,14 @@ class EquationController {
 
     private final EquationRandomizer equationRandomizer;
 
+    private final StringEditor stringEditor;
+
     private final QuizAnswerChecker solvableEquations;
 
-    EquationController(EquationRandomizer equationRandomizer, QuizAnswerChecker solvableEquations) {
+    EquationController(EquationRandomizer equationRandomizer, QuizAnswerChecker solvableEquations, StringEditor stringEditor) {
         this.equationRandomizer = equationRandomizer;
         this.solvableEquations = solvableEquations;
+        this.stringEditor = stringEditor;
     }
 
     @GetMapping("random")
@@ -24,6 +28,6 @@ class EquationController {
 
     @PostMapping("solution")
     boolean checkAnswer(@Valid @RequestBody Equation equation) {
-        return solvableEquations.checkForCorrectAnswer(equation.quiz, equation.answer);
+        return solvableEquations.checkForCorrectAnswer(equation.quiz, stringEditor.removeSpaces(equation.answer));
     }
 }

@@ -326,6 +326,10 @@ img[src="null"] {
 
 @media only screen and (max-width: 660px) {
 
+    #accountName {
+        margin-right: 20px;
+    }
+
     .bigiPad {
         width: 95%;
     }
@@ -359,6 +363,7 @@ img[src="null"] {
 
     h3 {
         margin-left: 1em;
+        margin-bottom: 0;
     }
 
     h1 {
