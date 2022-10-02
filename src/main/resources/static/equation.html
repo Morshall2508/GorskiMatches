@@ -18,13 +18,13 @@
         <img id="image">
         <div id="quiz"></div>
         <input id="answer">
+        <div id="answerEmpty" style="text-align: center"></div>
         <button id="buttonCheck">Check!</button>
         <div id="solution"></div>
     </div>
 </div>
 
 </body>
-
 <script>
     const image = document.getElementById("image");
     fetch("api/equation/random")
@@ -37,6 +37,7 @@
 </script>
 <script>
     document.getElementById("buttonCheck").onclick = () => {
+
         fetch("/api/equation/solution",
             {
                 method: "POST",
@@ -48,10 +49,18 @@
                     quiz: quiz,
                 })
             })
-            .then(res => res.json())
-            .then(text => {
-                document.getElementById("solution").innerText = text;
-            });
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Incorrect answer format')
+            })
+            .then(correct => {
+                document.getElementById("answerEmpty").innerText = "";
+                document.getElementById("solution").innerText = correct ? "Correct" : "Wrong";
+            }).catch((error) => {
+            document.getElementById("answerEmpty").innerText = "Answer cannot be empty and has to have a format: 0+0=0"
+        });
     };
 </script>
 <script>

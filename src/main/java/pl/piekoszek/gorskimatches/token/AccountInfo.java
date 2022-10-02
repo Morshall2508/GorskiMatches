@@ -1,12 +1,14 @@
 package pl.piekoszek.gorskimatches.token;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 public class AccountInfo {
 
     @Id
     private String email;
+    @NotBlank(message = "Account name is mandatory")
     private String accountName;
     @Column(columnDefinition = "TEXT")
     private String avatar;

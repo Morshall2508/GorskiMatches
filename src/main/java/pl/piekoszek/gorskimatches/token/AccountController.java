@@ -1,7 +1,10 @@
 package pl.piekoszek.gorskimatches.token;
 
+
 import org.springframework.web.bind.annotation.*;
 import pl.piekoszek.gorskimatches.repository.AccountRepository;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("api/auth")
@@ -15,12 +18,13 @@ class AccountController {
     }
 
     @PostMapping("email")
-    void sendRegistrationEmail(@RequestBody AccountInfo accountInfo) {
-        emailService.sendRegistrationOrLoginLink(accountInfo.getEmail());
+    String sendRegistrationEmail(@Valid @RequestBody RegistrationRequest sendRegistrationRequest) {
+            emailService.sendRegistrationOrLoginLink(sendRegistrationRequest.getEmail());
+            return "Email has been sent";
     }
 
     @PostMapping("account")
-    void changeAccountInfo(@Email String email, @RequestBody AccountInfo accountInfo) {
+    void changeAccountInfo(@Email String email, @Valid @RequestBody AccountInfo accountInfo) {
         if (!email.equals(accountInfo.getEmail())) {
             throw new ForbiddenException("Incorrect email");
         }

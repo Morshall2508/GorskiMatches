@@ -18,24 +18,45 @@
         <div id="challengeHistory"><h3>Check<br>Challenge history</h3></div>
         </div>
         <div id="loggedIn"></div>
-        <form>
+        <div id="accountInfoPad">
             <div id="accountInfo">
                 <div id="accountName"></div>
                 <img id="accountAvatar">
             </div>
             <h2>Write your username</h2><input id="username">
+            <div id="usernameEmpty"></div>
             <h2>Select your avatar</h2>
             <main>
-                <input type="file" id="file" accept="image/*" onchange="encodeImageFileAsURL(this)">
+                <input type="file" id="file" accept="image/*" onchange="encodeImageFileAsURL(this), fileValidation()">
                 <label for="file">
                     Choose file
                 </label>
+                <div id="info"></div>
                 <img id="output"/>
             </main>
             <button id="confirmChanges">Confirm</button>
-        </form>
+        </div>
     </div>
 </div>
+
+<script>
+    fileValidation = () => {
+        const fi = document.getElementById('file');
+        if (fi.files.length > 0) {
+            for (const i = 0; i <= fi.files.length - 1; i++) {
+
+                const fSize = fi.files.item(i).size;
+                const file = Math.round((fSize / 1024));
+                if (file >= 2048) {
+                    alert(
+                      "File is too big, please select a file less than 2Mb");
+                }  else {
+                    document.getElementById('info').innerHTML = "File has been selected";
+                }
+            }
+        }
+    }
+</script>
 <script>
     function encodeImageFileAsURL(element) {
         var output = element.files[0];
@@ -51,21 +72,35 @@
     import Auth from "/auth.js";
 
     document.getElementById("confirmChanges").onclick = () => {
-
-        fetch("/api/auth/account",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    'Authorization': 'bearer ' + token,
-                },
-                body: JSON.stringify({
-                    email: Auth.getEmail(),
-                    accountName: document.getElementById("username").value,
-                    avatar: sessionStorage.getItem('byte64Image')
-                })
-            })
-    };
+        if (!Auth.isLoggedIn()){
+            document.getElementById("usernameEmpty").innerText = "Please register first"
+        } else {
+            if (document.getElementById("username").value === "") {
+                    document.getElementById("usernameEmpty").innerText = "Username cannot be empty"
+                    } else {
+                            document.getElementById("usernameEmpty").innerText = ""
+                            fetch("/api/auth/account",
+                            {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    'Authorization': 'bearer ' + token,
+                                },
+                                body: JSON.stringify({
+                                    email: Auth.getEmail(),
+                                    accountName: document.getElementById("username").value,
+                                    avatar: sessionStorage.getItem('byte64Image')
+                                })
+                            }).then (res => {
+                            if (res.ok) {
+                                window.location.reload();
+                                } else {
+                                alert("Something went wrong, please try again");
+                                }
+                            });
+                    }
+            }
+        };
 
 </script>
 
@@ -80,6 +115,7 @@
         .then(accountInfo => {
             document.getElementById("accountName").innerText = accountInfo.accountName;
             document.getElementById("accountAvatar").src = accountInfo.avatar;
+            document.getElementById("username").value = accountInfo.accountName;
         });
 
 </script>
@@ -87,7 +123,6 @@
     const token = localStorage.getItem('token');
     const tokenData = JSON.parse(atob(token.split('.')[1]));
 </script>
-
 
 <script>
     document.getElementById("accountPage").onclick = () => {

@@ -9,9 +9,11 @@ button {
     color: rgb(95, 95, 97);
     border-radius: 0.2em;
 }
+
 a:not([href]) {
 
 }
+
 h3 {
     margin-left: 1.65em;
 }
@@ -28,9 +30,11 @@ h3 {
     border-radius: 0.2em;
     width: 50%;
 }
-.listOfUUIDS{
+
+.listOfUUIDS {
     display: none;
 }
+
 .wrapper {
     border: 1px solid #a4bad5;
 }
@@ -53,11 +57,11 @@ h3 {
     width: 100px;
     height: 50px;
 }
+
 .header {
     height: 50px;
     width: 100px;
     background-color: #417cb5;
-    border-bottom
 }
 
 .rest {
@@ -65,9 +69,10 @@ h3 {
     height: 50px;
 
 }
+
 #username {
     border-radius: 0.2em;
-    width: 50%;
+    width: 90%;
 }
 
 input {
@@ -114,7 +119,7 @@ h2 {
 
 p {
     color: rgb(255, 255, 255);
-    font-size: 0.8em;
+    font-size: 0.9em;
 }
 
 body {
@@ -127,6 +132,10 @@ body {
     align-items: center;
 }
 
+#email {
+    width: 70%;
+}
+
 .accountPad {
     width: auto;
     height: 20em;
@@ -136,10 +145,11 @@ body {
     background-color: rgb(112, 145, 177);
     flex-direction: row;
 }
-#registrationAndLogoutPad{
+
+#registrationAndLogoutPad {
     display: flex;
     width: 500px;
-    margin: 20px;
+    margin-bottom: 20px;
     justify-content: center;
 }
 
@@ -153,11 +163,12 @@ body {
     margin: 1.5em;
     width: 95%;
 }
+
 img[src="null"] {
     display: none;
 }
 
-#indexPadForChallengeHistory{
+#indexPadForChallengeHistory {
     width: auto;
     height: auto;
     display: flex;
@@ -165,12 +176,12 @@ img[src="null"] {
     align-items: center;
     background-color: rgb(112, 145, 177);
     flex-direction: column;
-    padding: 40px;
+    padding: 20px;
 }
 
 #indexPad {
     width: auto;
-    height: 20em;
+    height: auto;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -205,7 +216,7 @@ img[src="null"] {
 
 .bigiPadForChallengeHistory {
     height: auto;
-    width: 55%;
+    width: auto;
 }
 
 
@@ -230,15 +241,26 @@ img[src="null"] {
 #accountPage {
     cursor: pointer;
 }
+
 #challengeHistory:hover {
     cursor: pointer;
-    color : #417cb5;
+    color: #417cb5;
 }
-#answer{
+
+#answer {
     margin: 10px;
 }
 
+#loggedIn {
+    padding: 10px;
+    margin-top: 15px;
+}
+
 @media only screen and (max-width: 1150px) {
+    .bigiPad {
+        width: 85%;
+    }
+
     .wrapper {
         border: 0.5px solid #a4bad5;
     }
@@ -257,6 +279,7 @@ img[src="null"] {
         width: 75px;
         height: 30px;
     }
+
     .header {
         width: 75px;
         height: 30px;
@@ -267,7 +290,18 @@ img[src="null"] {
         height: 30px;
     }
 }
+
 @media only screen and (max-width: 880px) {
+
+
+    p {
+        color: rgb(255, 255, 255);
+        font-size: 1.1em;
+    }
+
+    .bigiPad {
+        width: 85%;
+    }
 
     #table {
         grid-template-columns: 55px 55px 55px 1fr 1fr 1fr;
@@ -278,6 +312,7 @@ img[src="null"] {
         width: 55px;
         height: 35px;
     }
+
     .header {
         width: 55px;
         height: 35px;
@@ -288,11 +323,21 @@ img[src="null"] {
         height: 35px;
     }
 }
+
 @media only screen and (max-width: 660px) {
 
-p {
+    #accountName {
+        margin-right: 20px;
+    }
+
+    .bigiPad {
+        width: 95%;
+    }
+
+    p {
         font-size: 0.5em;
     }
+
     #image {
         padding: 0.2em;
         margin: 0.2em;
@@ -300,6 +345,11 @@ p {
 
     #loggedIn {
         font-size: medium;
+        padding: 10px;
+    }
+
+    #accountInfoPad {
+        margin-left: 25px;
     }
 
     .accountPad {
@@ -310,9 +360,12 @@ p {
         height: auto;
         justify-content: flex-start;
     }
+
     h3 {
         margin-left: 1em;
+        margin-bottom: 0;
     }
+
     h1 {
         margin: 0.2em 0.6em 0.2em 0.6em;
         font-size: 2em;
@@ -335,15 +388,18 @@ p {
         height: auto;
         width: auto;
     }
-    #registrationAndLogoutPad{
+
+    #registrationAndLogoutPad {
         width: 250px;
     }
+
     #solution {
         font-size: medium;
     }
 
     #confirmChanges {
         width: 5em;
+        margin-bottom: 20px;
     }
 
     label {
@@ -355,14 +411,15 @@ p {
     #username {
         width: 13em;
     }
-    #answer{
+
+    #answer {
         font-size: 8px;
         margin: 5px;
     }
 
 
     #table {
-        grid-template-columns: 35px 35px 35px 1fr 1fr 1fr;
+        grid-template-columns: 45px 45px 45px 45px 45px 45px;
         font-size: 8px;
     }
 
@@ -370,6 +427,7 @@ p {
         width: 35px;
         height: 25px;
     }
+
     .header {
         width: 35px;
         height: 25px;

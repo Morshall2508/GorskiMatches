@@ -16,15 +16,16 @@
         <h2>For a random equation click the button bellow</h2>
         <div id="equation"></div>
         <button id="button">Random equation</button>
-        <h2>To register, write your email below</h2>
+        <div id="loggedIn"></div>
+        <h2 id = "registerInfo">To register, write your email below</h2>
         <input id="email">
+        <h2 id ="emailResponse"></h2>
         <div id="registrationAndLogoutPad">
             <button id="confirm">Register</button>
             <button id="logOut">Logout</button>
         </div>
         <button id="challengeLink">Get a challenge link</button>
         <a id="challenge" href="" style="display: none">Get your link here</a>
-        <div id="loggedIn"></div>
     </div>
 </div>
 
@@ -46,12 +47,21 @@
                 body: JSON.stringify({
                     email: document.getElementById("email").value
                 })
-            })
+            }).then (res => res.text()
+            .then(text => {
+                    document.getElementById("emailResponse").innerText = text;
+            }))
     };
 </script>
 
 <script>
     sessionStorage.removeItem('totalScore');
+</script>
+
+<script type="module">
+    import Auth from "/auth.js";
+        if (!Auth.isLoggedIn())
+        document.getElementById("challengeLink").style.display = "none";
 </script>
 
 <script>
@@ -75,6 +85,8 @@
     document.getElementById("logOut").onclick = () => {
         localStorage.clear();
         document.getElementById("loggedIn").style.display = 'none';
+        document.getElementById("challengeLink").style.display = "none";
+        window.location.reload();
     };
 </script>
 <script>
@@ -86,6 +98,17 @@
     document.getElementById("homeButton").onclick = () => {
         window.location.replace("/")
     };
+</script>
+<script type="module">
+    import Auth from "/auth.js";
+
+         if (!Auth.isLoggedIn()) {
+            document.getElementById("logOut").style.display = "none";
+         } else {
+            document.getElementById("registerInfo").style.display = "none";
+            document.getElementById("email").style.display = "none";
+            document.getElementById("confirm").style.display = "none";
+         }
 </script>
 </body>
 
