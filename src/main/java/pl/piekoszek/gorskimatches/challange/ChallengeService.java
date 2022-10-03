@@ -19,7 +19,7 @@ public class ChallengeService {
 
     private ChallengeRepository challengeRepository;
 
-    private Judge judgeResult;
+    private Judge judge;
 
 
     public ChallengeService(EmailService emailService,
@@ -31,12 +31,12 @@ public class ChallengeService {
         this.equationRandomizer = equationRandomizer;
         this.generateUUID = generateUUID;
         this.challengeRepository = challengeRepository;
-        this.judgeResult = judgeResult;
+        this.judge = judgeResult;
     }
 
     public void resultForRegisteredUser(ChallengeResult challengeResult) {
         var challengeInfo = getChallenge(challengeResult);
-        if (judgeResult.getResultForChallengeUser(
+        if (judge.getResultForChallengeUser(
                 challengeInfo.getRegisteredUserScore(),
                 challengeInfo.getNonRegisteredUserScore(),
                 challengeInfo.getRegisteredUserTimeSeconds(),
@@ -51,7 +51,7 @@ public class ChallengeService {
     public String resultForNonRegisteredUser(UUID uuid) {
         var challengeInfoData = challengeRepository.findById(uuid);
         var challengeInfo = challengeInfoData.get();
-        if (judgeResult.getResultForChallengeUser(
+        if (judge.getResultForChallengeUser(
                 challengeInfo.getRegisteredUserScore(),
                 challengeInfo.getNonRegisteredUserScore(),
                 challengeInfo.getRegisteredUserTimeSeconds(),
