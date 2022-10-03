@@ -19,14 +19,14 @@ public class ChallengeService {
 
     private ChallengeRepository challengeRepository;
 
-    private JudgeResult judgeResult;
+    private Judge judgeResult;
 
 
     public ChallengeService(EmailService emailService,
                             EquationRandomizer equationRandomizer,
                             GenerateUUID generateUUID,
                             ChallengeRepository challengeRepository,
-                            JudgeResult judgeResult) {
+                            Judge judgeResult) {
         this.emailService = emailService;
         this.equationRandomizer = equationRandomizer;
         this.generateUUID = generateUUID;
@@ -36,11 +36,11 @@ public class ChallengeService {
 
     public void resultForRegisteredUser(ChallengeResult challengeResult) {
         var challengeInfo = getChallenge(challengeResult);
-        if (judgeResult.getResultForChallengeUser1(
+        if (judgeResult.getResultForChallengeUser(
                 challengeInfo.getRegisteredUserScore(),
                 challengeInfo.getNonRegisteredUserScore(),
                 challengeInfo.getRegisteredUserTimeSeconds(),
-                challengeInfo.getNonRegisteredUserTimeSeconds()) == Result.WINNER) {
+                challengeInfo.getNonRegisteredUserTimeSeconds()) == Result.USER_1_WIN) {
 
             emailService.sendResultOfChallenge(challengeInfo.getEmail(), "Congratulations you've won!", challengeResult.getUuid());
         } else {
@@ -51,11 +51,11 @@ public class ChallengeService {
     public String resultForNonRegisteredUser(UUID uuid) {
         var challengeInfoData = challengeRepository.findById(uuid);
         var challengeInfo = challengeInfoData.get();
-        if (judgeResult.getResultForChallengeUser2(
+        if (judgeResult.getResultForChallengeUser(
                 challengeInfo.getRegisteredUserScore(),
                 challengeInfo.getNonRegisteredUserScore(),
                 challengeInfo.getRegisteredUserTimeSeconds(),
-                challengeInfo.getNonRegisteredUserTimeSeconds()) == Result.WINNER) {
+                challengeInfo.getNonRegisteredUserTimeSeconds()) == Result.USER_2_WIN) {
 
             return "Congratulations you've won!";
         } else {
