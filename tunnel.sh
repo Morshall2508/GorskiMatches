@@ -1,0 +1,1 @@
+ssh -nNT -R 8080:localhost:8080 ubuntu@maciej.piekoszek.pl
