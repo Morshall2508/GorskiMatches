@@ -31,7 +31,7 @@
                 <label for="file">
                     Choose file
                 </label>
-                <div id="info"></div>
+                <div id="thingsNeeded"></div>
                 <img id="output"/>
             </main>
             <button id="confirmChanges">Confirm</button>
@@ -51,7 +51,7 @@
                     alert(
                       "File is too big, please select a file less than 2Mb");
                 }  else {
-                    document.getElementById('info').innerHTML = "File has been selected";
+                    document.getElementById('thingsNeeded').innerHTML = "File has been selected";
                 }
             }
         }
