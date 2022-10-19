@@ -5,15 +5,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("web")
-public class FacebookTestController {
+public class FacebookController {
 
     private FacebookMessageService facebookMessageService;
 
-    private FacebookEntry facebookEntry;
-
-    FacebookTestController(FacebookMessageService facebookMessageService, FacebookEntry facebookEntry){
+    FacebookController(FacebookMessageService facebookMessageService){
         this.facebookMessageService = facebookMessageService;
-        this.facebookEntry = facebookEntry;
     }
 
     @GetMapping
@@ -24,10 +21,10 @@ public class FacebookTestController {
     }
 
     @PostMapping
-    public void post(@RequestBody FacebookHookRequest request) {
+    public void post(@RequestBody FacebookHookRequest request, FacebookEntry facebookEntry) {
         request.getEntry().forEach(entry -> entry.getMessaging().forEach(message -> {
             facebookEntry.setId(message.getSender().get("id"));
         }));
-        facebookMessageService.sendReply(facebookEntry.getId(), "hello");
+        facebookMessageService.sendHelloReply(facebookEntry.getId());
     }
 }

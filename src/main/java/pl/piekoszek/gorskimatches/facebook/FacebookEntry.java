@@ -8,9 +8,10 @@ import java.util.List;
 
 @Component
 public class FacebookEntry implements Serializable {
+
     private String id;
     private Long time;
-    private List<FacebookMessaging> messaging = new ArrayList<>();
+    public List<FacebookMessaging> messaging = new ArrayList<>();
 
     public String getId() {
         return id;

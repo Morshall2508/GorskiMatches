@@ -12,14 +12,13 @@ public class FacebookMessageService {
 
     @Value("${pagetoken.path}")
     private String PAGE_TOKEN;
-    void sendReply(String id, String text) {
+    void sendHelloReply(String id) {
         FacebookMessageResponse response = new FacebookMessageResponse();
         response.setMessage_type("text");
         response.getRecipient().put("id", id);
-        response.getMessage().put("text", text);
+        response.getMessage().put("text", "hello");
         HttpEntity<FacebookMessageResponse> entity = new HttpEntity<>(response);
-        String FB_MSG_URL = "https://graph.facebook.com/v2.6/me/messages?access_token="
-                + PAGE_TOKEN;
-        String result = template.postForEntity(FB_MSG_URL, entity, String.class).getBody();
+        String result = template.postForEntity("https://graph.facebook.com/v2.6/me/messages?access_token="
+                + PAGE_TOKEN, entity, String.class).getBody();
     }
 }
