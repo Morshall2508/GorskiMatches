@@ -1,16 +1,15 @@
 package pl.piekoszek.gorskimatches.facebook;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FacebookMessageResponse implements Serializable {
-    private String message_type;
-    private Map<String,String> recipient = new HashMap<>();
-    private Map<String,String> message = new HashMap<>();
+public class FacebookMessageResponse {
+    private String messageType;
+    private Map<String, String> recipient = new HashMap<>();
+    private Map<String, String> message = new HashMap<>();
 
-    public FacebookMessageResponse(String message_type, Map<String, String> recipient, Map<String, String> message) {
-        this.message_type = message_type;
+    public FacebookMessageResponse(String messageType, Map<String, String> recipient, Map<String, String> message) {
+        this.messageType = messageType;
         this.recipient = recipient;
         this.message = message;
     }
@@ -19,8 +18,8 @@ public class FacebookMessageResponse implements Serializable {
 
     }
 
-    public void setMessage_type(String message_type) {
-        this.message_type = message_type;
+    public void setMessageType(String messageType) {
+        this.messageType = messageType;
     }
 
     public Map<String, String> getRecipient() {

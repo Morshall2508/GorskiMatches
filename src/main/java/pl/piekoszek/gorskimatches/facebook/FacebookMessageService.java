@@ -10,11 +10,12 @@ public class FacebookMessageService {
 
     private final RestTemplate template = new RestTemplate();
 
-    @Value("${pagetoken.path}")
+    @Value("${PAGE_TOKEN}")
     private String PAGE_TOKEN;
+
     void sendHelloReply(String id) {
         FacebookMessageResponse response = new FacebookMessageResponse();
-        response.setMessage_type("text");
+        response.setMessageType("text");
         response.getRecipient().put("id", id);
         response.getMessage().put("text", "hello");
         HttpEntity<FacebookMessageResponse> entity = new HttpEntity<>(response);

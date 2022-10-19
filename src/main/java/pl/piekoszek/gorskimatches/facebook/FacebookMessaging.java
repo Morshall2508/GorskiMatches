@@ -1,13 +1,11 @@
 package pl.piekoszek.gorskimatches.facebook;
 
-import java.io.Serializable;
 import java.util.Map;
 
+public class FacebookMessaging {
 
-public class FacebookMessaging implements Serializable {
-
-    private Map<String,String> sender;
-    private Map<String,String> recipient;
+    private Map<String, String> sender;
+    private Map<String, String> recipient;
     private Long timestamp;
     private FacebookMessage message;
 

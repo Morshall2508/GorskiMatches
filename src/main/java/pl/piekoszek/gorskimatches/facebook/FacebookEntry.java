@@ -1,13 +1,9 @@
 package pl.piekoszek.gorskimatches.facebook;
 
-import org.springframework.stereotype.Component;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
-public class FacebookEntry implements Serializable {
+public class FacebookEntry {
 
     private String id;
     private Long time;

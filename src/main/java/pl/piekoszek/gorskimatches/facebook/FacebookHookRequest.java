@@ -1,10 +1,9 @@
 package pl.piekoszek.gorskimatches.facebook;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FacebookHookRequest implements Serializable {
+public class FacebookHookRequest {
     private String object;
     private List<FacebookEntry> entry = new ArrayList<>();
 
