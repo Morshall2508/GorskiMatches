@@ -2,6 +2,7 @@ package pl.piekoszek.gorskimatches.facebook;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,14 +18,13 @@ public class FacebookController {
         this.facebookMessageService = facebookMessageService;
     }
 
-    @GetMapping()
-    @ResponseStatus(HttpStatus.OK)
-    public String get(@RequestParam(name = "hub.verify_token") String token,
+    @GetMapping
+    public ResponseEntity<String> get(@RequestParam(name = "hub.verify_token") String token,
                       @RequestParam(name = "hub.challenge") String challenge) {
         if (token != null && !token.isEmpty() && token.equals(VERIFY_TOKEN)) {
-            return challenge;
+            return ResponseEntity.ok(challenge);
         } else {
-            return "Wrong Token";
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Wrong Token");
         }
     }
 
