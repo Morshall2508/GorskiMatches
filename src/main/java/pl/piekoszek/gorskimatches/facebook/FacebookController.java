@@ -5,8 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
-@RequestMapping("api/webhook/facebook/page/message")
+    @RequestMapping("api/webhook/facebook/page/message")
 public class FacebookController {
 
     private FacebookMessageService facebookMessageService;
@@ -20,7 +22,7 @@ public class FacebookController {
 
     @GetMapping
     public ResponseEntity<String> get(@RequestParam(name = "hub.verify_token") String token,
-                      @RequestParam(name = "hub.challenge") String challenge) {
+                                      @RequestParam(name = "hub.challenge") String challenge) {
         if (token != null && !token.isEmpty() && token.equals(VERIFY_TOKEN)) {
             return ResponseEntity.ok(challenge);
         } else {
@@ -34,6 +36,8 @@ public class FacebookController {
         request.getEntry().forEach(entry -> entry.getMessaging().forEach(message -> {
             facebookEntry.setId(message.getSender().get("id"));
         }));
-        facebookMessageService.sendHelloReply(facebookEntry.getId());
+//        facebookMessageService.sendHelloReply(facebookEntry.getId());
+//        facebookMessageService.sendAtt(facebookEntry.getId());
+        facebookMessageService.sendAttachmentPhoto(facebookEntry.getId());
     }
 }

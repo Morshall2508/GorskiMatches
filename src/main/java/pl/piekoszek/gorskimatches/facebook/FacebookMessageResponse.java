@@ -7,11 +7,17 @@ public class FacebookMessageResponse {
     private String messageType;
     private Map<String, String> recipient = new HashMap<>();
     private Map<String, String> message = new HashMap<>();
+    private FacebookAttachment attachment;
 
-    public FacebookMessageResponse(String messageType, Map<String, String> recipient, Map<String, String> message) {
+    public FacebookMessageResponse(String messageType, Map<String, String> recipient, Map<String, String> message, FacebookAttachment attachment) {
         this.messageType = messageType;
         this.recipient = recipient;
         this.message = message;
+        this.attachment = attachment;
+    }
+
+    public void setAttachment(FacebookAttachment attachment) {
+        this.attachment = attachment;
     }
 
     public FacebookMessageResponse() {
