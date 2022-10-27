@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import static java.awt.Color.white;
 @Component
 public class LineImageCreator {
 
@@ -41,9 +40,9 @@ public class LineImageCreator {
 
     }
 
-    public void create(char numberorsymbol, int x, BufferedImage image, Color color) {
+    public void create(char numberOrSymbol, int x, BufferedImage image, Color color) {
 
-        for (LineInfo lineInfo : lineInfosByNumberOrSign[numberorsymbol]) {
+        for (LineInfo lineInfo : lineInfosByNumberOrSign[numberOrSymbol]) {
             if (lineInfo.horizontal) {
                 drawHorizontalLine(lineInfo.x + x, lineInfo.y, image, color);
             } else {

@@ -1,6 +1,5 @@
 package pl.piekoszek.gorskimatches.facebook;
 
-
 public class FacebookAttachmentResponse {
     private FacebookRecipient recipient;
 

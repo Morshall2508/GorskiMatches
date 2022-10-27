@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.piekoszek.gorskimatches.validation.StringEditor;
 
-import java.util.concurrent.atomic.AtomicReference;
 
 @RestController
 @RequestMapping("api/webhook/facebook/page/message")
@@ -36,18 +35,7 @@ public class FacebookController {
 
     @PostMapping
     public void post(@RequestBody FacebookHookRequest request) {
-        FacebookEntry facebookEntry = new FacebookEntry();
-        request.getEntry().forEach(entry -> entry.getMessaging().forEach(message
-                -> {
-            facebookEntry.setId(message.getSender().get("id"));
-            if (message.getMessage().getText().toLowerCase().matches(stringEditor.removeSpaces("challenge"))) {
-                facebookMessageService.sendAttachmentPhoto(facebookEntry.getId());
-            } else if (message.getMessage().getText().toLowerCase().matches("\\b\\s*\\d\\s*[+-]\\s*\\d\\s*=\\s*\\d\\s*\\b\\s*")) {
-                facebookMessageService.sendResult(facebookEntry.getId(), stringEditor.removeSpaces(message.getMessage().getText()));
-            } else {
-                facebookMessageService.sendHelloReply(facebookEntry.getId());
-            }
-        }));
+        facebookMessageService.handle(request);
     }
 }
 
