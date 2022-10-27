@@ -1,21 +1,8 @@
 package pl.piekoszek.gorskimatches.facebook;
 
-public class FacebookMessageResponse {
-    private FacebookRecipient recipient;
+public class FacebookMessageResponse extends FacebookResponse {
 
     private FacebookMessage message;
-
-    public FacebookMessageResponse() {
-
-    }
-
-    public FacebookRecipient getRecipient() {
-        return recipient;
-    }
-
-    public void setRecipient(FacebookRecipient recipient) {
-        this.recipient = recipient;
-    }
 
     public FacebookMessage getMessage() {
         return message;

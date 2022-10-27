@@ -35,11 +35,11 @@ public class FacebookMessageService {
     @Value("${PAGE_TOKEN}")
     private String PAGE_TOKEN;
 
-    void sendReply (String id, String message){
+    void sendReply(String id, String message) {
         FacebookMessageResponse response = new FacebookMessageResponse();
         response.setRecipient(new FacebookRecipient(id));
         response.setMessage(new FacebookMessage(message));
-        HttpEntity<FacebookMessageResponse> entity = new HttpEntity<>(response);
+        HttpEntity<FacebookResponse> entity = new HttpEntity<>(response);
         String result = template.postForEntity("https://graph.facebook.com/v2.6/me/messages?access_token="
                 + PAGE_TOKEN, entity, String.class).getBody();
     }
@@ -64,7 +64,7 @@ public class FacebookMessageService {
         } else {
             response.setMessage(new FacebookMessage("Hmm, try again!"));
         }
-        HttpEntity<FacebookMessageResponse> entity = new HttpEntity<>(response);
+        HttpEntity<FacebookResponse> entity = new HttpEntity<>(response);
         String result = template.postForEntity("https://graph.facebook.com/v2.6/me/messages?access_token="
                 + PAGE_TOKEN, entity, String.class).getBody();
     }

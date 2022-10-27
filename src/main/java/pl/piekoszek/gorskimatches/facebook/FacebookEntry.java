@@ -9,7 +9,6 @@ public class FacebookEntry {
     private Long time;
     public List<FacebookMessaging> messaging = new ArrayList<>();
 
-
     public Long getTime() {
         return time;
     }
