@@ -80,7 +80,7 @@ public class FacebookMessageService {
                 sendResult(facebookEntry.getId(), idToQuiz.get(facebookEntry.getId()), stringEditor.removeSpaces(message.getMessage().getText()));
             } else {
                 sendReply(facebookEntry.getId(), "Hello!");
-                sendReply(facebookEntry.getId(), "Welcome to my facebook site! Here you can solve as in quizzes on the matchbook that say: Move one match to make equation correct.\nFor quiz simply type in: challenge. You will receive a quiz to solve, then type in your answer in format : 0+0=0\nGood luck!");
+                sendReply(facebookEntry.getId(), "Welcome to my facebook site! Here you can solve as in quizzes on the matchbook that say: Move one match to make equation correct.");
                 sendReply(facebookEntry.getId(), "For quiz simply type in: challenge. You will receive a quiz to solve, then type in your answer in format : 0+0=0\nGood luck!");
             }
         }));
