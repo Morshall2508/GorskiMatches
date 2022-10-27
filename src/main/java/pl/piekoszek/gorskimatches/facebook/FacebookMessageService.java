@@ -49,7 +49,7 @@ public class FacebookMessageService {
         response.setRecipient(new FacebookRecipient(id));
         response.setMessage(new FacebookAttachmentMessage());
         idToQuiz.put(id, equationRandomizer.randomEquation());
-        response.getMessage().setAttachment(new FacebookAttachment("image", new FacebookPayload("https://maciej.piekoszek.pl/api/image/equation/fb/" + idToQuiz.get(id), true)));
+        response.getMessage().setAttachment(new FacebookAttachment("image", new FacebookPayload(server + "api/image/equation/fb/" + idToQuiz.get(id), true)));
         HttpEntity<FacebookAttachmentResponse> entity = new HttpEntity<>(response);
         String result = template.postForEntity("https://graph.facebook.com/v2.6/me/messages?access_token="
                 + PAGE_TOKEN, entity, String.class).getBody();
