@@ -4,10 +4,6 @@ public class FacebookAttachmentResponse extends FacebookResponse{
 
     private FacebookAttachmentMessage message;
 
-    public FacebookAttachmentResponse(FacebookAttachmentMessage message) {
-        this.message = message;
-    }
-
     public FacebookAttachmentResponse() {
 
     }

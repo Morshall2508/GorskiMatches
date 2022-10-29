@@ -19,6 +19,7 @@ public class FacebookMessageService {
     private final String server;
 
     private Map<String, String> idToQuiz = new HashMap<>();
+
     private final EquationRandomizer equationRandomizer;
 
     private final QuizAnswerChecker quizAnswerChecker;
