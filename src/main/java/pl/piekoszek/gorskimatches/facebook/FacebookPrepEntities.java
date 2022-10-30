@@ -11,7 +11,7 @@ public class FacebookPrepEntities {
     @Value("${PAGE_TOKEN}")
     private String PAGE_TOKEN;
 
-    private String fbUrl = "https://graph.facebook.com/v2.6/me/messages?access_token=";
+    private final String fbUrl = "https://graph.facebook.com/v2.6/me/messages?access_token=";
     private final RestTemplate template = new RestTemplate();
 
     public String getMessageEntity(FacebookMessageResponse response) {
