@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/webhook/facebook/page/message")
 public class FacebookController {
 
-    private FacebookMessageService facebookMessageService;
+    private FacebookRequestHandler requestHandler;
 
     @Value("${VERIFY_TOKEN}")
     private String VERIFY_TOKEN;
 
-    FacebookController(FacebookMessageService facebookMessageService) {
-        this.facebookMessageService = facebookMessageService;
+    FacebookController(FacebookRequestHandler requestHandler) {
+        this.requestHandler = requestHandler;
     }
 
     @GetMapping
@@ -30,7 +30,7 @@ public class FacebookController {
 
     @PostMapping
     public void post(@RequestBody FacebookHookRequest request) {
-        facebookMessageService.handle(request);
+        requestHandler.handle(request);
     }
 }
 
