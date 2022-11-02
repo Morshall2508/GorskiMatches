@@ -2,6 +2,7 @@ package pl.piekoszek.gorskimatches.facebook;
 
 
 import org.springframework.stereotype.Component;
+import pl.piekoszek.gorskimatches.repository.FacebookRepository;
 import pl.piekoszek.gorskimatches.validation.StringEditor;
 
 @Component
@@ -11,9 +12,15 @@ public class FacebookRequestHandler {
 
     private final StringEditor stringEditor;
 
-    public FacebookRequestHandler(FacebookMessageService service, StringEditor stringEditor) {
+    private FacebookRepository facebookRepository;
+
+    private FacebookQuiz facebookQuiz;
+
+    public FacebookRequestHandler(FacebookMessageService service, StringEditor stringEditor, FacebookRepository facebookRepository, FacebookQuiz facebookQuiz) {
         this.stringEditor = stringEditor;
         this.service = service;
+        this.facebookRepository = facebookRepository;
+        this.facebookQuiz = facebookQuiz;
     }
 
     void handle(FacebookHookRequest request) {
@@ -22,9 +29,11 @@ public class FacebookRequestHandler {
                 -> {
             facebookEntry.setId(message.getSender().get("id"));
             if (message.getMessage().getText().toLowerCase().matches(stringEditor.removeSpaces("challenge"))) {
+                facebookQuiz.generateQuiz(facebookEntry.getId());
                 service.sendAttachmentPhoto(facebookEntry.getId());
             } else if (message.getMessage().getText().matches(stringEditor.removeSpaces("\\b\\s*\\d\\s*[+-]\\s*\\d\\s*=\\s*\\d\\s*\\b\\s*"))) {
-                service.sendResult(facebookEntry.getId(), service.idQuizMapper.getIdToQuiz().get(facebookEntry.getId()), stringEditor.removeSpaces(message.getMessage().getText()));
+                facebookQuiz.checkQuiz(facebookEntry.getId(), stringEditor.removeSpaces(message.getMessage().getText()));
+                service.sendResult(facebookEntry.getId(), stringEditor.removeSpaces(message.getMessage().getText()));
             } else {
                 service.sendReply(facebookEntry.getId(), "Hello!");
                 service.sendReply(facebookEntry.getId(), "Welcome to my facebook site! Here you can solve as in quizzes on the matchbook that say: Move one match to make equation correct.");
