@@ -20,11 +20,12 @@ public class FacebookQuiz {
         this.facebookRepository = facebookRepository;
     }
 
-    public void generateQuiz(String id) {
+    public String generateQuiz(String id) {
         FacebookIdQuizInfo idQuizInfo = new FacebookIdQuizInfo();
         idQuizInfo.setQuiz(equationRandomizer.randomEquation());
         idQuizInfo.setId(id);
         facebookRepository.save(idQuizInfo);
+        return idQuizInfo.getQuiz();
     }
 
     public boolean checkQuiz(String id, String answer) {

@@ -1,26 +1,15 @@
 package pl.piekoszek.gorskimatches.facebook;
 
-
 import org.springframework.stereotype.Component;
-import pl.piekoszek.gorskimatches.repository.FacebookRepository;
-import pl.piekoszek.gorskimatches.validation.StringEditor;
 
 @Component
 public class FacebookRequestHandler {
 
-    private FacebookMessageService service;
+    private final FacebookCommands commands;
 
-    private final StringEditor stringEditor;
 
-    private FacebookRepository facebookRepository;
-
-    private FacebookQuiz facebookQuiz;
-
-    public FacebookRequestHandler(FacebookMessageService service, StringEditor stringEditor, FacebookRepository facebookRepository, FacebookQuiz facebookQuiz) {
-        this.stringEditor = stringEditor;
-        this.service = service;
-        this.facebookRepository = facebookRepository;
-        this.facebookQuiz = facebookQuiz;
+    public FacebookRequestHandler(FacebookCommands commands) {
+        this.commands = commands;
     }
 
     void handle(FacebookHookRequest request) {
@@ -28,17 +17,13 @@ public class FacebookRequestHandler {
         request.getEntry().forEach(entry -> entry.getMessaging().forEach(message
                 -> {
             facebookEntry.setId(message.getSender().get("id"));
-            if (message.getMessage().getText().toLowerCase().matches(stringEditor.removeSpaces("challenge"))) {
-                facebookQuiz.generateQuiz(facebookEntry.getId());
-                service.sendAttachmentPhoto(facebookEntry.getId());
-            } else if (message.getMessage().getText().matches(stringEditor.removeSpaces("\\b\\s*\\d\\s*[+-]\\s*\\d\\s*=\\s*\\d\\s*\\b\\s*"))) {
-                facebookQuiz.checkQuiz(facebookEntry.getId(), stringEditor.removeSpaces(message.getMessage().getText()));
-                service.sendResult(facebookEntry.getId(), stringEditor.removeSpaces(message.getMessage().getText()));
-            } else {
-                service.sendReply(facebookEntry.getId(), "Hello!");
-                service.sendReply(facebookEntry.getId(), "Welcome to my facebook site! Here you can solve as in quizzes on the matchbook that say: Move one match to make equation correct.");
-                service.sendReply(facebookEntry.getId(), "For quiz simply type in: challenge. You will receive a quiz to solve, then type in your answer in format : 0+0=0\nGood luck!");
-            }
+            commands.helloMessage(message.getMessage(), facebookEntry.getId());
+            commands.quiz(message.getMessage(), facebookEntry.getId());
+            commands.check(message.getMessage(), facebookEntry.getId());
+            commands.info(message.getMessage(), facebookEntry.getId());
+            commands.contact(message.getMessage(), facebookEntry.getId());
+            commands.commands(message.getMessage(), facebookEntry.getId());
+
         }));
     }
 }
