@@ -31,4 +31,12 @@ public class FacebookQuiz {
     public boolean checkQuiz(String id, String answer) {
         return answerChecker.checkForCorrectAnswer(facebookRepository.findById(id).get().quiz, answer);
     }
+
+    public boolean isStarted(String id) {
+        return facebookRepository.findById(id).isPresent();
+    }
+
+    public void cleanUpAfterQuiz(String id) {
+        facebookRepository.deleteById(id);
+    }
 }

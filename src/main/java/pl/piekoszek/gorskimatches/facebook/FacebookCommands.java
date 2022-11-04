@@ -4,65 +4,88 @@ import org.springframework.stereotype.Component;
 import pl.piekoszek.gorskimatches.repository.FacebookRepository;
 import pl.piekoszek.gorskimatches.validation.StringEditor;
 
+import java.util.List;
+
 @Component
 public class FacebookCommands {
-
-    private final FacebookMessageService messageService;
 
     private final StringEditor stringEditor;
 
     private final FacebookRepository facebookRepository;
 
-    FacebookCommands(FacebookMessageService messageService, StringEditor stringEditor, FacebookRepository facebookRepository) {
-        this.messageService = messageService;
+    private final FacebookQuiz facebookQuiz;
+
+    private final FacebookUrlCreator facebookUrlCreator;
+
+    FacebookCommands(StringEditor stringEditor, FacebookRepository facebookRepository, FacebookQuiz facebookQuiz, FacebookUrlCreator facebookUrlCreator) {
         this.stringEditor = stringEditor;
         this.facebookRepository = facebookRepository;
+        this.facebookQuiz = facebookQuiz;
+        this.facebookUrlCreator = facebookUrlCreator;
     }
 
-    void commands(FacebookMessageReceived messageReceived, String id) {
-        if (messageReceived.getText().toLowerCase().matches(stringEditor.removeSpaces("commands"))) {
-            messageService.sendReply(id, "List of supported commands: hello, challenge, info, contact");
+    public List<FacebookCommandResponse> handleCommands(FacebookMessageReceived messageReceived, String id) {
+
+        if (messageReceived.getText().toLowerCase().matches(stringEditor.removeSpaces("hello")) ||
+                messageReceived.getText().toLowerCase().matches(stringEditor.removeSpaces("hi"))) {
+            return helloMessage();
         }
-    }
 
-    void helloMessage(FacebookMessageReceived messageReceived, String id) {
-        if (messageReceived.getText().toLowerCase().matches(stringEditor.removeSpaces("hello")) || messageReceived.getText().toLowerCase().matches(stringEditor.removeSpaces("hi"))) {
-            messageService.sendReply(id, "Welcome to my facebook site! Here you can solve as in quizzes on the matchbook that say: Move one match to make equation correct.");
-            messageService.sendReply(id, "To start simply type in: challenge. You will receive a quiz to solve, then type in your answer in format : 0+0=0\nGood luck!");
-        }
-    }
-
-    void quiz(FacebookMessageReceived messageReceived, String id) {
         if (messageReceived.getText().toLowerCase().matches(stringEditor.removeSpaces("challenge"))) {
-            messageService.sendAttachmentPhoto(id);
+            return quiz(id);
         }
-    }
 
-    void check(FacebookMessageReceived messageReceived, String id) {
         if (messageReceived.getText().matches((stringEditor.removeSpaces("\\b\\s*\\d\\s*[+-]\\s*\\d\\s*=\\s*\\d\\s*\\b\\s*")))) {
-            if (notStarted(id)) {
-                messageService.sendReply(id, "To start type in: challenge");
-            } else {
-                messageService.sendResult(id, messageReceived.getText());
-            }
+            return check(id, messageReceived.getText());
         }
-    }
 
-    void info(FacebookMessageReceived messageReceived, String id) {
         if (messageReceived.getText().toLowerCase().matches(stringEditor.removeSpaces("info"))) {
-            messageService.sendReply(id, "Here you can solve as in quizzes on the matchbook that say: Move one match to make equation correct.");
-            messageService.sendReply(id, "To solve a quiz type in your answer in a format: 0+0=0\\nGood luck!");
-            messageService.sendReply(id, "For list of handled commands type in: commands");
+            return info();
         }
-    }
 
-    void contact(FacebookMessageReceived messageReceived, String id) {
         if (messageReceived.getText().toLowerCase().matches(stringEditor.removeSpaces("contact"))) {
-            messageService.sendReply(id, "To contact me please write to: gorskimatchesserver@gmail.com");
+            return contact();
+        }
+        return commands();
+    }
+
+    private List<FacebookCommandResponse> commands() {
+        return List.of(FacebookCommandResponse.ofMessage("List of supported commands: hello, challenge, info, contact"));
+    }
+
+    private List<FacebookCommandResponse> helloMessage() {
+        return List.of(FacebookCommandResponse.ofMessage("Welcome to my facebook site! Here you can solve as in quizzes on the matchbook that say: Move one match to make equation correct."),
+                FacebookCommandResponse.ofMessage("To start simply type in: challenge. You will receive a quiz to solve, then type in your answer in format : 0+0=0\nGood luck!"));
+    }
+
+    private List<FacebookCommandResponse> quiz(String id) {
+        return List.of(FacebookCommandResponse.ofAttachment(facebookUrlCreator.createUrl(facebookQuiz.generateQuiz(id))));
+    }
+
+    private List<FacebookCommandResponse> check(String id, String answer) {
+        if (isStarted(id)) {
+            if (facebookQuiz.checkQuiz(id, answer)) {
+                facebookQuiz.cleanUpAfterQuiz(id);
+                return List.of(FacebookCommandResponse.ofMessage("Great Job! For another quiz, type in: challenge"));
+            } else {
+                return List.of(FacebookCommandResponse.ofMessage("Hmm, try again!"));
+            }
+        } else {
+            return List.of(FacebookCommandResponse.ofMessage("To start type in: challenge"));
         }
     }
 
-    boolean notStarted(String id) {
-        return !facebookRepository.existsById(id);
+    private List<FacebookCommandResponse> info() {
+        return List.of(FacebookCommandResponse.ofMessage("Here you can solve as in quizzes on the matchbook that say: Move one match to make equation correct."),
+                FacebookCommandResponse.ofMessage("To solve a quiz type in your answer in a format: 0+0=0. Good luck!"),
+                FacebookCommandResponse.ofMessage("For list of handled commands type in: commands"));
+    }
+
+    private List<FacebookCommandResponse> contact() {
+        return List.of(FacebookCommandResponse.ofMessage("To contact me please write to: gorskimatchesserver@gmail.com"));
+    }
+
+    private boolean isStarted(String id) {
+        return facebookQuiz.isStarted(id);
     }
 }

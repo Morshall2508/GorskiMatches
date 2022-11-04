@@ -7,9 +7,11 @@ public class FacebookRequestHandler {
 
     private final FacebookCommands commands;
 
+    private final FacebookMessageService messageService;
 
-    public FacebookRequestHandler(FacebookCommands commands) {
+    public FacebookRequestHandler(FacebookCommands commands, FacebookMessageService messageService) {
         this.commands = commands;
+        this.messageService = messageService;
     }
 
     void handle(FacebookHookRequest request) {
@@ -17,13 +19,14 @@ public class FacebookRequestHandler {
         request.getEntry().forEach(entry -> entry.getMessaging().forEach(message
                 -> {
             facebookEntry.setId(message.getSender().get("id"));
-            commands.helloMessage(message.getMessage(), facebookEntry.getId());
-            commands.quiz(message.getMessage(), facebookEntry.getId());
-            commands.check(message.getMessage(), facebookEntry.getId());
-            commands.info(message.getMessage(), facebookEntry.getId());
-            commands.contact(message.getMessage(), facebookEntry.getId());
-            commands.commands(message.getMessage(), facebookEntry.getId());
-
+            var responses = commands.handleCommands(message.getMessage(), facebookEntry.getId());
+            for (FacebookCommandResponse commandResponse : responses) {
+                if (commandResponse.getCommandsResponseType() == FacebookCommandsResponseType.ATTACHMENT_RESPONSE) {
+                    messageService.sendAttachmentPhoto(facebookEntry.getId(), commandResponse.getResponse());
+                } else {
+                    messageService.sendReply(facebookEntry.getId(), commandResponse.getResponse());
+                }
+            }
         }));
     }
 }

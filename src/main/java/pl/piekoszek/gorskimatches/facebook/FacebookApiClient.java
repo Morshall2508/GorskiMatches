@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
-public class FacebookPrepEntities {
+public class FacebookApiClient {
 
     @Value("${PAGE_TOKEN}")
     private String PAGE_TOKEN;
