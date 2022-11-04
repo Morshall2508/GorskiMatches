@@ -8,9 +8,9 @@ import pl.piekoszek.gorskimatches.repository.FacebookRepository;
 @Component
 public class FacebookQuiz {
 
-    private QuizAnswerChecker answerChecker;
+    private final QuizAnswerChecker answerChecker;
 
-    private EquationRandomizer equationRandomizer;
+    private final EquationRandomizer equationRandomizer;
 
     private FacebookRepository facebookRepository;
 

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/webhook/facebook/page/message")
 public class FacebookController {
 
-    private FacebookRequestHandler requestHandler;
+    private final FacebookRequestHandler requestHandler;
 
     @Value("${VERIFY_TOKEN}")
     private String VERIFY_TOKEN;

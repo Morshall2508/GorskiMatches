@@ -7,11 +7,11 @@ import pl.piekoszek.gorskimatches.validation.StringEditor;
 @Component
 public class FacebookCommands {
 
-    private FacebookMessageService messageService;
+    private final FacebookMessageService messageService;
 
-    private StringEditor stringEditor;
+    private final StringEditor stringEditor;
 
-    private FacebookRepository facebookRepository;
+    private final FacebookRepository facebookRepository;
 
     FacebookCommands(FacebookMessageService messageService, StringEditor stringEditor, FacebookRepository facebookRepository) {
         this.messageService = messageService;
@@ -20,20 +20,20 @@ public class FacebookCommands {
     }
 
     void commands(FacebookMessageReceived messageReceived, String id) {
-        if (messageReceived.getText().toLowerCase().matches("commands")) {
+        if (messageReceived.getText().toLowerCase().matches(stringEditor.removeSpaces("commands"))) {
             messageService.sendReply(id, "List of supported commands: hello, challenge, info, contact");
         }
     }
 
     void helloMessage(FacebookMessageReceived messageReceived, String id) {
-        if (messageReceived.getText().toLowerCase().matches("hello") || messageReceived.getText().toLowerCase().matches("hi")) {
+        if (messageReceived.getText().toLowerCase().matches(stringEditor.removeSpaces("hello")) || messageReceived.getText().toLowerCase().matches(stringEditor.removeSpaces("hi"))) {
             messageService.sendReply(id, "Welcome to my facebook site! Here you can solve as in quizzes on the matchbook that say: Move one match to make equation correct.");
             messageService.sendReply(id, "To start simply type in: challenge. You will receive a quiz to solve, then type in your answer in format : 0+0=0\nGood luck!");
         }
     }
 
     void quiz(FacebookMessageReceived messageReceived, String id) {
-        if (messageReceived.getText().toLowerCase().matches("challenge")) {
+        if (messageReceived.getText().toLowerCase().matches(stringEditor.removeSpaces("challenge"))) {
             messageService.sendAttachmentPhoto(id);
         }
     }
@@ -49,7 +49,7 @@ public class FacebookCommands {
     }
 
     void info(FacebookMessageReceived messageReceived, String id) {
-        if (messageReceived.getText().toLowerCase().matches("info")) {
+        if (messageReceived.getText().toLowerCase().matches(stringEditor.removeSpaces("info"))) {
             messageService.sendReply(id, "Here you can solve as in quizzes on the matchbook that say: Move one match to make equation correct.");
             messageService.sendReply(id, "To solve a quiz type in your answer in a format: 0+0=0\\nGood luck!");
             messageService.sendReply(id, "For list of handled commands type in: commands");
@@ -57,7 +57,7 @@ public class FacebookCommands {
     }
 
     void contact(FacebookMessageReceived messageReceived, String id) {
-        if (messageReceived.getText().toLowerCase().matches("contact")) {
+        if (messageReceived.getText().toLowerCase().matches(stringEditor.removeSpaces("contact"))) {
             messageService.sendReply(id, "To contact me please write to: gorskimatchesserver@gmail.com");
         }
     }
