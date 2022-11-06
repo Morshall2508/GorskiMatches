@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import static java.awt.Color.white;
 @Component
 public class LineImageCreator {
 
@@ -41,26 +40,26 @@ public class LineImageCreator {
 
     }
 
-    public void create(char numberorsymbol, int x, BufferedImage image) {
+    public void create(char numberOrSymbol, int x, BufferedImage image, Color color) {
 
-        for (LineInfo lineInfo : lineInfosByNumberOrSign[numberorsymbol]) {
+        for (LineInfo lineInfo : lineInfosByNumberOrSign[numberOrSymbol]) {
             if (lineInfo.horizontal) {
-                drawHorizontalLine(lineInfo.x + x, lineInfo.y, image);
+                drawHorizontalLine(lineInfo.x + x, lineInfo.y, image, color);
             } else {
-                drawVerticalLine(lineInfo.x + x, lineInfo.y, image);
+                drawVerticalLine(lineInfo.x + x, lineInfo.y, image, color);
             }
         }
     }
 
-    private void drawHorizontalLine(int x, int y, BufferedImage lineImage) {
+    private void drawHorizontalLine(int x, int y, BufferedImage lineImage, Color color) {
         Graphics2D drawLine = lineImage.createGraphics();
-        drawLine.setBackground(white);
+        drawLine.setBackground(color);
         drawLine.clearRect(x, y, 280, 20);
     }
 
-    private void drawVerticalLine(int x, int y, BufferedImage lineImage) {
+    private void drawVerticalLine(int x, int y, BufferedImage lineImage, Color color) {
         Graphics2D drawLine = lineImage.createGraphics();
-        drawLine.setBackground(white);
+        drawLine.setBackground(color);
         drawLine.clearRect(x, y, 20, 280);
     }
 

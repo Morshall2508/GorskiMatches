@@ -1,25 +1,30 @@
 package pl.piekoszek.gorskimatches.facebook;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
 @Component
 public class FacebookMessageService {
 
-    private final RestTemplate template = new RestTemplate();
+    private final FacebookApiClient facebookApiClient;
 
-    @Value("${PAGE_TOKEN}")
-    private String PAGE_TOKEN;
+    private final FacebookResponseGenerator responseGenerator;
 
-    void sendHelloReply(String id) {
-        FacebookMessageResponse response = new FacebookMessageResponse();
-        response.setMessageType("text");
-        response.getRecipient().put("id", id);
-        response.getMessage().put("text", "hello");
-        HttpEntity<FacebookMessageResponse> entity = new HttpEntity<>(response);
-        String result = template.postForEntity("https://graph.facebook.com/v2.6/me/messages?access_token="
-                + PAGE_TOKEN, entity, String.class).getBody();
+
+    private FacebookMessageService(FacebookApiClient facebookApiClient,
+                                   FacebookResponseGenerator responseGenerator) {
+        this.facebookApiClient = facebookApiClient;
+        this.responseGenerator = responseGenerator;
+    }
+
+    void sendReply(String id, String message) {
+        var response = responseGenerator.messageResponse(id);
+        response.getMessage().setText(message);
+        facebookApiClient.getMessageEntity(response);
+    }
+
+    void sendAttachmentPhoto(String id, String url) {
+        var response = responseGenerator.attachmentResponse(id);
+        response.getMessage().getAttachment().getPayload().setUrl(url);
+        facebookApiClient.getAttachmentEntity(response);
     }
 }

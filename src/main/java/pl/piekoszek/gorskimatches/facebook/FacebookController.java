@@ -9,18 +9,18 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/webhook/facebook/page/message")
 public class FacebookController {
 
-    private FacebookMessageService facebookMessageService;
+    private final FacebookRequestHandler requestHandler;
 
     @Value("${VERIFY_TOKEN}")
     private String VERIFY_TOKEN;
 
-    FacebookController(FacebookMessageService facebookMessageService) {
-        this.facebookMessageService = facebookMessageService;
+    FacebookController(FacebookRequestHandler requestHandler) {
+        this.requestHandler = requestHandler;
     }
 
     @GetMapping
     public ResponseEntity<String> get(@RequestParam(name = "hub.verify_token") String token,
-                      @RequestParam(name = "hub.challenge") String challenge) {
+                                      @RequestParam(name = "hub.challenge") String challenge) {
         if (token != null && !token.isEmpty() && token.equals(VERIFY_TOKEN)) {
             return ResponseEntity.ok(challenge);
         } else {
@@ -30,10 +30,8 @@ public class FacebookController {
 
     @PostMapping
     public void post(@RequestBody FacebookHookRequest request) {
-        FacebookEntry facebookEntry = new FacebookEntry();
-        request.getEntry().forEach(entry -> entry.getMessaging().forEach(message -> {
-            facebookEntry.setId(message.getSender().get("id"));
-        }));
-        facebookMessageService.sendHelloReply(facebookEntry.getId());
+        requestHandler.handle(request);
     }
 }
+
+

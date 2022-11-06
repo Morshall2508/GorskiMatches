@@ -1,11 +1,8 @@
 package pl.piekoszek.gorskimatches.facebook;
 
-public class FacebookMessage {
-    private String text;
+public class FacebookMessageReceived {
 
-    public FacebookMessage(String text) {
-        this.text = text;
-    }
+    private String text;
 
     public String getText() {
         return text;

@@ -3,9 +3,12 @@ package pl.piekoszek.gorskimatches.image;
 import org.springframework.stereotype.Component;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 @Component
 public class EquationImageCreator {
@@ -16,14 +19,25 @@ public class EquationImageCreator {
         this.lineImageCreator = lineImageCreator;
     }
 
-    public byte[] create(String equation) throws IOException {
-        BufferedImage equationImage = new BufferedImage(2000, 660, BufferedImage.TYPE_INT_ARGB);
+    public byte[] createImage(String equation, Color color, int imageType, int width, int height, String formatName) throws IOException {
+        BufferedImage equationImage = new BufferedImage(width, height, imageType);
         for (int i = 0; i < equation.length(); i++) {
             char numberOrSign = equation.charAt(i);
-            lineImageCreator.create(numberOrSign, i * 400, equationImage);
+            lineImageCreator.create(numberOrSign, i * 400, equationImage, color);
         }
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ImageIO.write(equationImage, "png", baos);
+        ImageIO.write(equationImage, formatName, baos);
+        return baos.toByteArray();
+    }
+
+    public byte[] addPadding(byte[] image, int padding, String formatName) throws IOException {
+        InputStream is = new ByteArrayInputStream(image);
+        BufferedImage oldImage = ImageIO.read(is);
+        BufferedImage newImage = new BufferedImage(oldImage.getWidth() + padding * 2, oldImage.getHeight() + padding * 2, oldImage.getType());
+        Graphics2D g = (Graphics2D) newImage.getGraphics();
+        g.drawImage(oldImage, padding, padding, null);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(newImage, formatName, baos);
         return baos.toByteArray();
     }
 }
