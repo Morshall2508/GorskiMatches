@@ -1,5 +1,7 @@
 package pl.piekoszek.gorskimatches.challange;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -11,6 +13,7 @@ import java.util.UUID;
 
 public class Challenge {
     @Id
+    @Type(type = "org.hibernate.type.UUIDCharType")
     private UUID uuid;
 
     private String email;
