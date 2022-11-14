@@ -55,4 +55,9 @@ public class ChallengeController {
     List<Challenge> returnsChallenges(){
         return challengeService.getChallenges();
     }
+
+    @GetMapping("{uuid}")
+    Challenge getChallenge(@PathVariable("uuid") UUID uuid){
+        return challengeService.getChallenge(uuid);
+    }
 }

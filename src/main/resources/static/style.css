@@ -42,7 +42,6 @@ h3 {
 .wrapperLeft {
     border: 1px solid #a4bad5;
 }
-
 #table {
     grid-template-columns: 100px 100px 100px 1fr 1fr 1fr;
     background-color: #a4bad5;
@@ -50,23 +49,73 @@ h3 {
     height: auto;
     display: grid;
     text-align: center;
+}
 
+#tableNonRegister {
+    grid-template-columns: auto 100px 100px 1fr 1fr 1fr;
+    background-color: #a4bad5;
+    width: auto;
+    height: auto;
+    display: grid;
+    text-align: center;
+
+}
+#tableRegister {
+    grid-template-columns: auto 100px 100px 1fr 1fr 1fr;
+    background-color: #a4bad5;
+    width: auto;
+    height: auto;
+    display: grid;
+    text-align: center;
 }
 
 .column {
     width: 100px;
-    height: 50px;
+    height: 65px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+.column2 {
+    width: 100px;
+    height: 65px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .header {
-    height: 50px;
+    height: 65px;
     width: 100px;
     background-color: #417cb5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .rest {
     width: 100px;
-    height: 50px;
+    height: 65px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.header2 {
+    height: 65px;
+    width: 100px;
+    background-color: #417cb5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.rest2 {
+    width: 100px;
+    height: 65px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
 }
 
@@ -211,7 +260,7 @@ img[src="null"] {
 }
 
 .bigiPad {
-    width: 55%;
+    width: 58%;
 }
 
 .bigiPadForChallengeHistory {
@@ -275,19 +324,43 @@ img[src="null"] {
         font-weight: bold;
     }
 
+    #tableNonRegister {
+        grid-template-columns: 100px 100px 100px 100px 100px 100px;
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    #tableRegister {
+        grid-template-columns: 100px 100px 100px 100px 100px 100px;
+        font-size: 15px;
+        font-weight: 600;
+    }
+
     .column {
         width: 75px;
         height: 30px;
     }
+    .column2 {
+        width: 100px;
+        height: 55px;
+    }
 
     .header {
-        width: 75px;
-        height: 30px;
+        width: 100px;
+        height: 55px;
     }
 
     .rest {
-        width: 75px;
-        height: 30px;
+        width: 100px;
+        height: 55px;
+    }
+    .header2 {
+        width: 100px;
+        height: 55px;
+    }
+    .rest2 {
+        width: 100px;
+        height: 55px;
     }
 }
 
@@ -302,15 +375,26 @@ img[src="null"] {
     .bigiPad {
         width: 85%;
     }
-
     #table {
-        grid-template-columns: 55px 55px 55px 1fr 1fr 1fr;
-        font-size: 11px;
+        grid-template-columns: 57px 57px 57px 1fr 1fr 1fr;
+        font-size: 13px;
+        font-weight: bold;
+    }
+
+    #tableNonRegister {
+        grid-template-columns: auto auto auto auto auto auto ;
+    }
+    #tableRegister {
+        grid-template-columns: auto auto auto auto auto auto;
     }
 
     .column {
         width: 55px;
         height: 35px;
+    }
+    .column2 {
+        width: 80px;
+        height: 55px;
     }
 
     .header {
@@ -321,6 +405,15 @@ img[src="null"] {
     .rest {
         width: 55px;
         height: 35px;
+    }
+    .header2 {
+        width: 80px;
+        height: 55px;
+    }
+
+    .rest2 {
+        width: 80px;
+        height: 55px;
     }
 }
 
@@ -417,24 +510,46 @@ img[src="null"] {
         margin: 5px;
     }
 
-
     #table {
-        grid-template-columns: 45px 45px 45px 45px 45px 45px;
-        font-size: 8px;
+        grid-template-columns: 60px  52px  52px  1fr 1fr 1fr;
+        font-size: 13px;
+        font-weight: bold;
+    }
+
+    #tableNonRegister {
+        grid-template-columns: auto auto auto auto auto auto;
+        font-weight: 500;
+    }
+    #tableRegister {
+        grid-template-columns: auto auto auto auto auto auto;
+        font-weight: 500;
     }
 
     .column {
-        width: 35px;
+        width: 50px;
         height: 25px;
+    }
+    .column2 {
+        width: 50px;
+        height: 38px;
     }
 
     .header {
-        width: 35px;
+        width: 60px;
         height: 25px;
     }
 
     .rest {
-        width: 35px;
+        width: 40px;
         height: 25px;
+    }
+    .header2 {
+        width: 60px;
+        height: 38px;
+    }
+
+    .rest2 {
+        width: 50px;
+        height: 38px;
     }
 }
