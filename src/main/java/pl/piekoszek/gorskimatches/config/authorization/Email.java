@@ -1,4 +1,4 @@
-package pl.piekoszek.gorskimatches.token;
+package pl.piekoszek.gorskimatches.config.authorization;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

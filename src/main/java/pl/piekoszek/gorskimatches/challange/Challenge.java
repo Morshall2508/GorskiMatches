@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-
 public class Challenge {
+
     @Id
     @Type(type = "org.hibernate.type.UUIDCharType")
     private UUID uuid;

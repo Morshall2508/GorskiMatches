@@ -7,7 +7,7 @@ public class QuizAnswerChecker {
 
     private final QuizzesGenerator equationGenerator;
 
-    public QuizAnswerChecker(QuizzesGenerator equationGenerator) {
+    QuizAnswerChecker(QuizzesGenerator equationGenerator) {
         this.equationGenerator = equationGenerator;
     }
 

@@ -1,9 +1,8 @@
 package pl.piekoszek.gorskimatches.challange;
 
-
 import java.util.List;
 
-public class ChallengeHistory {
+class ChallengeScoreAndAnswers {
 
     private List<String> answerUser1;
 
@@ -17,32 +16,16 @@ public class ChallengeHistory {
         return answerUser1;
     }
 
-    public void setAnswerUser1(List<String> answerUser1) {
-        this.answerUser1 = answerUser1;
-    }
-
     public List<String> getAnswerUser2() {
         return answerUser2;
-    }
-
-    public void setAnswerUser2(List<String> answerUser2) {
-        this.answerUser2 = answerUser2;
     }
 
     public List<Integer> getScoreUser1() {
         return scoreUser1;
     }
 
-    public void setScoreUser1(List<Integer> scoreUser1) {
-        this.scoreUser1 = scoreUser1;
-    }
-
     public List<Integer> getScoreUser2() {
         return scoreUser2;
-    }
-
-    public void setScoreUser2(List<Integer> scoreUser2) {
-        this.scoreUser2 = scoreUser2;
     }
 }
 

@@ -7,31 +7,34 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
-import pl.piekoszek.gorskimatches.token.ForbiddenException;
-import pl.piekoszek.gorskimatches.token.UnauthorizedException;
+import pl.piekoszek.gorskimatches.config.authorization.ForbiddenException;
+import pl.piekoszek.gorskimatches.config.authorization.UnauthorizedException;
+import pl.piekoszek.gorskimatches.config.http.NotFoundException;
 
 import java.util.HashMap;
 import java.util.Map;
 
-
 @ControllerAdvice
-
-public class GlobalExceptionHandler {
+class GlobalExceptionHandler {
 
     @ExceptionHandler(UnauthorizedException.class)
-    protected ResponseEntity<?> handleUnauthorizedExceptions(
-            RuntimeException ex, WebRequest request) {
+    ResponseEntity<?> handleUnauthorizedExceptions(RuntimeException ex, WebRequest request) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
     }
+
     @ExceptionHandler(ForbiddenException.class)
-    protected ResponseEntity<?> handleForbiddenExceptions(
+    ResponseEntity<?> handleForbiddenExceptions(
             RuntimeException ex, WebRequest request) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.FORBIDDEN);
     }
 
+    @ExceptionHandler(NotFoundException.class)
+    ResponseEntity<?> handleNotFoundExceptions(RuntimeException ex, WebRequest request) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    protected ResponseEntity<?> handleValidationExceptions(
-            MethodArgumentNotValidException ex) {
+    ResponseEntity<?> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();

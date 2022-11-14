@@ -3,9 +3,9 @@ package pl.piekoszek.gorskimatches.challange;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Judge {
+class Judge {
 
-    public Result getResultForChallengeUser(int scoreUser1, int scoreUser2, float timeUser1, float timeUser2) {
+    Result getResultForChallengeUser(int scoreUser1, int scoreUser2, float timeUser1, float timeUser2) {
         if (scoreUser1 != scoreUser2) {
             if (scoreUser1 > scoreUser2) {
                 return Result.USER_1_WIN;

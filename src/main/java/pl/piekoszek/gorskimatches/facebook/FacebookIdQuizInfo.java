@@ -6,15 +6,10 @@ import javax.persistence.Id;
 @Entity
 public class FacebookIdQuizInfo {
 
-
     @Id
     String id;
 
     String quiz;
-
-    public FacebookIdQuizInfo(){
-
-    }
 
     public String getId() {
         return id;

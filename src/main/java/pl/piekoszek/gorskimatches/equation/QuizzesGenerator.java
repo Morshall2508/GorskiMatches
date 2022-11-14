@@ -5,11 +5,11 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 @Component
-public class QuizzesGenerator {
+class QuizzesGenerator {
 
-    public Map<String, Set<String>> solutionsByQuiz = new HashMap<>();
+    Map<String, Set<String>> solutionsByQuiz = new HashMap<>();
 
-    public QuizzesGenerator(SolutionToQuizzesMapper solutionToQuizzesMapper, EquationGenerator equationGenerator) {
+    QuizzesGenerator(SolutionToQuizzesMapper solutionToQuizzesMapper, EquationGenerator equationGenerator) {
         var mathematicallyCorrectEquations = equationGenerator.mathematicallyCorrectEquations();
         for (String correctEquation : mathematicallyCorrectEquations) {
             solutionToQuizzesMapper.insideSingleNumber(correctEquation).forEach((quiz, solution) -> {
@@ -25,7 +25,7 @@ public class QuizzesGenerator {
         }
     }
 
-    public Map<String, Set<String>> getAllSolutionsByQuiz() {
+    Map<String, Set<String>> getAllSolutionsByQuiz() {
         return solutionsByQuiz;
     }
 }

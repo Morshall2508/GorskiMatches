@@ -11,14 +11,11 @@ class EquationController {
 
     private final EquationRandomizer equationRandomizer;
 
-    private final StringEditor stringEditor;
-
     private final QuizAnswerChecker solvableEquations;
 
-    EquationController(EquationRandomizer equationRandomizer, QuizAnswerChecker solvableEquations, StringEditor stringEditor) {
+    EquationController(EquationRandomizer equationRandomizer, QuizAnswerChecker solvableEquations) {
         this.equationRandomizer = equationRandomizer;
         this.solvableEquations = solvableEquations;
-        this.stringEditor = stringEditor;
     }
 
     @GetMapping("random")
@@ -28,6 +25,6 @@ class EquationController {
 
     @PostMapping("solution")
     boolean checkAnswer(@Valid @RequestBody Equation equation) {
-        return solvableEquations.checkForCorrectAnswer(equation.quiz, stringEditor.removeSpaces(equation.answer));
+        return solvableEquations.checkForCorrectAnswer(equation.quiz, StringEditor.removeSpaces(equation.answer));
     }
 }

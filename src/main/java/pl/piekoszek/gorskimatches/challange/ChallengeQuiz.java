@@ -25,7 +25,6 @@ public class ChallengeQuiz {
 
     private int scoreUser2;
 
-
     public String getAnswerUser1() {
         return answerUser1;
     }
@@ -55,13 +54,6 @@ public class ChallengeQuiz {
     }
 
     public void setScoreUser2(int scoreUser2) {
-        this.scoreUser2 = scoreUser2;
-    }
-
-    public ChallengeQuiz(String answerUser1, String answerUser2, int scoreUser1, int scoreUser2) {
-        this.answerUser1 = answerUser1;
-        this.answerUser2 = answerUser2;
-        this.scoreUser1 = scoreUser1;
         this.scoreUser2 = scoreUser2;
     }
 

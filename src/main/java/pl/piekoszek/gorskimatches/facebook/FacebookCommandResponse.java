@@ -1,15 +1,16 @@
 package pl.piekoszek.gorskimatches.facebook;
 
-public class FacebookCommandResponse {
-    private String response;
+class FacebookCommandResponse {
+
+    private final String response;
 
     private final FacebookCommandsResponseType commandsResponseType;
 
-    public static FacebookCommandResponse ofMessage(String response) {
+    static FacebookCommandResponse ofMessage(String response) {
         return new FacebookCommandResponse(response, FacebookCommandsResponseType.MESSAGE_RESPONSE);
     }
 
-    public static FacebookCommandResponse ofAttachment(String response) {
+    static FacebookCommandResponse ofAttachment(String response) {
         return new FacebookCommandResponse(response, FacebookCommandsResponseType.ATTACHMENT_RESPONSE);
     }
 

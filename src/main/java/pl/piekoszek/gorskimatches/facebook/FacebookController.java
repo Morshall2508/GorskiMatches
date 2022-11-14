@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/webhook/facebook/page/message")
-public class FacebookController {
+class FacebookController {
 
     private final FacebookRequestHandler requestHandler;
 
@@ -19,7 +19,7 @@ public class FacebookController {
     }
 
     @GetMapping
-    public ResponseEntity<String> get(@RequestParam(name = "hub.verify_token") String token,
+    ResponseEntity<String> get(@RequestParam(name = "hub.verify_token") String token,
                                       @RequestParam(name = "hub.challenge") String challenge) {
         if (token != null && !token.isEmpty() && token.equals(VERIFY_TOKEN)) {
             return ResponseEntity.ok(challenge);
@@ -29,7 +29,7 @@ public class FacebookController {
     }
 
     @PostMapping
-    public void post(@RequestBody FacebookHookRequest request) {
+    void post(@RequestBody FacebookHookRequest request) {
         requestHandler.handle(request);
     }
 }
