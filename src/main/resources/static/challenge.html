@@ -30,8 +30,7 @@
         <div id="allDone"></div>
         <div id="result"></div>
         <div id="indexPadForChallengeHistory">
-            <div id="tableNonRegister"></div>
-            <div id="tableRegister"></div>
+            <div id="table"></div>
         </div>
     </div>
 </div>
@@ -135,50 +134,39 @@
                         })
                         .then(challengeInfo => {
                             let html = "";
-                            let html2 = "";
-                            let timeUser2 = challengeInfo.nonRegisteredUserTimeSeconds / 1000;
-                            let timeUser1 = challengeInfo.registeredUserTimeSeconds / 1000;
+                            let timeUser2 = (challengeInfo.nonRegisteredUserTimeSeconds / 1000).toFixed(2);
+                            let timeUser1 = (challengeInfo.registeredUserTimeSeconds / 1000).toFixed(2);
                             let totalScoreRegister = challengeInfo.registeredUserScore;
                             let totalScoreNonRegister = challengeInfo.nonRegisteredUserScore;
 
-                            html += `<div class = "wrapperLeft">
-                <div class = "header2"> Quiz</div>
-                <div class = "header2"> Your Answer</div>
-                <div class = "header2"> Your Time </div>
-                </div>`
-                            html2 += `<div class = "wrapperLeft">
-                <div class = "header2"> Oponent Answer</div>
-                <div class = "header2"> Oponent Time </div>
-                </div>`
+                            html += `
+                <div class = "sidebarElement"> Quiz</div>
+                <div class = "sidebarElement"> Your Answer</div>
+                <div class = "sidebarElement"> Opponent Answer</div>
+                <div class = "sidebarElement"> Your Time </div>
+                <div class = "sidebarElement"> Opponent Time </div>`
 
                             challengeInfo.challengeQuizzes.forEach(innerItem => {
 
                                 let resultUser1 = Boolean(innerItem.scoreUser1 > 0);
                                 let resultUser2 = Boolean(innerItem.scoreUser2 > 0);
 
-                                html += `<div class = "wrapper">
-                        <div class = "column2">
-                        <div class = "rest2"> ${innerItem.quiz} </div></div>
-                        <div class = "rest2" style = background-color:${resultUser2 ? "#54af54" : "#d54545"}> ${innerItem.answerUser2} </div></div>
-                        </div>`
-                                html2 += `<div class = "wrapper">
-                        <div class = "rest2" style = background-color:${resultUser1 ? "#54af54" : "#d54545"}> ${innerItem.answerUser1} </div>
+                                html += `<div class = "tableElement">${innerItem.quiz}</div>
+                        <div class = "tableElement" style = background-color:${resultUser2 ? "#54af54" : "#d54545"}> ${innerItem.answerUser2}</div>
+                        <div class = "tableElement" style = background-color:${resultUser1 ? "#54af54" : "#d54545"}> ${innerItem.answerUser1}</div>
                         </div>`
 
                             })
                             if (totalScoreNonRegister === totalScoreRegister) {
 
                                 let totalResult = Boolean(timeUser1 > timeUser2);
-                                html += `<div class = "wrapper"><div class = "rest2" style = background-color:${totalResult ? "#54af54" : "#d54545"}>${timeUser2}s`
-                                html2 += `<div class = "wrapper"><div class = "rest2" style = background-color:${totalResult ? "#d54545" : "#54af54"}>${timeUser1}s</div>`
-                                document.getElementById("tableNonRegister").innerHTML = html;
-                                document.getElementById("tableRegister").innerHTML = html2;
-
+                                html += `<div class = "tableTime" style = background-color:${totalResult ? "#54af54" : "#d54545"}>${timeUser2}s</div>
+                                        <div class = "tableTime" style = background-color:${totalResult ? "#d54545" : "#54af54"}>${timeUser1}s</div>`
+                                document.getElementById("table").innerHTML = html;
                             } else {
-                                html += `<div class = "wrapper"><div class = "rest2">${timeUser2}s`
-                                html2 += `<div class = "wrapper"><div class = "rest2">${timeUser1}s</div>`
-                                document.getElementById("tableNonRegister").innerHTML = html;
-                                document.getElementById("tableRegister").innerHTML = html2;
+                                html += `<div class = "tableTime">${timeUser2}s</div>
+                                            <div class = "tableTime">${timeUser1}s</div>`
+                                document.getElementById("table").innerHTML = html;
                             }
                         }))
             }
