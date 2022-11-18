@@ -5,6 +5,7 @@ import pl.piekoszek.gorskimatches.config.http.NotFoundException;
 import pl.piekoszek.gorskimatches.email.EmailService;
 import pl.piekoszek.gorskimatches.equation.EquationRandomizer;
 
+import java.util.Date;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -19,18 +20,21 @@ public class ChallengeService {
 
     private final ChallengeRepository challengeRepository;
 
+    private ChallengeDate challengeDate;
     private final Judge judge;
 
     public ChallengeService(EmailService emailService,
                             EquationRandomizer equationRandomizer,
                             GenerateUUID generateUUID,
                             ChallengeRepository challengeRepository,
-                            Judge judgeResult) {
+                            Judge judge,
+                            ChallengeDate challengeDate) {
         this.emailService = emailService;
         this.equationRandomizer = equationRandomizer;
         this.generateUUID = generateUUID;
         this.challengeRepository = challengeRepository;
-        this.judge = judgeResult;
+        this.judge = judge;
+        this.challengeDate = challengeDate;
     }
 
     void resultForRegisteredUser(ChallengeResult challengeResult) {
@@ -68,6 +72,8 @@ public class ChallengeService {
                         .map(quiz -> new ChallengeQuiz(challenge, quiz))
                         .collect(Collectors.toList()));
         challenge.setUuid(generateUUID.generateUUID());
+        challenge.setCreationDate(challengeDate.currentDate());
+        challenge.setCreationTime(challengeDate.currentDate());
         challengeRepository.save(challenge);
         return challenge.getUuid();
     }

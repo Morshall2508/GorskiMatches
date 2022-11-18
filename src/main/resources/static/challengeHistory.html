@@ -4,6 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 <div class="bigiPadForChallengeHistory">
     <div class="navigationBar">
@@ -11,63 +12,97 @@
         <div id="accountPage">Account</div>
     </div>
     <div id="indexPadForChallengeHistory">
-        <div id = "table"></div>
+        <div id="table2"></div>
+        <div id="tableUuidTime"></div>
     </div>
 </div>
-
 <script type="module">
     import Auth from "/auth.js";
 
     fetch(`/api/challenge/challenges`)
 
         .then(res => {
-            if (res.ok) { return res.json()};
-            { throw "Not found";
+            if (res.ok) {
+                return res.json()
+            }
+            {
+                throw "Not found";
             }
         })
-            .then(json => {
+        .then(json => {
             let html = "";
+            html += `<div class = "topBarFirst"> Date and Time</div>
+                <div class = "topBarSecond"> Result </div>`
             json.forEach(item => {
-            let scoreUser1 = item.registeredUserScore;
-            let scoreUser2 = item.nonRegisteredUserScore;
-            let timeUser2 = item.nonRegisteredUserTimeSeconds;
-            let timeUser1 = item.registeredUserTimeSeconds;
-
-                html += `<div class = "wrapperLeft">
-                <div class = "listOfUUIDS"> ${item.uuid}</div>
-                <div class = "header"> Quiz</div>
-                <div class = "header"> Answer</div>
-                <div class = "header"> Score</div>
-                </div>`
-
-                item.challengeQuizzes.forEach (innerItem => {
-
-                    if (timeUser2 === 0) {
-                    html += `<div class = "wrapper">
-                        <div class = "column"><div class = "rest"> ${innerItem.quiz} </div></div>
-                        <div class = "column"><div class = "rest"> ${innerItem.answerUser1} </div></div>
-                        <div class = "column"><div class = "rest"> ${innerItem.scoreUser1} </div></div>
-                        </div>`
-                    } else {
-
-                    if (scoreUser1>scoreUser2){
-                        html += `<div class = "wrapper">
-                        <div class = "column" style = "background-color:#54af54"><div class = "rest"> ${innerItem.quiz} </div></div>
-                        <div class = "column" style = "background-color:#54af54"><div class = "rest"> ${innerItem.answerUser1} </div></div>
-                        <div class = "column" style = "background-color:#54af54"><div class = "rest"> ${innerItem.scoreUser1} </div></div>
-                        </div>`
-                        } else {
-                        html += `<div class = "wrapper">
-                        <div class = "column" style = "background-color:#d54545"><div class = "rest"> ${innerItem.quiz} </div></div>
-                        <div class = "column" style = "background-color:#d54545"><div class = "rest"> ${innerItem.answerUser1} </div></div>
-                        <div class = "column" style = "background-color:#d54545"><div class = "rest"> ${innerItem.scoreUser1} </div></div>
-                        </div>`
-                    }
+                let result = Boolean(item.registeredUserScore > item.nonRegisteredUserScore);
+                if (item.nonRegisteredUserTimeSeconds === 0 && item.registeredUserTimeSeconds === 0) {
+                    html += `
+                <div class = "challengeHistoryElement"> ${item.creationDate}<br> ${item.creationTime}</div>
+                <div class = "challengeHistoryElement"></div>`
+                } else {
+                    html += `
+                <div class = "challengeHistoryElement"> ${item.creationDateTime}</div>
+                <div class = "challengeHistoryElement"> ${result ? "Won" : "Lost"}</div>`
                 }
+
+                document.getElementById("tableUuidTime").innerHTML = html;
+            })
         })
-    })
-    document.getElementById("table").innerHTML = html;
-})
+
+
+</script>
+
+<script type="module">
+    import Auth from "/auth.js";
+
+    document.getElementById("challengeHistoryElement").onclick = () => {
+        fetch(`/api/challenge/${document.getElementById("challengeHistoryElement").value}`)
+
+            .then(res => {
+                if (res.ok) {
+                    return res.json()
+                }
+                {
+                    throw "Not found";
+                }
+            })
+            .then(json => {
+                document.getElementById("tableUuidTime").style.display = "none";
+                let html = "";
+                json.forEach(item => {
+                    let scoreUser1 = item.registeredUserScore;
+                    let scoreUser2 = item.nonRegisteredUserScore;
+                    let timeUser2 = item.nonRegisteredUserTimeSeconds;
+
+                    html += `<div class = "sidebarElement"> Quiz</div>
+                <div class = "sidebarElement"> Answer</div>
+                <div class = "sidebarElement"> Score</div>`
+
+                    item.challengeQuizzes.forEach(innerItem => {
+
+                        if (timeUser2 === 0) {
+                            html += `<div class = "tableElement2"> ${innerItem.quiz} </div>
+                        <div class = "tableElement2"> ${innerItem.answerUser1} </div>
+                        <div class = "tableElement2"> ${innerItem.scoreUser1} </div>`
+                        } else {
+
+                            if (scoreUser1 > scoreUser2) {
+                                html += `
+                        <div class = "tableElement2" style = "background-color:#54af54"> ${innerItem.quiz} </div>
+                        <div class = "tableElement2" style = "background-color:#54af54"> ${innerItem.answerUser1} </div>
+                        <div class = "tableElement2" style = "background-color:#54af54"> ${innerItem.scoreUser1} </div>`
+                            } else {
+                                html += `<div class = "tableElement2" style = "background-color:#d54545"> ${innerItem.quiz} </div>
+                        <div class = "tableElement2" style = "background-color:#d54545"> ${innerItem.answerUser1} </div>
+                        <div class = "tableElement2" style = "background-color:#d54545"> ${innerItem.scoreUser1} </div>
+                        </div>`
+                            }
+                        }
+                    })
+                })
+                document.getElementById("table2").innerHTML = html;
+            })
+    }
 
 </script>
 <script>

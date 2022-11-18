@@ -138,7 +138,7 @@
                             let timeUser1 = (challengeInfo.registeredUserTimeSeconds / 1000).toFixed(2);
                             let totalScoreRegister = challengeInfo.registeredUserScore;
                             let totalScoreNonRegister = challengeInfo.nonRegisteredUserScore;
-
+                            document.getElementById("table").style.gap = "2px";
                             html += `
                 <div class = "sidebarElement"> Quiz</div>
                 <div class = "sidebarElement"> Your Answer</div>
@@ -171,7 +171,6 @@
                         }))
             }
         }
-
     }
 
     document.getElementById("buttonStart").onclick = () => {
