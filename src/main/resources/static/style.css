@@ -35,38 +35,121 @@ h3 {
     display: none;
 }
 
-.wrapper {
-    border: 1px solid #a4bad5;
-}
-
-.wrapperLeft {
-    border: 1px solid #a4bad5;
-}
-
 #table {
-    grid-template-columns: 100px 100px 100px 1fr 1fr 1fr;
+    display: grid;
+    grid-template-areas:
+    'a  b  c  d  e  f'
+    'g  h  i  j  k  l'
+    'm  n  o  p  r  s'
+    't  u  w  x  y  z'
+    'a1  2  3  a4  5  6';
     background-color: #a4bad5;
+    text-align: center;
     width: auto;
     height: auto;
-    display: grid;
-    text-align: center;
-
+    font-weight: 350;
 }
 
-.column {
-    width: 100px;
-    height: 50px;
+.sidebarElement:nth-child(1) {
+    grid-area: a;
 }
 
-.header {
-    height: 50px;
+.sidebarElement:nth-child(2) {
+    grid-area: g;
+}
+
+.sidebarElement:nth-child(3) {
+    grid-area: m;
+}
+
+.sidebarElement:nth-child(4) {
+    grid-area: t;
+}
+
+.sidebarElement:nth-child(5) {
+    grid-area: a1;
+}
+
+.tableElement:nth-child(6) {
+    grid-area: b;
+}
+
+.tableElement:nth-child(7) {
+    grid-area: h;
+}
+
+.tableElement:nth-child(8) {
+    grid-area: n;
+}
+
+.tableElement:nth-child(9) {
+    grid-area: c;
+}
+
+.tableElement:nth-child(0) {
+    grid-area: i;
+}
+
+.tableElement:nth-child(11) {
+    grid-area: o;
+}
+
+.tableElement:nth-child(12) {
+    grid-area: d;
+}
+
+.tableElement:nth-child(13) {
+    grid-area: j;
+}
+
+.tableElement:nth-child(14) {
+    grid-area: p;
+}
+
+.tableElement:nth-child(15) {
+    grid-area: e;
+}
+.tableElement:nth-child(16) {
+    grid-area: k;
+}
+.tableElement:nth-child(17) {
+    grid-area: r;
+}
+.tableElement:nth-child(18) {
+    grid-area: f;
+}
+.tableElement:nth-child(19) {
+    grid-area: l;
+}
+.tableElement:nth-child(20) {
+    grid-area: s;
+}
+
+.tableTime {
+    height: 75px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-column-start: u;
+    grid-column-end: z;
+}
+
+.sidebarElement {
     width: 100px;
     background-color: #417cb5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-column-start: 1;
+    padding: 5px;
 }
 
-.rest {
+.tableElement {
     width: 100px;
-    height: 50px;
+    height: 75px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
 }
 
@@ -211,7 +294,7 @@ img[src="null"] {
 }
 
 .bigiPad {
-    width: 55%;
+    width: 58%;
 }
 
 .bigiPadForChallengeHistory {
@@ -270,7 +353,6 @@ img[src="null"] {
     }
 
     #table {
-        grid-template-columns: 75px 75px 75px 1fr 1fr 1fr;
         font-size: 13px;
         font-weight: bold;
     }
@@ -280,14 +362,28 @@ img[src="null"] {
         height: 30px;
     }
 
+    .column2 {
+        width: 100px;
+        height: 55px;
+    }
+
     .header {
-        width: 75px;
-        height: 30px;
+        width: 100px;
+        height: 55px;
     }
 
     .rest {
-        width: 75px;
-        height: 30px;
+        width: 100px;
+        height: 55px;
+    }
+
+    .tableTime {
+        height: 55px;
+    }
+
+    .tableElement {
+        width: 100px;
+        height: 55px;
     }
 }
 
@@ -304,23 +400,21 @@ img[src="null"] {
     }
 
     #table {
-        grid-template-columns: 55px 55px 55px 1fr 1fr 1fr;
-        font-size: 11px;
+        font-size: 13px;
+        font-weight: 500;
     }
 
-    .column {
-        width: 55px;
-        height: 35px;
+    .column2 {
+        width: 80px;
+        height: 55px;
     }
 
-    .header {
-        width: 55px;
-        height: 35px;
+    .sidebarElement {
+        width: 80px;
     }
 
-    .rest {
-        width: 55px;
-        height: 35px;
+    .tableElement {
+        width: 80px;
     }
 }
 
@@ -417,24 +511,20 @@ img[src="null"] {
         margin: 5px;
     }
 
-
     #table {
-        grid-template-columns: 45px 45px 45px 45px 45px 45px;
-        font-size: 8px;
+        font-size: 13px;
+        font-weight: 400;
     }
 
-    .column {
-        width: 35px;
-        height: 25px;
+    .column2 {
+        width: 50px;
+        height: 38px;
     }
 
-    .header {
-        width: 35px;
-        height: 25px;
+    .sidebarElement {
+        width: 60px;
     }
-
-    .rest {
-        width: 35px;
-        height: 25px;
-    }
+    .tableElement {
+        width: 50px;
+}
 }

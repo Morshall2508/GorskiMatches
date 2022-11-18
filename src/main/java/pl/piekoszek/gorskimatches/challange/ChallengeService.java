@@ -124,4 +124,8 @@ public class ChallengeService {
     public List<Challenge> getChallenges() {
         return challengeRepository.findAll();
     }
+
+    public Challenge getChallenge(UUID id){
+        return challengeRepository.findById(id).get();
+    }
 }
