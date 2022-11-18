@@ -3,6 +3,7 @@ package pl.piekoszek.gorskimatches.challange;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 public class ChallengeQuiz {
@@ -25,6 +26,10 @@ public class ChallengeQuiz {
 
     private int scoreUser2;
 
+
+    public ChallengeQuiz() {
+
+    }
 
     public String getAnswerUser1() {
         return answerUser1;
@@ -58,19 +63,12 @@ public class ChallengeQuiz {
         this.scoreUser2 = scoreUser2;
     }
 
-    public ChallengeQuiz(String answerUser1, String answerUser2, int scoreUser1, int scoreUser2) {
-        this.answerUser1 = answerUser1;
-        this.answerUser2 = answerUser2;
-        this.scoreUser1 = scoreUser1;
-        this.scoreUser2 = scoreUser2;
-    }
+
 
     public ChallengeQuiz(Challenge challenge, String quiz){
         this.challenge = challenge;
         this.quiz = quiz;
     }
-
-    public ChallengeQuiz(){}
 
     public long getId() {
         return id;

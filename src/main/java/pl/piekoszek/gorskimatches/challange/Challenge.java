@@ -2,10 +2,8 @@ package pl.piekoszek.gorskimatches.challange;
 
 import org.hibernate.annotations.Type;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,6 +26,12 @@ public class Challenge {
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<ChallengeQuiz> challengeQuizzes;
+
+    @Temporal(TemporalType.DATE)
+    Date creationDate;
+
+    @Temporal(TemporalType.TIME)
+    Date creationTime;
 
     public List<ChallengeQuiz> getChallengeQuizzes() {
         return challengeQuizzes;
@@ -83,5 +87,21 @@ public class Challenge {
 
     public void setRegisteredUserTimeSeconds(float registeredUserTimeSeconds) {
         this.registeredUserTimeSeconds = registeredUserTimeSeconds;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public Date getCreationTime() {
+        return creationTime;
+    }
+
+    public void setCreationTime(Date creationTime) {
+        this.creationTime = creationTime;
     }
 }

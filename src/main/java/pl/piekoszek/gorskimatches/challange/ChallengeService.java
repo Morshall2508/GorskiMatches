@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import pl.piekoszek.gorskimatches.equation.EquationRandomizer;
 import pl.piekoszek.gorskimatches.token.EmailService;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -21,17 +22,20 @@ public class ChallengeService {
 
     private Judge judge;
 
+    private ChallengeDate challengeDate;
 
     public ChallengeService(EmailService emailService,
                             EquationRandomizer equationRandomizer,
                             GenerateUUID generateUUID,
                             ChallengeRepository challengeRepository,
-                            Judge judgeResult) {
+                            Judge judge,
+                            ChallengeDate challengeDate) {
         this.emailService = emailService;
         this.equationRandomizer = equationRandomizer;
         this.generateUUID = generateUUID;
         this.challengeRepository = challengeRepository;
-        this.judge = judgeResult;
+        this.judge = judge;
+        this.challengeDate = challengeDate;
     }
 
     public void resultForRegisteredUser(ChallengeResult challengeResult) {
@@ -70,6 +74,8 @@ public class ChallengeService {
                         .map(quiz -> new ChallengeQuiz(challenge, quiz))
                         .collect(Collectors.toList()));
         challenge.setUuid(generateUUID.generateUUID());
+        challenge.setCreationDate(challengeDate.currentDate());
+        challenge.setCreationTime(challengeDate.currentDate());
         challengeRepository.save(challenge);
         return challenge.getUuid();
     }
@@ -123,5 +129,9 @@ public class ChallengeService {
 
     public List<Challenge> getChallenges() {
         return challengeRepository.findAll();
+    }
+
+    public Challenge getChallenge(UUID id){
+        return challengeRepository.findById(id).get();
     }
 }

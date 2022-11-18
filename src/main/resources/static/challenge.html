@@ -29,6 +29,9 @@
         <div id="solution" style="display:none"></div>
         <div id="allDone"></div>
         <div id="result"></div>
+        <div id="indexPadForChallengeHistory">
+            <div id="table"></div>
+        </div>
     </div>
 </div>
 
@@ -118,9 +121,57 @@
                             .then(text => {
                                 document.getElementById("result").innerText = text;
                             })
-                    );
+                    ).then(() =>
+                    fetch(`/api/challenge/${uuid}`)
+
+                        .then(res => {
+                            if (res.ok) {
+                                return res.json()
+                            }
+                            {
+                                throw "Not found";
+                            }
+                        })
+                        .then(challengeInfo => {
+                            let html = "";
+                            let timeUser2 = (challengeInfo.nonRegisteredUserTimeSeconds / 1000).toFixed(2);
+                            let timeUser1 = (challengeInfo.registeredUserTimeSeconds / 1000).toFixed(2);
+                            let totalScoreRegister = challengeInfo.registeredUserScore;
+                            let totalScoreNonRegister = challengeInfo.nonRegisteredUserScore;
+                            document.getElementById("table").style.gap = "2px";
+                            html += `
+                <div class = "sidebarElement"> Quiz</div>
+                <div class = "sidebarElement"> Your Answer</div>
+                <div class = "sidebarElement"> Opponent Answer</div>
+                <div class = "sidebarElement"> Your Time </div>
+                <div class = "sidebarElement"> Opponent Time </div>`
+
+                            challengeInfo.challengeQuizzes.forEach(innerItem => {
+
+                                let resultUser1 = Boolean(innerItem.scoreUser1 > 0);
+                                let resultUser2 = Boolean(innerItem.scoreUser2 > 0);
+
+                                html += `<div class = "tableElement">${innerItem.quiz}</div>
+                        <div class = "tableElement" style = background-color:${resultUser2 ? "#54af54" : "#d54545"}> ${innerItem.answerUser2}</div>
+                        <div class = "tableElement" style = background-color:${resultUser1 ? "#54af54" : "#d54545"}> ${innerItem.answerUser1}</div>
+                        </div>`
+
+                            })
+                            if (totalScoreNonRegister === totalScoreRegister) {
+
+                                let totalResult = Boolean(timeUser1 > timeUser2);
+                                html += `<div class = "tableTime" style = background-color:${totalResult ? "#54af54" : "#d54545"}>${timeUser2}s</div>
+                                        <div class = "tableTime" style = background-color:${totalResult ? "#d54545" : "#54af54"}>${timeUser1}s</div>`
+                                document.getElementById("table").innerHTML = html;
+                            } else {
+                                html += `<div class = "tableTime">${timeUser2}s</div>
+                                            <div class = "tableTime">${timeUser1}s</div>`
+                                document.getElementById("table").innerHTML = html;
+                            }
+                        }))
             }
         }
+
     }
 
     document.getElementById("buttonStart").onclick = () => {
