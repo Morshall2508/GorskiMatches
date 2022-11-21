@@ -16,7 +16,6 @@ class ImageController {
 
     private final EquationImageCreator equationCreator;
 
-
     ImageController(EquationImageCreator equationCreator) {
         this.equationCreator = equationCreator;
     }

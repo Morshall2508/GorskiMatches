@@ -1,9 +1,8 @@
 package pl.piekoszek.gorskimatches.challange;
 
-
 import java.util.UUID;
 
-public class ChallengeResult {
+class ChallengeResult {
 
     private UUID uuid;
 

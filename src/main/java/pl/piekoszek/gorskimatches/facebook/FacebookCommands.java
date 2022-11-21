@@ -1,7 +1,6 @@
 package pl.piekoszek.gorskimatches.facebook;
 
 import org.springframework.stereotype.Component;
-import pl.piekoszek.gorskimatches.repository.FacebookRepository;
 import pl.piekoszek.gorskimatches.validation.StringEditor;
 
 import java.util.List;
@@ -9,41 +8,35 @@ import java.util.List;
 @Component
 public class FacebookCommands {
 
-    private final StringEditor stringEditor;
-
-    private final FacebookRepository facebookRepository;
-
     private final FacebookQuiz facebookQuiz;
 
     private final FacebookUrlCreator facebookUrlCreator;
 
-    FacebookCommands(StringEditor stringEditor, FacebookRepository facebookRepository, FacebookQuiz facebookQuiz, FacebookUrlCreator facebookUrlCreator) {
-        this.stringEditor = stringEditor;
-        this.facebookRepository = facebookRepository;
+    FacebookCommands(FacebookQuiz facebookQuiz, FacebookUrlCreator facebookUrlCreator) {
         this.facebookQuiz = facebookQuiz;
         this.facebookUrlCreator = facebookUrlCreator;
     }
 
     public List<FacebookCommandResponse> handleCommands(FacebookMessageReceived messageReceived, String id) {
 
-        if (messageReceived.getText().toLowerCase().matches(stringEditor.removeSpaces("hello")) ||
-                messageReceived.getText().toLowerCase().matches(stringEditor.removeSpaces("hi"))) {
+        if (messageReceived.getText().toLowerCase().matches(StringEditor.removeSpaces("hello")) ||
+                messageReceived.getText().toLowerCase().matches(StringEditor.removeSpaces("hi"))) {
             return helloMessage();
         }
 
-        if (messageReceived.getText().toLowerCase().matches(stringEditor.removeSpaces("challenge"))) {
+        if (messageReceived.getText().toLowerCase().matches(StringEditor.removeSpaces("challenge"))) {
             return quiz(id);
         }
 
-        if (messageReceived.getText().matches((stringEditor.removeSpaces("\\b\\s*\\d\\s*[+-]\\s*\\d\\s*=\\s*\\d\\s*\\b\\s*")))) {
+        if (messageReceived.getText().matches((StringEditor.removeSpaces("\\b\\s*\\d\\s*[+-]\\s*\\d\\s*=\\s*\\d\\s*\\b\\s*")))) {
             return check(id, messageReceived.getText());
         }
 
-        if (messageReceived.getText().toLowerCase().matches(stringEditor.removeSpaces("info"))) {
+        if (messageReceived.getText().toLowerCase().matches(StringEditor.removeSpaces("info"))) {
             return info();
         }
 
-        if (messageReceived.getText().toLowerCase().matches(stringEditor.removeSpaces("contact"))) {
+        if (messageReceived.getText().toLowerCase().matches(StringEditor.removeSpaces("contact"))) {
             return contact();
         }
         return commands();

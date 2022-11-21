@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 @Component
-public class EquationGenerator {
+class EquationGenerator {
 
     private final EquationMathChecker equationMathChecker;
 
@@ -12,7 +12,7 @@ public class EquationGenerator {
         this.equationMathChecker = equationMathChecker;
     }
 
-    public Set<String> mathematicallyCorrectEquations() {
+    Set<String> mathematicallyCorrectEquations() {
 
         Map<String, Boolean> correctEquations = new HashMap<>();
         List<String> equations = new ArrayList<>();
@@ -31,5 +31,4 @@ public class EquationGenerator {
         }
         return correctEquations.keySet();
     }
-
 }

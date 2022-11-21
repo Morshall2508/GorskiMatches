@@ -1,6 +1,6 @@
 package pl.piekoszek.gorskimatches.image;
 
-public class LineInfo {
+class LineInfo {
     int x;
     int y;
     boolean horizontal;

@@ -3,7 +3,7 @@ package pl.piekoszek.gorskimatches.facebook;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FacebookMessageService {
+class FacebookMessageService {
 
     private final FacebookApiClient facebookApiClient;
 

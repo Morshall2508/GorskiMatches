@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @Component
-public class EquationImageCreator {
+class EquationImageCreator {
 
     private final LineImageCreator lineImageCreator;
 
@@ -19,7 +19,7 @@ public class EquationImageCreator {
         this.lineImageCreator = lineImageCreator;
     }
 
-    public byte[] createImage(String equation, Color color, int imageType, int width, int height, String formatName) throws IOException {
+    byte[] createImage(String equation, Color color, int imageType, int width, int height, String formatName) throws IOException {
         BufferedImage equationImage = new BufferedImage(width, height, imageType);
         for (int i = 0; i < equation.length(); i++) {
             char numberOrSign = equation.charAt(i);
@@ -30,7 +30,7 @@ public class EquationImageCreator {
         return baos.toByteArray();
     }
 
-    public byte[] addPadding(byte[] image, int padding, String formatName) throws IOException {
+    byte[] addPadding(byte[] image, int padding, String formatName) throws IOException {
         InputStream is = new ByteArrayInputStream(image);
         BufferedImage oldImage = ImageIO.read(is);
         BufferedImage newImage = new BufferedImage(oldImage.getWidth() + padding * 2, oldImage.getHeight() + padding * 2, oldImage.getType());

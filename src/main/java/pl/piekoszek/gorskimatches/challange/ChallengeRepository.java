@@ -7,6 +7,6 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface ChallengeRepository extends CrudRepository<Challenge, UUID> {
+interface ChallengeRepository extends CrudRepository<Challenge, UUID> {
     List<Challenge> findAll();
 }

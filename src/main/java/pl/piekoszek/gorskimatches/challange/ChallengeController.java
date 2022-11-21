@@ -1,16 +1,16 @@
 package pl.piekoszek.gorskimatches.challange;
 
 import org.springframework.web.bind.annotation.*;
-import pl.piekoszek.gorskimatches.token.Email;
+import pl.piekoszek.gorskimatches.config.authorization.Email;
 
 import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("api/challenge")
-public class ChallengeController {
+class ChallengeController {
 
-    private ChallengeService challengeService;
+    private final ChallengeService challengeService;
 
     public ChallengeController(ChallengeService challengeService) {
         this.challengeService = challengeService;
@@ -23,7 +23,6 @@ public class ChallengeController {
 
     @PostMapping("score")
     void saveRegisteredUserAndGetResults(@Email(required = false) String email, @RequestBody ChallengeResult challengeResult) {
-
         if (email != null) {
             challengeService.saveRegisteredUserResult(challengeResult, email);
             return;
@@ -42,17 +41,17 @@ public class ChallengeController {
         return challengeService.getQuizzes(uuid);
     }
 
-    @PostMapping("challengeQuizzesData/{uuid}")
-    void saveChallengeData(@Email(required = false) String email, @PathVariable("uuid") UUID uuid, @RequestBody ChallengeHistory challengeHistory) {
+    @PostMapping("challengeQuizzesAndAnswers/{uuid}")
+    void saveChallengeData(@Email(required = false) String email, @PathVariable("uuid") UUID uuid, @RequestBody ChallengeScoreAndAnswers challengeScoreAndAnswers) {
         if (email != null) {
-            challengeService.saveUser1ScoreAndAnswers(uuid, challengeHistory);
+            challengeService.saveUser1ScoreAndAnswers(uuid, challengeScoreAndAnswers);
             return;
         }
-        challengeService.saveUser2ScoreAndAnswers(uuid, challengeHistory);
+        challengeService.saveUser2ScoreAndAnswers(uuid, challengeScoreAndAnswers);
     }
 
     @GetMapping("challenges")
-    List<Challenge> returnsChallenges(){
+    List<Challenge> returnsChallenges() {
         return challengeService.getChallenges();
     }
 

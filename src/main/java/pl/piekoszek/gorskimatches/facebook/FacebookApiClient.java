@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
-public class FacebookApiClient {
+class FacebookApiClient {
 
     @Value("${PAGE_TOKEN}")
     private String PAGE_TOKEN;
@@ -14,12 +14,12 @@ public class FacebookApiClient {
     private final String fbUrl = "https://graph.facebook.com/v2.6/me/messages?access_token=";
     private final RestTemplate template = new RestTemplate();
 
-    public String getMessageEntity(FacebookMessageResponse response) {
+    String getMessageEntity(FacebookMessageResponse response) {
         HttpEntity<FacebookResponse> entity = new HttpEntity<>(response);
         return template.postForEntity(fbUrl + PAGE_TOKEN, entity, String.class).getBody();
     }
 
-    public String getAttachmentEntity(FacebookAttachmentResponse response) {
+    String getAttachmentEntity(FacebookAttachmentResponse response) {
         HttpEntity<FacebookResponse> entity = new HttpEntity<>(response);
         return template.postForEntity(fbUrl + PAGE_TOKEN, entity, String.class).getBody();
     }

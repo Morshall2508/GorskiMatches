@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 @Component
-public class SolutionToQuizzesMapper {
+class SolutionToQuizzesMapper {
     private final CharacterChanger characterChanger;
     private final EquationMathChecker equationMathChecker;
     private final Map<Character, List<Character>> numberOrSymbolChangeableToOther = new HashMap<>();
@@ -65,7 +65,7 @@ public class SolutionToQuizzesMapper {
         giveOneMatchFromNumberOrSymbol.put('=', Collections.emptyList());
     }
 
-    public Map<String, Set<String>> insideSingleNumber(String solution) {
+    Map<String, Set<String>> insideSingleNumber(String solution) {
         Map<String, Set<String>> quizzesAndSolutions = new HashMap<>();
         for (int i = 0; i < solution.length(); i++) {
             char numberOrSymbolToBeReplaced = solution.charAt(i);
@@ -80,7 +80,7 @@ public class SolutionToQuizzesMapper {
         return quizzesAndSolutions;
     }
 
-    public Map<String, Set<String>> insideEquation(String solution) {
+    Map<String, Set<String>> insideEquation(String solution) {
         Map<String, Set<String>> quizzesAndSolutionsWithinEquation = new HashMap<>();
 
         for (int i = 0; i < solution.length(); i++) {

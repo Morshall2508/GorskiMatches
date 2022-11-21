@@ -4,5 +4,4 @@ public enum FacebookCommandsResponseType {
     MESSAGE_RESPONSE,
 
     ATTACHMENT_RESPONSE,
-
 }

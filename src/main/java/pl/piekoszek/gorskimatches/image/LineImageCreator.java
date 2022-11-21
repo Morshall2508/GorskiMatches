@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 @Component
-public class LineImageCreator {
+class LineImageCreator {
 
     LineInfo[][] lineInfosByNumberOrSign = new LineInfo[62][];
 
@@ -40,7 +40,7 @@ public class LineImageCreator {
 
     }
 
-    public void create(char numberOrSymbol, int x, BufferedImage image, Color color) {
+    void create(char numberOrSymbol, int x, BufferedImage image, Color color) {
 
         for (LineInfo lineInfo : lineInfosByNumberOrSign[numberOrSymbol]) {
             if (lineInfo.horizontal) {
@@ -51,13 +51,13 @@ public class LineImageCreator {
         }
     }
 
-    private void drawHorizontalLine(int x, int y, BufferedImage lineImage, Color color) {
+    void drawHorizontalLine(int x, int y, BufferedImage lineImage, Color color) {
         Graphics2D drawLine = lineImage.createGraphics();
         drawLine.setBackground(color);
         drawLine.clearRect(x, y, 280, 20);
     }
 
-    private void drawVerticalLine(int x, int y, BufferedImage lineImage, Color color) {
+    void drawVerticalLine(int x, int y, BufferedImage lineImage, Color color) {
         Graphics2D drawLine = lineImage.createGraphics();
         drawLine.setBackground(color);
         drawLine.clearRect(x, y, 20, 280);

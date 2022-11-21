@@ -3,7 +3,7 @@ package pl.piekoszek.gorskimatches.facebook;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FacebookRequestHandler {
+class FacebookRequestHandler {
 
     private final FacebookCommands commands;
 

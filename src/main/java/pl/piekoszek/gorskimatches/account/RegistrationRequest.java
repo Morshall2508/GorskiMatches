@@ -1,9 +1,9 @@
-package pl.piekoszek.gorskimatches.token;
+package pl.piekoszek.gorskimatches.account;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-public class RegistrationRequest {
+class RegistrationRequest {
 
     @Email(message = "Email has to have proper format")
     @NotBlank(message = "Email cannot be blank")
@@ -11,9 +11,5 @@ public class RegistrationRequest {
 
     public String getEmail() {
         return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 }

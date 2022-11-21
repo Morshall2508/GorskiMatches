@@ -1,26 +1,25 @@
 package pl.piekoszek.gorskimatches.challange;
 
 import org.springframework.stereotype.Service;
+import pl.piekoszek.gorskimatches.config.http.NotFoundException;
+import pl.piekoszek.gorskimatches.email.EmailService;
 import pl.piekoszek.gorskimatches.equation.EquationRandomizer;
-import pl.piekoszek.gorskimatches.token.EmailService;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class ChallengeService {
 
-    private EmailService emailService;
+    private final EmailService emailService;
 
-    private EquationRandomizer equationRandomizer;
+    private final EquationRandomizer equationRandomizer;
 
     private final GenerateUUID generateUUID;
 
-    private ChallengeRepository challengeRepository;
+    private final ChallengeRepository challengeRepository;
 
-    private Judge judge;
-
+    private final Judge judge;
 
     public ChallengeService(EmailService emailService,
                             EquationRandomizer equationRandomizer,
@@ -34,36 +33,35 @@ public class ChallengeService {
         this.judge = judgeResult;
     }
 
-    public void resultForRegisteredUser(ChallengeResult challengeResult) {
+    void resultForRegisteredUser(ChallengeResult challengeResult) {
         var challengeInfo = getChallenge(challengeResult);
+        String subject = "Challenge: " + challengeResult.getUuid() + " result";
         if (judge.getResultForChallengeUser(
                 challengeInfo.getRegisteredUserScore(),
                 challengeInfo.getNonRegisteredUserScore(),
                 challengeInfo.getRegisteredUserTimeSeconds(),
                 challengeInfo.getNonRegisteredUserTimeSeconds()) == Result.USER_1_WIN) {
-
-            emailService.sendResultOfChallenge(challengeInfo.getEmail(), "Congratulations you've won!", challengeResult.getUuid());
+            emailService.sendEmail(challengeInfo.getEmail(), subject, "Congratulations you've won!");
         } else {
-            emailService.sendResultOfChallenge(challengeInfo.getEmail(), "Unfortunately you've lost :(", challengeResult.getUuid());
+            emailService.sendEmail(challengeInfo.getEmail(), subject, "Unfortunately you've lost :(");
         }
     }
 
-    public String resultForNonRegisteredUser(UUID uuid) {
+    String resultForNonRegisteredUser(UUID uuid) {
         var challengeInfoData = challengeRepository.findById(uuid);
-        var challengeInfo = challengeInfoData.get();
+        var challengeInfo = challengeInfoData.orElseThrow(() -> new NotFoundException("Couldn't find the challenge with uuid: " + uuid));
         if (judge.getResultForChallengeUser(
                 challengeInfo.getRegisteredUserScore(),
                 challengeInfo.getNonRegisteredUserScore(),
                 challengeInfo.getRegisteredUserTimeSeconds(),
                 challengeInfo.getNonRegisteredUserTimeSeconds()) == Result.USER_2_WIN) {
-
             return "Congratulations you've won!";
         } else {
             return "Unfortunately you've lost :(";
         }
     }
 
-    public UUID createChallenge() {
+    UUID createChallenge() {
         var challenge = new Challenge();
         challenge.setChallengeQuizzes(
                 equationRandomizer.equationsForChallenge().stream()
@@ -74,40 +72,44 @@ public class ChallengeService {
         return challenge.getUuid();
     }
 
-    public void saveUser1ScoreAndAnswers(UUID uuid, ChallengeHistory challengeHistory) {
-        var challenge = challengeRepository.findById(uuid).get();
+    void saveUser1ScoreAndAnswers(UUID uuid, ChallengeScoreAndAnswers challengeScoreAndAnswers) {
+        var challenge = challengeRepository.findById(uuid).orElseThrow(() -> new NotFoundException("Couldn't find the challenge with uuid: " + uuid));
         for (int i = 0; i < 5; i++) {
             var challengeQuiz = challenge.getChallengeQuizzes().get(i);
-            challengeQuiz.setAnswerUser1(challengeHistory.getAnswerUser1().get(i));
-            challengeQuiz.setScoreUser1(challengeHistory.getScoreUser1().get(i));
+            challengeQuiz.setAnswerUser1(challengeScoreAndAnswers.getAnswerUser1().get(i));
+            challengeQuiz.setScoreUser1(challengeScoreAndAnswers.getScoreUser1().get(i));
         }
         challengeRepository.save(challenge);
     }
 
-    public void saveUser2ScoreAndAnswers(UUID uuid, ChallengeHistory challengeHistory) {
-        var challenge = challengeRepository.findById(uuid).get();
+    void saveUser2ScoreAndAnswers(UUID uuid, ChallengeScoreAndAnswers challengeScoreAndAnswers) {
+        var challenge = challengeRepository.findById(uuid).orElseThrow(() -> new NotFoundException("Couldn't find the challenge with uuid: " + uuid));
         for (int i = 0; i < 5; i++) {
             var challengeQuiz = challenge.getChallengeQuizzes().get(i);
-            challengeQuiz.setAnswerUser2(challengeHistory.getAnswerUser2().get(i));
-            challengeQuiz.setScoreUser2(challengeHistory.getScoreUser2().get(i));
+            challengeQuiz.setAnswerUser2(challengeScoreAndAnswers.getAnswerUser2().get(i));
+            challengeQuiz.setScoreUser2(challengeScoreAndAnswers.getScoreUser2().get(i));
         }
         challengeRepository.save(challenge);
     }
 
-    public List<String> getQuizzes(UUID uuid) {
-        return challengeRepository.findById(uuid).get().getChallengeQuizzes().stream()
+    List<String> getQuizzes(UUID uuid) {
+        var challengeOptional = challengeRepository.findById(uuid);
+        if (challengeOptional.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return challengeOptional.get().getChallengeQuizzes().stream()
                 .map(ChallengeQuiz::getQuiz)
                 .collect(Collectors.toList());
     }
 
-    public void saveNonRegisteredUserResult(ChallengeResult challengeResult) {
+    void saveNonRegisteredUserResult(ChallengeResult challengeResult) {
         var challengeInfo = getChallenge(challengeResult);
         challengeInfo.setNonRegisteredUserScore(challengeResult.getScore());
         challengeInfo.setNonRegisteredUserTimeSeconds(challengeResult.getTime());
         challengeRepository.save(challengeInfo);
     }
 
-    public void saveRegisteredUserResult(ChallengeResult challengeResult, String email) {
+    void saveRegisteredUserResult(ChallengeResult challengeResult, String email) {
         var challengeInfo = getChallenge(challengeResult);
         challengeInfo.setEmail(email);
         challengeInfo.setRegisteredUserScore(challengeResult.getScore());
@@ -115,13 +117,12 @@ public class ChallengeService {
         challengeRepository.save(challengeInfo);
     }
 
-    public Challenge getChallenge(ChallengeResult challengeResult) {
+    private Challenge getChallenge(ChallengeResult challengeResult) {
         var challengeInfoData = challengeRepository.findById(challengeResult.getUuid());
-        return challengeInfoData.get();
+        return challengeInfoData.orElseThrow(() -> new NotFoundException("Couldn't find the challenge with uuid: " + challengeResult.getUuid()));
     }
 
-
-    public List<Challenge> getChallenges() {
+    List<Challenge> getChallenges() {
         return challengeRepository.findAll();
     }
 
