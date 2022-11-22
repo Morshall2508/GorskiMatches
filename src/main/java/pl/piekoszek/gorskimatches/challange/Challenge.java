@@ -2,14 +2,16 @@ package pl.piekoszek.gorskimatches.challange;
 
 import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
-import java.util.Date;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
-public class Challenge {
 
+public class Challenge {
     @Id
     @Type(type = "org.hibernate.type.UUIDCharType")
     private UUID uuid;
