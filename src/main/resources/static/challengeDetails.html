@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<div class="bigiPadForChallengeHistory">
+    <div class="navigationBar">
+        <div id="homeButton">Home</div>
+        <div id="accountPage">Account</div>
+    </div>
+    <div id="indexPadForChallengeHistory">
+        <div id="table2"></div>
+    </div>
+</div>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const uuid = urlParams.get('uuid');
+    sessionStorage.setItem('uuid', uuid);
+
+    fetch(`/api/challenge/${uuid}`)
+
+        .then(res => {
+            if (res.ok) {
+                return res.json()
+            }
+            {
+                throw "Not found";
+            }
+        })
+
+        .then(json => {
+
+            let html = "";
+            html += `<div class = "sidebarElement"> Quiz</div>
+                <div class = "sidebarElement"> Answer</div>
+                <div class = "sidebarElement"> Score</div>`
+
+                json.forEach(item => {
+
+                    let scoreUser1 = item.registeredUserScore;
+                    let scoreUser2 = item.nonRegisteredUserScore;
+                    let timeUser2 = item.nonRegisteredUserTimeSeconds;
+
+                    item.challengeQuizzes.forEach(innerItem => {
+
+                        if (timeUser2 === 0) {
+                            html += `<div class = "tableElement2"> ${innerItem.quiz} </div>
+                        <div class = "tableElement2"> ${innerItem.answerUser1} </div>
+                        <div class = "tableElement2"> ${innerItem.scoreUser1} </div>`
+                        } else {
+
+                            if (scoreUser1 > scoreUser2) {
+                                html += `
+                        <div class = "tableElement2" style = "background-color:#54af54"> ${innerItem.quiz} </div>
+                        <div class = "tableElement2" style = "background-color:#54af54"> ${innerItem.answerUser1} </div>
+                        <div class = "tableElement2" style = "background-color:#54af54"> ${innerItem.scoreUser1} </div>`
+                            } else {
+                                html += `<div class = "tableElement2" style = "background-color:#d54545"> ${innerItem.quiz} </div>
+                        <div class = "tableElement2" style = "background-color:#d54545"> ${innerItem.answerUser1} </div>
+                        <div class = "tableElement2" style = "background-color:#d54545"> ${innerItem.scoreUser1} </div>
+                        </div>`
+                            }
+                        }
+                    })
+                })
+                document.getElementById("table2").innerHTML = html;
+            }
+        )
+
+</script>
+<script>
+    document.getElementById("accountPage").onclick = () => {
+        window.location.replace("/account.html?")
+    };
+</script>
+<script>
+    document.getElementById("homeButton").onclick = () => {
+        window.location.replace("/")
+    };
+</script>
+</body>
+</html>

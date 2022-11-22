@@ -43,7 +43,7 @@
     fileValidation = () => {
         const fi = document.getElementById('file');
         if (fi.files.length > 0) {
-            for (const i = 0; i <= fi.files.length - 1; i++) {
+            for (let i = 0; i <= fi.files.length - 1; i++) {
 
                 const fSize = fi.files.item(i).size;
                 const file = Math.round((fSize / 1024));
@@ -136,7 +136,7 @@
 </script>
 <script>
         document.getElementById("challengeScoreAndAnswers").onclick = () => {
-            window.location.replace("/challengeScoreAndAnswers.html?")
+            window.location.replace("/challengeHistory.html?")
         };
 </script>
 </body>

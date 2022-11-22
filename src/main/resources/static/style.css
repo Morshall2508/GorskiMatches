@@ -10,8 +10,9 @@ button {
     border-radius: 0.2em;
 }
 
-a:not([href]) {
-
+h3:hover {
+    color: #417cb5;
+    cursor:pointer;
 }
 
 h3 {

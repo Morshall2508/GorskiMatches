@@ -27,11 +27,7 @@ public class Challenge {
     @OneToMany(cascade = CascadeType.ALL)
     private List<ChallengeQuiz> challengeQuizzes;
 
-    @Temporal(TemporalType.DATE)
-    Date creationDate;
-
-    @Temporal(TemporalType.TIME)
-    Date creationTime;
+    private long time;
 
     public List<ChallengeQuiz> getChallengeQuizzes() {
         return challengeQuizzes;
@@ -89,19 +85,11 @@ public class Challenge {
         this.registeredUserTimeSeconds = registeredUserTimeSeconds;
     }
 
-    public Date getCreationDate() {
-        return creationDate;
+    public long getTime() {
+        return time;
     }
 
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public Date getCreationTime() {
-        return creationTime;
-    }
-
-    public void setCreationTime(Date creationTime) {
-        this.creationTime = creationTime;
+    public void setTime(long time) {
+        this.time = time;
     }
 }
