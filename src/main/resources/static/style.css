@@ -12,7 +12,7 @@ button {
 
 h3:hover {
     color: #417cb5;
-    cursor:pointer;
+    cursor: pointer;
 }
 
 h3 {
@@ -36,6 +36,25 @@ h3 {
     display: none;
 }
 
+.arrow {
+    border: solid white;
+    border-width: 0 5px 5px 0;
+    display: inline-block;
+    padding: 10px;
+    margin-top: 15px;
+}
+.left {
+    transform: rotate(135deg);
+}
+.arrow:hover {
+    cursor: pointer;
+    border: solid #417cb5;
+    border-width: 0 5px 5px 0;
+    display: inline-block;
+    padding: 10px;
+    margin-top: 15px;
+}
+
 #table {
     display: grid;
     grid-template-areas:
@@ -49,30 +68,18 @@ h3 {
     width: auto;
     height: auto;
     font-weight: 350;
-}
-
-#table2 {
-
-    grid-template-areas:
-    'a  b  c  d  e  f'
-    'g  h  i  j  k  l'
-    'm  n  o  p  r  s';
-    background-color: #a4bad5;
-    text-align: center;
-    width: auto;
-    height: auto;
-    font-weight: 350;
+    margin-bottom: 5px;
 }
 
 #tableUuidTime {
-
     background-color: #a4bad5;
     width: auto;
     height: auto;
     display: grid;
     text-align: center;
 }
-.topBarFirst{
+
+.topBarFirst {
     grid-column-start: 1;
     width: auto;
     background-color: #417cb5;
@@ -82,7 +89,7 @@ h3 {
     padding: 5px;
 }
 
-.topBarSecond{
+.topBarSecond {
     grid-column-start: 2;
     grid-column-end: 3;
     background-color: #417cb5;
@@ -92,14 +99,15 @@ h3 {
     padding: 5px;
 }
 
-.challengeHistoryElement{
+.challengeHistoryElement {
     justify-content: center;
     align-items: center;
     padding: 10px;
 }
-.challengeHistoryElement:hover{
+
+.challengeHistoryElement:hover {
     background-color: #417cb5;
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .sidebarElement:nth-child(1) {
@@ -182,52 +190,12 @@ h3 {
     grid-area: s;
 }
 
-.tableElement2:nth-child(4) {
-    grid-area: b;
+.sidebarElement:nth-child(1) {
+    grid-area: a;
 }
 
-.tableElement2:nth-child(5) {
-    grid-area: h;
-}
-
-.tableElement2:nth-child(6) {
-    grid-area: n;
-}
-
-.tableElement2:nth-child(7) {
-    grid-area: c;
-}
-
-.tableElement2:nth-child(8) {
-    grid-area: i;
-}
-
-.tableElement2:nth-child(9) {
-    grid-area: o;
-}
-
-.tableElement2:nth-child(10) {
-    grid-area: d;
-}
-
-.tableElement2:nth-child(11) {
-    grid-area: j;
-}
-
-.tableElement2:nth-child(12) {
-    grid-area: p;
-}
-
-.tableElement2:nth-child(13) {
-    grid-area: e;
-}
-
-.tableElement2:nth-child(14) {
-    grid-area: k;
-}
-
-.tableElement2:nth-child(15) {
-    grid-area: r;
+.sidebarElement:nth-child(2) {
+    grid-area: g;
 }
 
 .tableTime {
@@ -250,13 +218,6 @@ h3 {
 }
 
 .tableElement {
-    width: 100px;
-    height: 75px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.tableElement2 {
     width: 100px;
     height: 75px;
     display: flex;
@@ -505,6 +466,7 @@ img[src="null"] {
         width: 100px;
         height: 55px;
     }
+
     .tableElement2 {
         width: 100px;
         height: 55px;
@@ -518,6 +480,7 @@ img[src="null"] {
         width: 100px;
         height: 55px;
     }
+
     .tableElement2 {
         width: 100px;
         height: 55px;
@@ -553,9 +516,11 @@ img[src="null"] {
     .tableElement {
         width: 80px;
     }
+
     .tableElement2 {
         width: 80px;
     }
+
     .tableElement {
         width: 80px;
     }
@@ -671,6 +636,7 @@ img[src="null"] {
     .tableElement {
         width: 50px;
     }
+
     .tableElement2 {
         width: 50px;
     }

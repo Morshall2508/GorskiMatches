@@ -4,7 +4,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
-class Equation {
+public class Equation {
     public String quiz;
 
     @NotBlank(message = "Answer has to be provided")

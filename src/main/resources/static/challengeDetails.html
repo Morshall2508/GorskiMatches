@@ -12,7 +12,8 @@
         <div id="accountPage">Account</div>
     </div>
     <div id="indexPadForChallengeHistory">
-        <div id="table2"></div>
+        <div id="table"></div>
+        <i class="arrow left" onclick="window.location.href='/challengeHistory.html?';"></i>
     </div>
 </div>
 
@@ -21,8 +22,8 @@
     const uuid = urlParams.get('uuid');
     sessionStorage.setItem('uuid', uuid);
 
-    fetch(`/api/challenge/${uuid}`)
 
+    fetch(`/api/challenge/${uuid}`)
         .then(res => {
             if (res.ok) {
                 return res.json()
@@ -33,43 +34,53 @@
         })
 
         .then(json => {
-
             let html = "";
-            html += `<div class = "sidebarElement"> Quiz</div>
-                <div class = "sidebarElement"> Answer</div>
-                <div class = "sidebarElement"> Score</div>`
+            let timeUser2 = (json.nonRegisteredUserTimeSeconds / 1000).toFixed(2);
+            let timeUser1 = (json.registeredUserTimeSeconds / 1000).toFixed(2);
+            let totalScoreRegister = json.registeredUserScore;
+            let totalScoreNonRegister = json.nonRegisteredUserScore;
 
-                json.forEach(item => {
+            document.getElementById("table").style.gap = "2px";
+            html += `
+                <div class = "sidebarElement"> Quiz</div>
+                <div class = "sidebarElement"> Your Answer</div>
+                <div class = "sidebarElement"> Opponent Answer</div>
+                <div class = "sidebarElement"> Your Time </div>
+                <div class = "sidebarElement"> Opponent Time </div>`
 
-                    let scoreUser1 = item.registeredUserScore;
-                    let scoreUser2 = item.nonRegisteredUserScore;
-                    let timeUser2 = item.nonRegisteredUserTimeSeconds;
+            json.challengeQuizzes.forEach(innerItem => {
 
-                    item.challengeQuizzes.forEach(innerItem => {
-
-                        if (timeUser2 === 0) {
-                            html += `<div class = "tableElement2"> ${innerItem.quiz} </div>
-                        <div class = "tableElement2"> ${innerItem.answerUser1} </div>
-                        <div class = "tableElement2"> ${innerItem.scoreUser1} </div>`
-                        } else {
-
-                            if (scoreUser1 > scoreUser2) {
-                                html += `
-                        <div class = "tableElement2" style = "background-color:#54af54"> ${innerItem.quiz} </div>
-                        <div class = "tableElement2" style = "background-color:#54af54"> ${innerItem.answerUser1} </div>
-                        <div class = "tableElement2" style = "background-color:#54af54"> ${innerItem.scoreUser1} </div>`
-                            } else {
-                                html += `<div class = "tableElement2" style = "background-color:#d54545"> ${innerItem.quiz} </div>
-                        <div class = "tableElement2" style = "background-color:#d54545"> ${innerItem.answerUser1} </div>
-                        <div class = "tableElement2" style = "background-color:#d54545"> ${innerItem.scoreUser1} </div>
+                let resultUser1 = Boolean(innerItem.scoreUser1 > 0);
+                let resultUser2 = Boolean(innerItem.scoreUser2 > 0);
+                if (json.nonRegisteredUserTimeSeconds === 0 || json.registeredUserTimeSeconds === 0) {
+                    html += `<div class = "tableElement">${innerItem.quiz}</div>
+                        <div class = "tableElement"> ${innerItem.answerUser1}</div>
+                        <div class = "tableElement"> ${innerItem.answerUser2}</div>
                         </div>`
-                            }
-                        }
-                    })
-                })
-                document.getElementById("table2").innerHTML = html;
+                } else {
+                    html += `<div class = "tableElement">${innerItem.quiz}</div>
+                        <div class = "tableElement" style = background-color:${resultUser2 ? "#54af54" : "#d54545"}> ${innerItem.answerUser1}</div>
+                        <div class = "tableElement" style = background-color:${resultUser1 ? "#54af54" : "#d54545"}> ${innerItem.answerUser2}</div>
+                        </div>`
+                }
+            })
+            if (json.nonRegisteredUserTimeSeconds === 0 || json.registeredUserTimeSeconds === 0) {
+                html += `<div class = "tableTime">${timeUser1}s</div>
+                         <div class = "tableTime">${timeUser2}s</div>`
+            } else {
+                if (totalScoreNonRegister === totalScoreRegister) {
+                    let totalResult = Boolean(timeUser1 > timeUser2);
+                    html += `<div class = "tableTime" style = background-color:${totalResult ? "#d54545" : "#54af54"}>${timeUser1}s</div>
+                         <div class = "tableTime" style = background-color:${totalResult ? "#54af54" : "#d54545"}>${timeUser2}s</div>`
+                    document.getElementById("table").innerHTML = html;
+                } else {
+                    html += `<div class = "tableTime">${timeUser1}s</div>
+                         <div class = "tableTime">${timeUser2}s</div>`
+                    document.getElementById("table").innerHTML = html;
+                }
             }
-        )
+            document.getElementById("table").innerHTML = html;
+        })
 
 </script>
 <script>

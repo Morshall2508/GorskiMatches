@@ -12,11 +12,10 @@
         <div id="accountPage">Account</div>
     </div>
     <div id="indexPadForChallengeHistory">
-        <div id="table2"></div>
         <div id="tableUuidTime"></div>
     </div>
 </div>
-
+</body>
 <script>
 
     fetch(`/api/challenge/challenges`)
@@ -30,27 +29,27 @@
             }
         })
         .then(json => {
-
             let html = "";
             html += `<div class = "topBarFirst"> Date and Time</div>
                 <div class = "topBarSecond"> Result </div>`
 
             json.forEach(item => {
+                let uuid = item.uuid;
                 let result = Boolean(item.registeredUserScore > item.nonRegisteredUserScore);
-                if (item.nonRegisteredUserTimeSeconds === 0 && item.registeredUserTimeSeconds === 0) {
+                if (item.nonRegisteredUserTimeSeconds === 0 || item.registeredUserTimeSeconds === 0) {
+
                     html += `
-                <div class = "challengeHistoryElement">${new Date(item.time).toLocaleString()}</div>
-                <div class = "challengeHistoryElement"></div>`
+                <div class = "challengeHistoryElement" onclick="window.location.href='/challengeDetails.html?uuid=' + ('${uuid}');"> ${new Date(item.time).toLocaleString()}</div>
+                <div class = "challengeHistoryElement" onclick="window.location.href='/challengeDetails.html?uuid=' + ('${uuid}');"></div>`
                 } else {
                     html += `
-                <div class = "challengeHistoryElement"style = background-color:${result ? "#54af54" : "#d54545"}> ${new Date(item.time).toLocaleString()}</div>
-                <div class = "challengeHistoryElement"style = background-color:${result ? "#54af54" : "#d54545"}> ${result ? "Won" : "Lost"}</div>`
+                <div class = "challengeHistoryElement" onclick="window.location.href='/challengeDetails.html?uuid=' + ('${uuid}');" style = background-color:${result ? "#54af54" : "#d54545"}> ${new Date(item.time).toLocaleString()}</div>
+                <div class = "challengeHistoryElement" onclick="window.location.href='/challengeDetails.html?uuid=' + ('${uuid}');" style = background-color:${result ? "#54af54" : "#d54545"}> ${result ? "Won" : "Lost"}</div>`
                 }
                 document.getElementById("tableUuidTime").innerHTML = html;
             })
         })
 </script>
-
 <script>
     document.getElementById("accountPage").onclick = () => {
         window.location.replace("/account.html?")
@@ -61,5 +60,5 @@
         window.location.replace("/")
     };
 </script>
-</body>
+
 </html>
