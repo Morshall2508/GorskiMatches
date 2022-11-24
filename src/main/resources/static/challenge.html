@@ -134,8 +134,9 @@
                         })
                         .then(challengeInfo => {
                             let html = "";
-                            let timeUser2 = (challengeInfo.nonRegisteredUserTimeSeconds / 1000).toFixed(2);
-                            let timeUser1 = (challengeInfo.registeredUserTimeSeconds / 1000).toFixed(2);
+
+                            let timeRegister = (challengeInfo.registeredUserTimeSeconds / 1000).toFixed(2);
+                            let timeNonRegister = (challengeInfo.nonRegisteredUserTimeSeconds / 1000).toFixed(2);
                             let totalScoreRegister = challengeInfo.registeredUserScore;
                             let totalScoreNonRegister = challengeInfo.nonRegisteredUserScore;
                             document.getElementById("table").style.gap = "2px";
@@ -159,13 +160,14 @@
                             })
                             if (totalScoreNonRegister === totalScoreRegister) {
 
-                                let totalResult = Boolean(timeUser1 > timeUser2);
-                                html += `<div class = "tableTime" style = background-color:${totalResult ? "#54af54" : "#d54545"}>${timeUser2}s</div>
-                                        <div class = "tableTime" style = background-color:${totalResult ? "#d54545" : "#54af54"}>${timeUser1}s</div>`
+                                let timeCompare = Boolean(challengeInfo.nonRegisteredUserTimeSeconds < challengeInfo.registeredUserTimeSeconds);
+
+                                html += `<div class = "tableTime" style = background-color:${timeCompare ? "#54af54" : "#d54545"}>${timeNonRegister}s</div>
+                                        <div class = "tableTime" style = background-color:${timeCompare ? "#d54545" : "#54af54"}>${timeRegister}s</div>`
                                 document.getElementById("table").innerHTML = html;
                             } else {
-                                html += `<div class = "tableTime">${timeUser2}s</div>
-                                            <div class = "tableTime">${timeUser1}s</div>`
+                                html += `<div class = "tableTime">${timeNonRegister}s</div>
+                                            <div class = "tableTime">${timeRegister}s</div>`
                                 document.getElementById("table").innerHTML = html;
                             }
                         }))

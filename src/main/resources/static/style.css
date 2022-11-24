@@ -274,7 +274,8 @@ h2 {
 
 p {
     color: rgb(255, 255, 255);
-    font-size: 0.9em;
+    font-size: 0.7em;
+    margin: 10px;
 }
 
 body {
@@ -353,7 +354,7 @@ img[src="null"] {
     align-items: center;
     background-color: rgb(112, 145, 177);
     flex-direction: column;
-    padding: 40px;
+    padding: 15px;
 }
 
 .navigationBar {
