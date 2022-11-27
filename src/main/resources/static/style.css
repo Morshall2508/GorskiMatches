@@ -10,8 +10,9 @@ button {
     border-radius: 0.2em;
 }
 
-a:not([href]) {
-
+h3:hover {
+    color: #417cb5;
+    cursor: pointer;
 }
 
 h3 {
@@ -35,6 +36,25 @@ h3 {
     display: none;
 }
 
+.arrow {
+    border: solid white;
+    border-width: 0 5px 5px 0;
+    display: inline-block;
+    padding: 10px;
+    margin-top: 15px;
+}
+.left {
+    transform: rotate(135deg);
+}
+.arrow:hover {
+    cursor: pointer;
+    border: solid #417cb5;
+    border-width: 0 5px 5px 0;
+    display: inline-block;
+    padding: 10px;
+    margin-top: 15px;
+}
+
 #table {
     display: grid;
     grid-template-areas:
@@ -48,6 +68,46 @@ h3 {
     width: auto;
     height: auto;
     font-weight: 350;
+    margin-bottom: 5px;
+}
+
+#tableUuidTime {
+    background-color: #a4bad5;
+    width: auto;
+    height: auto;
+    display: grid;
+    text-align: center;
+}
+
+.topBarFirst {
+    grid-column-start: 1;
+    width: auto;
+    background-color: #417cb5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+}
+
+.topBarSecond {
+    grid-column-start: 2;
+    grid-column-end: 3;
+    background-color: #417cb5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+}
+
+.challengeHistoryElement {
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.challengeHistoryElement:hover {
+    background-color: #417cb5;
+    cursor: pointer;
 }
 
 .sidebarElement:nth-child(1) {
@@ -109,20 +169,33 @@ h3 {
 .tableElement:nth-child(15) {
     grid-area: e;
 }
+
 .tableElement:nth-child(16) {
     grid-area: k;
 }
+
 .tableElement:nth-child(17) {
     grid-area: r;
 }
+
 .tableElement:nth-child(18) {
     grid-area: f;
 }
+
 .tableElement:nth-child(19) {
     grid-area: l;
 }
+
 .tableElement:nth-child(20) {
     grid-area: s;
+}
+
+.sidebarElement:nth-child(1) {
+    grid-area: a;
+}
+
+.sidebarElement:nth-child(2) {
+    grid-area: g;
 }
 
 .tableTime {
@@ -150,7 +223,6 @@ h3 {
     display: flex;
     justify-content: center;
     align-items: center;
-
 }
 
 #username {
@@ -202,7 +274,8 @@ h2 {
 
 p {
     color: rgb(255, 255, 255);
-    font-size: 0.9em;
+    font-size: 0.7em;
+    margin: 10px;
 }
 
 body {
@@ -281,7 +354,7 @@ img[src="null"] {
     align-items: center;
     background-color: rgb(112, 145, 177);
     flex-direction: column;
-    padding: 40px;
+    padding: 15px;
 }
 
 .navigationBar {
@@ -354,7 +427,7 @@ img[src="null"] {
 
     #table {
         font-size: 13px;
-        font-weight: bold;
+        font-weight: 500;
     }
 
     .column {
@@ -368,8 +441,8 @@ img[src="null"] {
     }
 
     .header {
-        width: 100px;
-        height: 55px;
+        width: 75px;
+        height: 30px;
     }
 
     .rest {
@@ -382,6 +455,34 @@ img[src="null"] {
     }
 
     .tableElement {
+        width: 100px;
+        height: 55px;
+    }
+
+    .tableTime {
+        height: 55px;
+    }
+
+    .tableElement {
+        width: 100px;
+        height: 55px;
+    }
+
+    .tableElement2 {
+        width: 100px;
+        height: 55px;
+    }
+
+    .tableTime {
+        height: 55px;
+    }
+
+    .tableElement {
+        width: 100px;
+        height: 55px;
+    }
+
+    .tableElement2 {
         width: 100px;
         height: 55px;
     }
@@ -410,6 +511,14 @@ img[src="null"] {
     }
 
     .sidebarElement {
+        width: 80px;
+    }
+
+    .tableElement {
+        width: 80px;
+    }
+
+    .tableElement2 {
         width: 80px;
     }
 
@@ -524,7 +633,30 @@ img[src="null"] {
     .sidebarElement {
         width: 60px;
     }
+
     .tableElement {
         width: 50px;
-}
+    }
+
+    .tableElement2 {
+        width: 50px;
+    }
+
+    @media only screen and (max-width: 400px) {
+        .table {
+            font-size: 11px;
+        }
+
+        .tableElement {
+            width: 43px;
+        }
+
+        .tableElement2 {
+            width: 43px;
+        }
+
+        .sidebarElement {
+            width: 52px;
+        }
+    }
 }

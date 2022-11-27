@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-public class Challenge {
 
+public class Challenge {
     @Id
     @Type(type = "org.hibernate.type.UUIDCharType")
     private UUID uuid;
@@ -28,6 +28,8 @@ public class Challenge {
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<ChallengeQuiz> challengeQuizzes;
+
+    private long time;
 
     public List<ChallengeQuiz> getChallengeQuizzes() {
         return challengeQuizzes;
@@ -83,5 +85,13 @@ public class Challenge {
 
     public void setRegisteredUserTimeSeconds(float registeredUserTimeSeconds) {
         this.registeredUserTimeSeconds = registeredUserTimeSeconds;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
     }
 }

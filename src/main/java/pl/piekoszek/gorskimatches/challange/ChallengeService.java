@@ -19,18 +19,22 @@ public class ChallengeService {
 
     private final ChallengeRepository challengeRepository;
 
+    private TimeService timeService;
+
     private final Judge judge;
 
     public ChallengeService(EmailService emailService,
                             EquationRandomizer equationRandomizer,
                             GenerateUUID generateUUID,
                             ChallengeRepository challengeRepository,
-                            Judge judgeResult) {
+                            Judge judge,
+                            TimeService timeService) {
         this.emailService = emailService;
         this.equationRandomizer = equationRandomizer;
         this.generateUUID = generateUUID;
         this.challengeRepository = challengeRepository;
-        this.judge = judgeResult;
+        this.judge = judge;
+        this.timeService = timeService;
     }
 
     void resultForRegisteredUser(ChallengeResult challengeResult) {
@@ -68,6 +72,7 @@ public class ChallengeService {
                         .map(quiz -> new ChallengeQuiz(challenge, quiz))
                         .collect(Collectors.toList()));
         challenge.setUuid(generateUUID.generateUUID());
+        challenge.setTime(timeService.millisSinceEpoch());
         challengeRepository.save(challenge);
         return challenge.getUuid();
     }
