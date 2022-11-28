@@ -6,8 +6,6 @@ import pl.piekoszek.gorskimatches.config.http.NotFoundException;
 import pl.piekoszek.gorskimatches.email.EmailService;
 import pl.piekoszek.gorskimatches.token.TokenService;
 
-import java.util.Optional;
-
 @Component
 class AccountService {
 
