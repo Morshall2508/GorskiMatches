@@ -4,12 +4,12 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CharacterChangeInStringTest {
+class CharacterChangeInStringTest {
 
     private final CharacterChanger characterChangeInString = new CharacterChanger();
 
     @Test
-    void shouldChangeTheCharcterInString() {
+    void shouldChangeTheCharacterInString() {
         assertThat(characterChangeInString.changeCharactersInString("6+1=7",0,'0'))
                 .isEqualTo("0+1=7");
         assertThat(characterChangeInString.changeCharactersInString("8+1=7",0,'0'))

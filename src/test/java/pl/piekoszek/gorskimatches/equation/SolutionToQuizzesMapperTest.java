@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class SolutionToQuizzesMapperTest {
+class SolutionToQuizzesMapperTest {
 
     private final SolutionToQuizzesMapper solutionToQuizzesMapper = new SolutionToQuizzesMapper(new CharacterChanger(), new EquationMathChecker());
     private final EquationMathChecker equationMathChecker = new EquationMathChecker();
