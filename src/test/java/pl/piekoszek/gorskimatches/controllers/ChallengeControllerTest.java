@@ -1,5 +1,6 @@
 package pl.piekoszek.gorskimatches.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -7,6 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import pl.piekoszek.gorskimatches.token.TokenService;
+
+import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -31,21 +34,11 @@ public class ChallengeControllerTest {
 
     @Test
     void shouldSaveScoreOfUserWithEmail() throws Exception {
-        var uuid = mockMvc.perform(get("/api/challenge/generate"))
-                .andReturn().getResponse().getContentAsString();
-
-        var json = """
-                {
-                 "uuid": %s,
-                 "score" : "4",
-                 "time" : "12.21"
-                }
-                """.formatted(uuid);
-        System.out.println(json);
+        var uuid = getUuid();
 
         mockMvc.perform(post("/api/challenge/score")
                         .header("Authorization", "Bearer " + getToken())
-                        .content(json)
+                        .content(getJsonString(uuid))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -53,20 +46,11 @@ public class ChallengeControllerTest {
 
     @Test
     void shouldSaveScoreOfUserWithoutEmail() throws Exception {
-        var uuid = mockMvc.perform(get("/api/challenge/generate"))
-                .andReturn().getResponse().getContentAsString();
-
-        var json = """
-                {
-                 "uuid": %s,
-                 "score" : "4",
-                 "time" : "12.21"
-                }
-                """.formatted(uuid);
+        var uuid = getUuid();
 
         mockMvc.perform(post("/api/challenge/score")
                         .header("Authorization", "Bearer " + getToken())
-                        .content(json)
+                        .content(getJsonString(uuid))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -74,7 +58,7 @@ public class ChallengeControllerTest {
         mockMvc.perform(post("/api/challenge/score")
                         .content("""
                                 {
-                                 "uuid": %s,
+                                 "uuid": "%s",
                                  "score" : "3",
                                  "time" : "14.21"
                                 }
@@ -86,19 +70,11 @@ public class ChallengeControllerTest {
 
     @Test
     void shouldReturnResultForNonRegisteredUser() throws Exception {
-        var uuid = mockMvc.perform(get("/api/challenge/generate"))
-                .andReturn().getResponse().getContentAsString();
-        var json = """
-                {
-                 "uuid": %s,
-                 "score" : "4",
-                 "time" : "12.21"
-                }
-                """.formatted(uuid);
+        var uuid = getUuid();
 
         mockMvc.perform(post("/api/challenge/score")
                         .header("Authorization", "Bearer " + getToken())
-                        .content(json)
+                        .content(getJsonString(uuid))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -106,7 +82,7 @@ public class ChallengeControllerTest {
         mockMvc.perform(post("/api/challenge/score")
                         .content("""
                                 {
-                                 "uuid": %s,
+                                 "uuid": "%s",
                                  "score" : "3",
                                  "time" : "14.21"
                                 }
@@ -114,27 +90,18 @@ public class ChallengeControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
-        //TODO Make sure that url is in correct format - in this way it doesn't work.
+
         mockMvc.perform(get("/api/challenge/resultForNonRegistered/{uuid}", uuid))
                 .andExpect(status().isOk());
     }
 
     @Test
     void shouldReturnAListOfQuizzesThatIsNotEmpty() throws Exception {
-        var uuid = mockMvc.perform(get("/api/challenge/generate"))
-                .andReturn().getResponse().getContentAsString();
-
-        var json = """
-                {
-                 "uuid": %s,
-                 "score" : "4",
-                 "time" : "12.21"
-                }
-                """.formatted(uuid);
+        var uuid = getUuid();
 
         mockMvc.perform(post("/api/challenge/score")
                         .header("Authorization", "Bearer " + getToken())
-                        .content(json)
+                        .content(getJsonString(uuid))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -142,7 +109,7 @@ public class ChallengeControllerTest {
         mockMvc.perform(post("/api/challenge/score")
                         .content("""
                                 {
-                                 "uuid": %s,
+                                 "uuid": "%s",
                                  "score" : "3",
                                  "time" : "14.21"
                                 }
@@ -150,7 +117,7 @@ public class ChallengeControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
-        //TODO Make sure that url is in correct format - in this way it doesn't work.
+
         mockMvc.perform(get("/api/challenge/quizzes/{$uuid}", uuid))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isNotEmpty())
@@ -158,26 +125,24 @@ public class ChallengeControllerTest {
     }
 
     @Test
-    void shouldSaveInformationAboutQuizzesForRegistratedUser() throws Exception {
-        var uuid = mockMvc.perform(get("/api/challenge/generate"))
-                .andReturn().getResponse().getContentAsString();
-        var scoreAndAnswers1 = """
+    void shouldSaveInformationAboutQuizzesForRegisteredUser() throws Exception {
+        var scoreAndAnswers = """
                 {
                  "scoreUser1":[1,1,1,1,1],
                  "answerUser1":["1+1=1","1+1=1","1+1=1","1+1=1","1+1=1"]
                 }
                 """;
 
-        //TODO Make sure that url is in correct format - in this way it doesn't work.
-        mockMvc.perform(post("/api/challenge/challengeQuizzesAndAnswers/{$uuid}", uuid)
+        mockMvc.perform(post("/api/challenge/challengeQuizzesAndAnswers/{$uuid}", getUuid())
                         .header("Authorization", "Bearer " + getToken())
-                        .content(scoreAndAnswers1))
+                        .content(scoreAndAnswers)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
+
     @Test
     void shouldSaveInformationAboutQuizzesForNonRegisteredUser() throws Exception {
-        var uuid = mockMvc.perform(get("/api/challenge/generate"))
-                .andReturn().getResponse().getContentAsString();
         var scoreAndAnswers = """
                 {
                  "scoreUser2":[1,1,1,1,1],
@@ -185,9 +150,10 @@ public class ChallengeControllerTest {
                 }
                 """;
 
-        //TODO Make sure that url is in correct format - in this way it doesn't work.
-        mockMvc.perform(post("/api/challenge/challengeQuizzesAndAnswers/{$uuid}", uuid)
-                        .content(scoreAndAnswers))
+        mockMvc.perform(post("/api/challenge/challengeQuizzesAndAnswers/{$uuid}", getUuid())
+                        .content(scoreAndAnswers)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
@@ -199,19 +165,27 @@ public class ChallengeControllerTest {
     }
 
     @Test
-    void shouldReturnInformationAboutQuiz() throws Exception{
-        var uuid = mockMvc.perform(get("/api/challenge/generate"))
-                .andReturn().getResponse().getContentAsString();
-
-        //TODO Make sure that url is in correct format - in this way it doesn't work.
-        mockMvc.perform(get("/api/challenge/{$uuid}", uuid))
+    void shouldReturnInformationAboutQuiz() throws Exception {
+        mockMvc.perform(get("/api/challenge/{$uuid}", getUuid()))
                 .andExpect(status().isOk());
     }
 
-    @Test
     private String getToken() {
         return tokenService.encode("gorskimatchesserver@gmail.com");
     }
 
-
+    private UUID getUuid() throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(mockMvc.perform(get("/api/challenge/generate"))
+                .andReturn().getResponse().getContentAsString(), UUID.class);
+    }
+    private String getJsonString(UUID uuid){
+        return """
+                {
+                 "uuid": "%s",
+                 "score" : "4",
+                 "time" : "12.21"
+                }
+                """.formatted(uuid);
+    }
 }
