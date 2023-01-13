@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import pl.piekoszek.gorskimatches.validation.StringEditor;
 
 import java.util.List;
+import java.util.Locale;
 
 @Component
 public class FacebookCommands {
@@ -19,24 +20,26 @@ public class FacebookCommands {
 
     public List<FacebookCommandResponse> handleCommands(FacebookMessageReceived messageReceived, String id) {
 
-        if (messageReceived.getText().toLowerCase().matches(StringEditor.removeSpaces("hello")) ||
-                messageReceived.getText().toLowerCase().matches(StringEditor.removeSpaces("hi"))) {
+        String message = StringEditor.removeSpaces(messageReceived.getText().toLowerCase());
+
+        if (message.matches("hello") ||
+                message.matches("hi")) {
             return helloMessage();
         }
 
-        if (messageReceived.getText().toLowerCase().matches(StringEditor.removeSpaces("challenge"))) {
+        if (message.matches("challenge")) {
             return quiz(id);
         }
 
-        if (messageReceived.getText().matches((StringEditor.removeSpaces("\\b\\s*\\d\\s*[+-]\\s*\\d\\s*=\\s*\\d\\s*\\b\\s*")))) {
-            return check(id, messageReceived.getText());
+        if (message.matches("\\b\\s*\\d\\s*[+-]\\s*\\d\\s*=\\s*\\d\\s*\\b\\s*")) {
+            return check(id, message);
         }
 
-        if (messageReceived.getText().toLowerCase().matches(StringEditor.removeSpaces("info"))) {
+        if (message.matches("info")) {
             return info();
         }
 
-        if (messageReceived.getText().toLowerCase().matches(StringEditor.removeSpaces("contact"))) {
+        if (message.matches("contact")) {
             return contact();
         }
         return commands();
