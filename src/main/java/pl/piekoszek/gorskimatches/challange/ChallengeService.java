@@ -50,7 +50,8 @@ public class ChallengeService {
                 challengeInfo.getNonRegisteredUserScore(),
                 challengeInfo.getRegisteredUserTimeSeconds(),
                 challengeInfo.getNonRegisteredUserTimeSeconds()) == Result.USER_1_WIN) {
-            emailService.sendEmail(challengeInfo.getEmail(), subject, "Congratulations you've won!\n Here is a link:" + getChallengeDetailsUrl(challengeResult.getUuid()));
+            emailService.sendEmail(challengeInfo.getEmail(), subject, "Congratulations you've won!\n Here is a link:" + "<a href=" +
+                    getChallengeDetailsUrl(challengeResult.getUuid()) + ">" + "Result" + "</a>");
         } else {
             emailService.sendEmail(challengeInfo.getEmail(), subject, "Unfortunately you've lost :(");
         }
