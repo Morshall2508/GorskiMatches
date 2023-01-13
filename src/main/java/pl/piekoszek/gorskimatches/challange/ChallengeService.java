@@ -1,5 +1,6 @@
 package pl.piekoszek.gorskimatches.challange;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pl.piekoszek.gorskimatches.config.http.NotFoundException;
 import pl.piekoszek.gorskimatches.email.EmailService;
@@ -23,18 +24,22 @@ public class ChallengeService {
 
     private final Judge judge;
 
+    private final String server;
+
     public ChallengeService(EmailService emailService,
                             EquationRandomizer equationRandomizer,
                             GenerateUUID generateUUID,
                             ChallengeRepository challengeRepository,
                             Judge judge,
-                            TimeService timeService) {
+                            TimeService timeService,
+                            @Value("${matches.server.address}") String server) {
         this.emailService = emailService;
         this.equationRandomizer = equationRandomizer;
         this.generateUUID = generateUUID;
         this.challengeRepository = challengeRepository;
         this.judge = judge;
         this.timeService = timeService;
+        this.server = server;
     }
 
     void resultForRegisteredUser(ChallengeResult challengeResult) {
@@ -45,7 +50,7 @@ public class ChallengeService {
                 challengeInfo.getNonRegisteredUserScore(),
                 challengeInfo.getRegisteredUserTimeSeconds(),
                 challengeInfo.getNonRegisteredUserTimeSeconds()) == Result.USER_1_WIN) {
-            emailService.sendEmail(challengeInfo.getEmail(), subject, "Congratulations you've won!");
+            emailService.sendEmail(challengeInfo.getEmail(), subject, "Congratulations you've won!\n Here is a link:" + getChallengeDetailsUrl(challengeResult.getUuid()));
         } else {
             emailService.sendEmail(challengeInfo.getEmail(), subject, "Unfortunately you've lost :(");
         }
@@ -133,5 +138,9 @@ public class ChallengeService {
 
     public Challenge getChallenge(UUID id){
         return challengeRepository.findById(id).get();
+    }
+
+    String getChallengeDetailsUrl(UUID uuid){
+        return server + "challengeDetails.html?uuid=" + uuid;
     }
 }
