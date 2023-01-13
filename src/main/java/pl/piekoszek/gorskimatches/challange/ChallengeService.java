@@ -5,6 +5,7 @@ import pl.piekoszek.gorskimatches.config.http.NotFoundException;
 import pl.piekoszek.gorskimatches.email.EmailService;
 import pl.piekoszek.gorskimatches.equation.EquationRandomizer;
 
+import javax.mail.MessagingException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -37,7 +38,7 @@ public class ChallengeService {
         this.timeService = timeService;
     }
 
-    void resultForRegisteredUser(ChallengeResult challengeResult) {
+    void resultForRegisteredUser(ChallengeResult challengeResult) throws MessagingException {
         var challengeInfo = getChallenge(challengeResult);
         String subject = "Challenge: " + challengeResult.getUuid() + " result";
         if (judge.getResultForChallengeUser(

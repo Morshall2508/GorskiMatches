@@ -5,6 +5,7 @@ import pl.piekoszek.gorskimatches.config.authorization.Email;
 import pl.piekoszek.gorskimatches.config.authorization.ForbiddenException;
 import pl.piekoszek.gorskimatches.config.http.NotFoundException;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 
 @RestController
@@ -18,7 +19,7 @@ class AccountController {
     }
 
     @PostMapping("email")
-    String sendRegistrationEmail(@Valid @RequestBody RegistrationRequest sendRegistrationRequest) {
+    String sendRegistrationEmail(@Valid @RequestBody RegistrationRequest sendRegistrationRequest) throws MessagingException {
         accountService.sendRegistrationOrLoginLink(sendRegistrationRequest.getEmail());
         return "Email has been sent";
     }
