@@ -9,8 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.stream.Collectors;
+import pl.piekoszek.gorskimatches.equation.EquationRandomizer;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -27,13 +26,7 @@ public class FacebookControllerTest {
     private FacebookMessageService facebookMessageService;
 
     @MockBean
-    private FacebookApiClient apiClient;
-
-    @MockBean
-    private FacebookResponseGenerator responseGenerator;
-
-    @MockBean
-    private FacebookRepository facebookRepository;
+    private EquationRandomizer equationRandomizer;
 
     @Value("${VERIFY_TOKEN}")
     private String VERIFY_TOKEN;
@@ -106,8 +99,8 @@ public class FacebookControllerTest {
     }
 
     @Test
-    public void shouldSendChallengeUrlWhenMessageReceivedIsChallenge() throws Exception {
-        var a = Mockito.mock(FacebookRepository.class);
+    public void shouldSendAttachmentUrlToUserWhenChallengeMessageIsSent() throws Exception {
+        Mockito.when(equationRandomizer.randomEquation()).thenReturn("7-5=4");
         mockMvc.perform(post("/api/webhook/facebook/page/message").content("""
                         {"entry":[{
                             "id":"101650416067938",
@@ -125,10 +118,88 @@ public class FacebookControllerTest {
                              """)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
+        Mockito.verify(facebookMessageService).sendAttachmentPhoto("5533019560146899", "https://maciej.piekoszek.pl/api/image/equation/fb/7-5=4");
 
-        var b = a.findById("5533019560146899").get().quiz;
-        System.out.println(b);
-//        var b = responseGenerator.attachmentResponse("5533019560146899").getMessage().getAttachment().getPayload().url;
-//        Mockito.verify(facebookMessageService).sendAttachmentPhoto("5533019560146899", "a") ;
+
+    }
+
+    @Test
+    public void shouldSendReplyWithCongratulationMessageWhenQuizIsCorrect() throws Exception {
+        Mockito.when(equationRandomizer.randomEquation()).thenReturn("7-5=4");
+        mockMvc.perform(post("/api/webhook/facebook/page/message").content("""
+                        {"entry":[{
+                            "id":"101650416067938",
+                            "time":1673444243864,
+                                "messaging":[{
+                                "sender":{
+                                    "id":"5533019560146899"},
+                                "recipient":{
+                                    "id":"101650416067938"},
+                                "timestamp":1673444242999,
+                                "message":{
+                                "mid":"m_W6wvCjMgU-OuVylXuH5Iop5x1RXIqJ5aTf5qnNKQgJ-5o5iTO8njIWduCQ1jQ2INh_kJcw2sAIDunbDeO-0k4w",
+                                "text":"challenge"
+                                }}]}]}
+                             """)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+        mockMvc.perform(post("/api/webhook/facebook/page/message").content("""
+                        {"entry":[{
+                            "id":"101650416067938",
+                            "time":1673444243864,
+                                "messaging":[{
+                                "sender":{
+                                    "id":"5533019560146899"},
+                                "recipient":{
+                                    "id":"101650416067938"},
+                                "timestamp":1673444242999,
+                                "message":{
+                                "mid":"m_W6wvCjMgU-OuVylXuH5Iop5x1RXIqJ5aTf5qnNKQgJ-5o5iTO8njIWduCQ1jQ2INh_kJcw2sAIDunbDeO-0k4w",
+                                "text":"7-3=4"
+                                }}]}]}
+                             """)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+        Mockito.verify(facebookMessageService).sendReply("5533019560146899", "Great Job! For another quiz, type in: challenge");
+    }
+
+    @Test
+    public void shouldSendReplyWithTryAgainMessageWhenQuizIsCorrect() throws Exception {
+        Mockito.when(equationRandomizer.randomEquation()).thenReturn("7-5=4");
+        mockMvc.perform(post("/api/webhook/facebook/page/message").content("""
+                        {"entry":[{
+                            "id":"101650416067938",
+                            "time":1673444243864,
+                                "messaging":[{
+                                "sender":{
+                                    "id":"5533019560146899"},
+                                "recipient":{
+                                    "id":"101650416067938"},
+                                "timestamp":1673444242999,
+                                "message":{
+                                "mid":"m_W6wvCjMgU-OuVylXuH5Iop5x1RXIqJ5aTf5qnNKQgJ-5o5iTO8njIWduCQ1jQ2INh_kJcw2sAIDunbDeO-0k4w",
+                                "text":"challenge"
+                                }}]}]}
+                             """)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+        mockMvc.perform(post("/api/webhook/facebook/page/message").content("""
+                        {"entry":[{
+                            "id":"101650416067938",
+                            "time":1673444243864,
+                                "messaging":[{
+                                "sender":{
+                                    "id":"5533019560146899"},
+                                "recipient":{
+                                    "id":"101650416067938"},
+                                "timestamp":1673444242999,
+                                "message":{
+                                "mid":"m_W6wvCjMgU-OuVylXuH5Iop5x1RXIqJ5aTf5qnNKQgJ-5o5iTO8njIWduCQ1jQ2INh_kJcw2sAIDunbDeO-0k4w",
+                                "text":"7-3=0"
+                                }}]}]}
+                             """)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+        Mockito.verify(facebookMessageService).sendReply("5533019560146899", "Hmm, try again!");
     }
 }
