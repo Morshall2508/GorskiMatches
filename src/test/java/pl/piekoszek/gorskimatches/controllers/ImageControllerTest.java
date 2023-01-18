@@ -8,26 +8,27 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ImageControllerTest {
+class ImageControllerTest {
 
-    String equation = "4+4=8";
+    private static final String equation = "4+4=8";
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
-    public void shouldReturnPNG() throws Exception {
+    void shouldReturnPNG() throws Exception {
         mockMvc.perform(get("/api/image/equation/" + equation))
                 .andExpect(content().contentType(MediaType.IMAGE_PNG))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void shouldReturnJPEG() throws Exception {
+    void shouldReturnJPEG() throws Exception {
         mockMvc.perform(get("/api/image/equation/fb/" + equation))
                 .andExpect(content().contentType(MediaType.IMAGE_JPEG))
                 .andExpect(status().isOk());

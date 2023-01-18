@@ -11,11 +11,12 @@ import pl.piekoszek.gorskimatches.token.TokenService;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class AccountControllerTest {
+class AccountControllerTest {
 
     private final String email = "gorskimatchesserver@gmail.com";
 
@@ -26,7 +27,7 @@ public class AccountControllerTest {
     private TokenService tokenService;
 
     @Test
-    public void shouldSendEmailAndReturnStringWhenEmailIsInCorrectFormat() throws Exception {
+    void shouldSendEmailAndReturnStringWhenEmailIsInCorrectFormat() throws Exception {
         var string = mockMvc.perform(post("/api/auth/email/").content("""
                                 {
                                  "email": "gorskimatchesserver@gmail.com"
@@ -39,7 +40,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void shouldNotSendEmailWhenEmailIsInIncorrectFormat() throws Exception {
+    void shouldNotSendEmailWhenEmailIsInIncorrectFormat() throws Exception {
         mockMvc.perform(post("/api/auth/email/").content("""
                                 {
                                  "email": "a1s2.com"
@@ -52,7 +53,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void shouldNotSendEmailWhenEmailIsEmpty() throws Exception {
+    void shouldNotSendEmailWhenEmailIsEmpty() throws Exception {
         mockMvc.perform(post("/api/auth/email/").content("""
                                 {
                                  "email": ""
@@ -65,7 +66,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void shouldNotChangeAccountInfoAndReturnStringWhenAuthorizationHeaderIsMissing() throws Exception {
+    void shouldNotChangeAccountInfoAndReturnStringWhenAuthorizationHeaderIsMissing() throws Exception {
         mockMvc.perform(post("/api/auth/account/")
                         .content("""
                                 {
@@ -81,7 +82,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void shouldNotChangeTheAccountInfoWhenTokenSignatureIsNotCorrect() throws Exception {
+    void shouldNotChangeTheAccountInfoWhenTokenSignatureIsNotCorrect() throws Exception {
         TokenService tokenService = new TokenService("5olTsaOR52ihTM3jtaw0RVTAtcNhajLs");
         mockMvc.perform(post("/api/auth/account/")
                         .header("Authorization", "Bearer " + tokenService.encode(email))
@@ -98,7 +99,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void shouldNotChangeAccountInfoAndReturnStringWhenAccountNameIsEmpty() throws Exception {
+    void shouldNotChangeAccountInfoAndReturnStringWhenAccountNameIsEmpty() throws Exception {
         mockMvc.perform(post("/api/auth/account/")
                         .header("Authorization", "Bearer " + getToken())
                         .content("""
@@ -115,7 +116,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void shouldNotChangeAccountInfoAndReturnStringWhenEmailIsIncorrect() throws Exception {
+    void shouldNotChangeAccountInfoAndReturnStringWhenEmailIsIncorrect() throws Exception {
         mockMvc.perform(post("/api/auth/account/")
                         .header("Authorization", "Bearer " + getToken())
                         .content("""
@@ -132,7 +133,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void shouldChangeTheAccountInfoWhenTokenSignatureIsCorrect() throws Exception {
+    void shouldChangeTheAccountInfoWhenTokenSignatureIsCorrect() throws Exception {
         mockMvc.perform(post("/api/auth/account/")
                         .header("Authorization", "Bearer " + getToken())
                         .content("""
@@ -148,7 +149,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void shouldReturnAccountInfo() throws Exception {
+    void shouldReturnAccountInfo() throws Exception {
         mockMvc.perform(post("/api/auth/account/")
                 .header("Authorization", "Bearer " + getToken())
                 .content("""
@@ -166,7 +167,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void shouldNotReturnAccountInfoWhenUserIsNotInDatabase() throws Exception {
+    void shouldNotReturnAccountInfoWhenUserIsNotInDatabase() throws Exception {
         mockMvc.perform(get("/api/auth/accountInfo/" + email))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$").value("Cannot find user with email: " + email));

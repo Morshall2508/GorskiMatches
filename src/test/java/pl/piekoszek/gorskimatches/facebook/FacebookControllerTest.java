@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class FacebookControllerTest {
+class FacebookControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -32,7 +32,7 @@ public class FacebookControllerTest {
     private String VERIFY_TOKEN;
 
     @Test
-    public void shouldReturnForbiddenStatusWhenTokenIsWrong() throws Exception {
+    void shouldReturnForbiddenStatusWhenTokenIsWrong() throws Exception {
         mockMvc.perform(get("/api/webhook/facebook/page/message")
                         .param("hub.verify_token", "a")
                         .param("hub.challenge", "a")
@@ -42,32 +42,18 @@ public class FacebookControllerTest {
     }
 
     @Test
-    public void shouldReturnOkWhenTokenIsCorrect() throws Exception {
+    void shouldReturnOkWhenTokenIsCorrect() throws Exception {
         mockMvc.perform(get("/api/webhook/facebook/page/message")
                         .param("hub.verify_token", VERIFY_TOKEN)
                         .param("hub.challenge", "a")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+                .andExpect(status().isOk());
     }
 
     @Test
-    public void shouldRespondToHiMessageWithWelcomeMessages() throws Exception {
-        mockMvc.perform(post("/api/webhook/facebook/page/message").content("""
-                        {"entry":[{
-                            "id":"101650416067938",
-                            "time":1673444243864,
-                                "messaging":[{
-                                "sender":{
-                                    "id":"5533019560146899"},
-                                "recipient":{
-                                    "id":"101650416067938"},
-                                "timestamp":1673444242999,
-                                "message":{
-                                "mid":"m_W6wvCjMgU-OuVylXuH5Iop5x1RXIqJ5aTf5qnNKQgJ-5o5iTO8njIWduCQ1jQ2INh_kJcw2sAIDunbDeO-0k4w",
-                                "text":"hi"
-                                }}]}]}
-                             """)
+    void shouldRespondToHiMessageWithWelcomeMessages() throws Exception {
+        mockMvc.perform(post("/api/webhook/facebook/page/message").content(getJsonString("hi"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
 
@@ -76,22 +62,8 @@ public class FacebookControllerTest {
     }
 
     @Test
-    public void shouldRespondWithContactInformationWhenContactMessageIsReceived() throws Exception {
-        mockMvc.perform(post("/api/webhook/facebook/page/message").content("""
-                        {"entry":[{
-                            "id":"101650416067938",
-                            "time":1673444243864,
-                                "messaging":[{
-                                "sender":{
-                                    "id":"5533019560146899"},
-                                "recipient":{
-                                    "id":"101650416067938"},
-                                "timestamp":1673444242999,
-                                "message":{
-                                "mid":"m_W6wvCjMgU-OuVylXuH5Iop5x1RXIqJ5aTf5qnNKQgJ-5o5iTO8njIWduCQ1jQ2INh_kJcw2sAIDunbDeO-0k4w",
-                                "text":"contact"
-                                }}]}]}
-                             """)
+    void shouldRespondWithContactInformationWhenContactMessageIsReceived() throws Exception {
+        mockMvc.perform(post("/api/webhook/facebook/page/message").content(getJsonString("contact"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
 
@@ -99,107 +71,53 @@ public class FacebookControllerTest {
     }
 
     @Test
-    public void shouldSendAttachmentUrlToUserWhenChallengeMessageIsSent() throws Exception {
+    void shouldSendAttachmentUrlToUserWhenChallengeMessageIsSent() throws Exception {
         Mockito.when(equationRandomizer.randomEquation()).thenReturn("7-5=4");
-        mockMvc.perform(post("/api/webhook/facebook/page/message").content("""
-                        {"entry":[{
-                            "id":"101650416067938",
-                            "time":1673444243864,
-                                "messaging":[{
-                                "sender":{
-                                    "id":"5533019560146899"},
-                                "recipient":{
-                                    "id":"101650416067938"},
-                                "timestamp":1673444242999,
-                                "message":{
-                                "mid":"m_W6wvCjMgU-OuVylXuH5Iop5x1RXIqJ5aTf5qnNKQgJ-5o5iTO8njIWduCQ1jQ2INh_kJcw2sAIDunbDeO-0k4w",
-                                "text":"challenge"
-                                }}]}]}
-                             """)
+        mockMvc.perform(post("/api/webhook/facebook/page/message").content(getJsonString("challenge"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
         Mockito.verify(facebookMessageService).sendAttachmentPhoto("5533019560146899", "https://maciej.piekoszek.pl/api/image/equation/fb/7-5=4");
-
-
     }
 
     @Test
-    public void shouldSendReplyWithCongratulationMessageWhenQuizIsCorrect() throws Exception {
+    void shouldSendReplyWithCongratulationMessageWhenQuizIsCorrect() throws Exception {
         Mockito.when(equationRandomizer.randomEquation()).thenReturn("7-5=4");
-        mockMvc.perform(post("/api/webhook/facebook/page/message").content("""
-                        {"entry":[{
-                            "id":"101650416067938",
-                            "time":1673444243864,
-                                "messaging":[{
-                                "sender":{
-                                    "id":"5533019560146899"},
-                                "recipient":{
-                                    "id":"101650416067938"},
-                                "timestamp":1673444242999,
-                                "message":{
-                                "mid":"m_W6wvCjMgU-OuVylXuH5Iop5x1RXIqJ5aTf5qnNKQgJ-5o5iTO8njIWduCQ1jQ2INh_kJcw2sAIDunbDeO-0k4w",
-                                "text":"challenge"
-                                }}]}]}
-                             """)
+        mockMvc.perform(post("/api/webhook/facebook/page/message").content(getJsonString("challenge"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
-        mockMvc.perform(post("/api/webhook/facebook/page/message").content("""
-                        {"entry":[{
-                            "id":"101650416067938",
-                            "time":1673444243864,
-                                "messaging":[{
-                                "sender":{
-                                    "id":"5533019560146899"},
-                                "recipient":{
-                                    "id":"101650416067938"},
-                                "timestamp":1673444242999,
-                                "message":{
-                                "mid":"m_W6wvCjMgU-OuVylXuH5Iop5x1RXIqJ5aTf5qnNKQgJ-5o5iTO8njIWduCQ1jQ2INh_kJcw2sAIDunbDeO-0k4w",
-                                "text":"7-3=4"
-                                }}]}]}
-                             """)
+        mockMvc.perform(post("/api/webhook/facebook/page/message").content(getJsonString("7-3=4"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
         Mockito.verify(facebookMessageService).sendReply("5533019560146899", "Great Job! For another quiz, type in: challenge");
     }
 
     @Test
-    public void shouldSendReplyWithTryAgainMessageWhenQuizIsCorrect() throws Exception {
+    void shouldSendReplyWithTryAgainMessageWhenQuizIsCorrect() throws Exception {
         Mockito.when(equationRandomizer.randomEquation()).thenReturn("7-5=4");
-        mockMvc.perform(post("/api/webhook/facebook/page/message").content("""
-                        {"entry":[{
-                            "id":"101650416067938",
-                            "time":1673444243864,
-                                "messaging":[{
-                                "sender":{
-                                    "id":"5533019560146899"},
-                                "recipient":{
-                                    "id":"101650416067938"},
-                                "timestamp":1673444242999,
-                                "message":{
-                                "mid":"m_W6wvCjMgU-OuVylXuH5Iop5x1RXIqJ5aTf5qnNKQgJ-5o5iTO8njIWduCQ1jQ2INh_kJcw2sAIDunbDeO-0k4w",
-                                "text":"challenge"
-                                }}]}]}
-                             """)
+        mockMvc.perform(post("/api/webhook/facebook/page/message").content(getJsonString("challenge"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
-        mockMvc.perform(post("/api/webhook/facebook/page/message").content("""
-                        {"entry":[{
-                            "id":"101650416067938",
-                            "time":1673444243864,
-                                "messaging":[{
-                                "sender":{
-                                    "id":"5533019560146899"},
-                                "recipient":{
-                                    "id":"101650416067938"},
-                                "timestamp":1673444242999,
-                                "message":{
-                                "mid":"m_W6wvCjMgU-OuVylXuH5Iop5x1RXIqJ5aTf5qnNKQgJ-5o5iTO8njIWduCQ1jQ2INh_kJcw2sAIDunbDeO-0k4w",
-                                "text":"7-3=0"
-                                }}]}]}
-                             """)
+        mockMvc.perform(post("/api/webhook/facebook/page/message").content(getJsonString("7-3=0"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
         Mockito.verify(facebookMessageService).sendReply("5533019560146899", "Hmm, try again!");
+    }
+
+    private String getJsonString(String text) {
+        return """
+                {"entry":[{
+                "id":"101650416067938",
+                "time":1673444243864,
+                    "messaging":[{
+                    "sender":{
+                        "id":"5533019560146899"},
+                    "recipient":{
+                        "id":"101650416067938"},
+                    "timestamp":1673444242999,
+                    "message":{
+                    "mid":"m_W6wvCjMgU-OuVylXuH5Iop5x1RXIqJ5aTf5qnNKQgJ-5o5iTO8njIWduCQ1jQ2INh_kJcw2sAIDunbDeO-0k4w",
+                    "text":"%s"
+                    }}]}]}
+                 """.formatted(text);
     }
 }
