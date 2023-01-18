@@ -46,7 +46,6 @@
                     if (item.registeredUserScore === item.nonRegisteredUserScore) {
 
                         let totalTime = Boolean(item.nonRegisteredUserTimeSeconds > item.registeredUserTimeSeconds);
-                        console.log(Boolean(item.nonRegisteredUserTimeSeconds > item.registeredUserTimeSeconds));
                         html += `
                 <div class = "challengeHistoryElement" onclick="window.location.href='/challengeDetails.html?uuid=' + ('${uuid}');" style = background-color:${totalTime ? "#54af54" : "#d54545"}> ${new Date(item.time).toLocaleString()}</div>
                 <div class = "challengeHistoryElement" onclick="window.location.href='/challengeDetails.html?uuid=' + ('${uuid}');" style = background-color:${totalTime ? "#54af54" : "#d54545"}> ${totalTime ? "Won" : "Lost"}</div>`

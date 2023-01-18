@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="info">Info</div>
+<script type="module">
+import Auth from "/auth.js";
+     fetch(`/api/auth/accountList`)
+
+        .then(res => {
+            if (res.ok) {
+                return res.json()
+            }
+            {
+                throw "Not found";
+            }
+        })
+        .then(json => {
+            let html= "";
+        html +=`
+                    <div class = "userName"> Username</div>`
+            json.forEach(item => {
+
+            html+=`<div class = "tableElement"> ${item.accountName}</div>
+            <div class = "challenge"> Challenge!</div>`
+
+            })
+            document.getElementById("info").innerHTML = html;
+    });
+
+</script>
+</body>
+</html>

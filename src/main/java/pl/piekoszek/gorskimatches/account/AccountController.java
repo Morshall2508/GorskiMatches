@@ -3,7 +3,6 @@ package pl.piekoszek.gorskimatches.account;
 import org.springframework.web.bind.annotation.*;
 import pl.piekoszek.gorskimatches.config.authorization.Email;
 import pl.piekoszek.gorskimatches.config.authorization.ForbiddenException;
-import pl.piekoszek.gorskimatches.config.http.NotFoundException;
 
 import javax.validation.Valid;
 
@@ -34,5 +33,10 @@ class AccountController {
     @GetMapping("accountInfo/{email}")
     AccountInfo fetchAccountInfo(@PathVariable("email") String email) {
         return accountService.getAccountInfo(email);
+    }
+
+    @GetMapping("accountList")
+    Iterable<AccountInfo> getAll() {
+        return accountService.getAllAccountsInformation();
     }
 }

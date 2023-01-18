@@ -87,7 +87,8 @@
                         },
                         body: JSON.stringify({
                             scoreUser1: scoreForEachQuiz,
-                            answerUser1: answersForEachQuiz
+                            answerUser1: answersForEachQuiz,
+                            timeUser1: totalTimeToSolve
                         })
                     })
             } else {
@@ -112,7 +113,8 @@
                         },
                         body: JSON.stringify({
                             scoreUser2: scoreForEachQuiz,
-                            answerUser2: answersForEachQuiz
+                            answerUser2: answersForEachQuiz,
+                            timeUser2: totalTimeToSolve
                         })
                     })
                     .then(() =>

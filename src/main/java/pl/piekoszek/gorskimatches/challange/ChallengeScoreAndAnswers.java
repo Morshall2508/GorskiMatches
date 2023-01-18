@@ -12,6 +12,11 @@ class ChallengeScoreAndAnswers {
 
     private List<Integer> scoreUser2;
 
+    public float timeUser1;
+
+    public float timeUser2;
+
+
     public List<String> getAnswerUser1() {
         return answerUser1;
     }
@@ -26,6 +31,14 @@ class ChallengeScoreAndAnswers {
 
     public List<Integer> getScoreUser2() {
         return scoreUser2;
+    }
+
+    public float getTimeUser1() {
+        return timeUser1;
+    }
+
+    public float getTimeUser2() {
+        return timeUser2;
     }
 }
 
