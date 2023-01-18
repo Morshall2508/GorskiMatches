@@ -18,6 +18,10 @@ public class ChallengeQuiz {
 
     public String quiz;
 
+    public String emailUser1;
+
+    public String emailUser2;
+
     private String answerUser1;
 
     private String answerUser2;
@@ -26,6 +30,9 @@ public class ChallengeQuiz {
 
     private int scoreUser2;
 
+    private float timeUser1;
+
+    private float timeUser2;
 
     public ChallengeQuiz() {
 
@@ -64,8 +71,40 @@ public class ChallengeQuiz {
     }
 
 
+    public String getEmailUser1() {
+        return emailUser1;
+    }
 
-    public ChallengeQuiz(Challenge challenge, String quiz){
+    public void setEmailUser1(String emailUser1) {
+        this.emailUser1 = emailUser1;
+    }
+
+    public String getEmailUser2() {
+        return emailUser2;
+    }
+
+    public void setEmailUser2(String emailUser2) {
+        this.emailUser2 = emailUser2;
+    }
+
+
+    public float getTimeUser1() {
+        return timeUser1;
+    }
+
+    public void setTimeUser1(float timeUser1) {
+        this.timeUser1 = timeUser1;
+    }
+
+    public float getTimeUser2() {
+        return timeUser2;
+    }
+
+    public void setTimeUser2(float timeUser2) {
+        this.timeUser2 = timeUser2;
+    }
+
+    public ChallengeQuiz(Challenge challenge, String quiz) {
         this.challenge = challenge;
         this.quiz = quiz;
     }

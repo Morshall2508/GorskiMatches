@@ -16,5 +16,8 @@ public class Equation {
         this.quiz = quiz;
         this.answer = answer;
     }
+
+    Equation() {
+    }
 }
 
