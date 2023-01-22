@@ -37,8 +37,9 @@
 
             .then(json => {
                 let html = "";
-                let timeUser2 = (json.nonRegisteredUserTimeSeconds / 1000).toFixed(2);
-                let timeUser1 = (json.registeredUserTimeSeconds / 1000).toFixed(2);
+                const timeUser2 = (json.nonRegisteredUserTimeSeconds / 1000).toFixed(2);
+                const timeUser1 = (json.registeredUserTimeSeconds / 1000).toFixed(2);
+
                 let totalScoreRegister = json.registeredUserScore;
                 let totalScoreNonRegister = json.nonRegisteredUserScore;
                 let totalResultUser1 = 0;
@@ -53,8 +54,7 @@
 
                 json.challengeQuizzes.forEach(innerItem => {
                     localStorage.setItem('emailUser2', innerItem.emailUser2);
-
-
+                    localStorage.setItem('emailUser1', innerItem.emailUser1);
                     if (innerItem.scoreUser1 > 0) {
                         totalResultUser1++;
                     }
@@ -70,7 +70,7 @@
                     localStorage.setItem('timeRegisteredUser2', timeRegisteredUser2)
                     let resultUser1 = Boolean(innerItem.scoreUser1 > 0);
                     let resultUser2 = Boolean(innerItem.scoreUser2 > 0);
-                    // Case gdy 2 rejestr
+
                     if (localStorage.getItem('emailUser2') != null) {
                         if (Auth.getEmail() == localStorage.getItem('emailUser2')) {
                             if (innerItem.timeUser1 === 0 || innerItem.timeUser2 === 0) {
@@ -97,7 +97,7 @@
                         </div>`
                             }
                         }
-                        // Case gdy 1 zarejestr
+
                     } else {
                         if (timeUser1 === 0 || timeUser2 === 0) {
                             html += `<div class = "tableElement">${innerItem.quiz}</div>
@@ -112,41 +112,16 @@
                         }
                     }
                 })
-                if (localStorage.getItem('emailUser2') != null) {
-                    // Case gdy 2 rejestr - tu jesteśmy
-                    if (Auth.getEmail() == localStorage.getItem('emailUser2')) {
 
-                        if (localStorage.getItem('timeRegisteredUser1') === 0 || localStorage.getItem('timeRegisteredUser2') === 0) {
-
-                            html += `<div class = "tableTime">${localStorage.getItem('timeRegisteredUser2')}s</div>
-                         <div class = "tableTime">${localStorage.getItem('timeRegisteredUser1')}s</div>`
-                        } else {
-
-                            if (totalResultUser1 === totalResultUser2) {
-
-                                let timeCompare = Boolean(localStorage.getItem('timeRegisteredUser2') < localStorage.getItem('timeRegisteredUser1'));
-
-                                html += `<div class = "tableTime" style = background-color:${timeCompare ? "#54af54" : "#d54545"}>${localStorage.getItem('timeRegisteredUser2')}s</div>
-                         <div class = "tableTime" style = background-color:${timeCompare ? "#d54545" : "#54af54"}>${localStorage.getItem('timeRegisteredUser1')}s</div>`
-                                document.getElementById("table").innerHTML = html;
-                            } else {
-
-                                html += `<div class = "tableTime">${localStorage.getItem('timeRegisteredUser2')}s</div>
-                         <div class = "tableTime">${localStorage.getItem('timeRegisteredUser1')}s</div>`
-                                document.getElementById("table").innerHTML = html;
-                            }
-                        }
-                    } else {
-                        if (localStorage.getItem('timeRegisteredUser1') === 0 || localStorage.getItem('timeRegisteredUser2') === 0) {
-
+                if (Auth.getEmail() == localStorage.getItem('emailUser1')) {
+                    if (localStorage.getItem('emailUser2') == "null") {
+                        if (parseFloat(localStorage.getItem('timeRegisteredUser1')) == 0 || parseFloat(localStorage.getItem('timeRegisteredUser2')) == 0) {
                             html += `<div class = "tableTime">${localStorage.getItem('timeRegisteredUser1')}s</div>
                          <div class = "tableTime">${localStorage.getItem('timeRegisteredUser2')}s</div>`
+
                         } else {
-
                             if (totalResultUser1 === totalResultUser2) {
-
-                                let timeCompare = Boolean(localStorage.getItem('timeRegisteredUser1') < localStorage.getItem('timeRegisteredUser2'));
-
+                                let timeCompare = Boolean(parseFloat(localStorage.getItem('timeRegisteredUser2')) > parseFloat(localStorage.getItem('timeRegisteredUser1')));
                                 html += `<div class = "tableTime" style = background-color:${timeCompare ? "#54af54" : "#d54545"}>${localStorage.getItem('timeRegisteredUser1')}s</div>
                          <div class = "tableTime" style = background-color:${timeCompare ? "#d54545" : "#54af54"}>${localStorage.getItem('timeRegisteredUser2')}s</div>`
                                 document.getElementById("table").innerHTML = html;
@@ -154,40 +129,53 @@
 
                                 html += `<div class = "tableTime">${localStorage.getItem('timeRegisteredUser1')}s</div>
                          <div class = "tableTime">${localStorage.getItem('timeRegisteredUser2')}s</div>`
-
                                 document.getElementById("table").innerHTML = html;
                             }
                         }
+                    }
 
+                    else {
+                        if (localStorage.getItem('timeRegisteredUser1') == 0 || localStorage.getItem('timeRegisteredUser2') == 0) {
+                            html += `<div class = "tableTime">${localStorage.getItem('timeRegisteredUser1')}s</div>
+                         <div class = "tableTime">${localStorage.getItem('timeRegisteredUser2')}s</div>`
+
+                        } else {
+                            if (totalResultUser1 === totalResultUser2) {
+                                let timeCompare = Boolean(parseFloat(localStorage.getItem('timeRegisteredUser2')) > parseFloat(localStorage.getItem('timeRegisteredUser1')));
+                                html += `<div class = "tableTime" style = background-color:${timeCompare ? "#54af54" : "#d54545"}>${localStorage.getItem('timeRegisteredUser1')}s</div>
+                         <div class = "tableTime" style = background-color:${timeCompare ? "#d54545" : "#54af54"}>${localStorage.getItem('timeRegisteredUser2')}s</div>`
+                                document.getElementById("table").innerHTML = html;
+                            } else {
+
+                                html += `<div class = "tableTime">${localStorage.getItem('timeRegisteredUser1')}s</div>
+                         <div class = "tableTime">${localStorage.getItem('timeRegisteredUser2')}s</div>`
+                                document.getElementById("table").innerHTML = html;
+                            }
+                        }
                     }
                 } else {
-                    // case 1 zarejestr
-                    if (timeUser1 === 0 || timeUser2 === 0) {
-                        html += `<div class = "tableTime">${timeUser2}s</div>
-                         <div class = "tableTime">${timeUser1}s</div>`
+
+                    if (parseFloat(localStorage.getItem('timeRegisteredUser1')) === 0 || parseFloat(localStorage.getItem('timeRegisteredUser2')) === 0) {
+                        html += `<div class = "tableTime">${localStorage.getItem('timeRegisteredUser2')}s</div>
+                         <div class = "tableTime">${localStorage.getItem('timeRegisteredUser1')}s</div>`
+
                     } else {
-                        if (totalScoreNonRegister === totalScoreRegister) {
+                        if (totalResultUser1 === totalResultUser2) {
+                            let timeCompare = Boolean(parseFloat(localStorage.getItem('timeRegisteredUser1')) > parseFloat(localStorage.getItem('timeRegisteredUser2')));
 
-                            let timeCompare = Boolean(timeUser2 < timeUser1);
-
-                            html += `<div class = "tableTime" style = background-color:${timeCompare ? "#d54545" : "#54af54"}>${timeUser2}s</div>
-                         <div class = "tableTime" style = background-color:${timeCompare ? "#54af54" : "#d54545"}>${timeUser1}s</div>`
-
+                            html += `<div class = "tableTime" style = background-color:${timeCompare ? "#54af54" : "#d54545"}>${localStorage.getItem('timeRegisteredUser2')}s</div>
+                         <div class = "tableTime" style = background-color:${timeCompare ? "#d54545" : "#54af54"}>${localStorage.getItem('timeRegisteredUser1')}s</div>`
                             document.getElementById("table").innerHTML = html;
+
                         } else {
-
-                            html += `<div class = "tableTime">${timeUser2}s</div>
-                         <div class = "tableTime">${timeUser1}s</div>`
-
+                            html += `<div class = "tableTime">${localStorage.getItem('timeRegisteredUser2')}s</div>
+                         <div class = "tableTime">${localStorage.getItem('timeRegisteredUser1')}s</div>`
                             document.getElementById("table").innerHTML = html;
                         }
                     }
                 }
-                console.log(totalResultUser1);
-                console.log(totalResultUser2);
                 document.getElementById("table").innerHTML = html;
-            }
-            )
+            })
 
     </script>
 <script>
@@ -201,4 +189,5 @@
         };
     </script>
 </body>
+
 </html>
