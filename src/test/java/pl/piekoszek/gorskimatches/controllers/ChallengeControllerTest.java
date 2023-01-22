@@ -28,10 +28,10 @@ class ChallengeControllerTest {
 
     @Test
     void shouldCreateChallenge() throws Exception {
-        var uuid = mockMvc.perform(get("/api/challenge/generate"))
+        mockMvc.perform(get("/api/challenge/generate"))
                 .andExpect(jsonPath("$").isString())
                 .andExpect(jsonPath("$").isNotEmpty())
-                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -58,13 +58,8 @@ class ChallengeControllerTest {
                 .andExpect(status().isOk());
 
         mockMvc.perform(post("/api/challenge/score")
-                        .content("""
-                                {
-                                 "uuid": "%s",
-                                 "score" : "3",
-                                 "time" : "14.21"
-                                }
-                                """.formatted(uuid))
+                        .content(getJsonString(uuid)
+                                .formatted(uuid))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -132,13 +127,7 @@ class ChallengeControllerTest {
                 .andExpect(status().isOk());
 
         mockMvc.perform(post("/api/challenge/score")
-                        .content("""
-                                {
-                                 "uuid": "%s",
-                                 "score" : "3",
-                                 "time" : "14.21"
-                                }
-                                """.formatted(uuid))
+                        .content(getJsonString(uuid))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -191,8 +180,32 @@ class ChallengeControllerTest {
 
     @Test
     void shouldReturnInformationAboutQuiz() throws Exception {
-        mockMvc.perform(get("/api/challenge/{$uuid}", getUuid()))
+        var uuid = getUuid();
+        var scoreAndAnswers = """
+                {
+                 "scoreUser1":[1,1,1,1,1],
+                 "answerUser1":["1+1=1","1+1=1","1+1=1","1+1=1","1+1=1"]
+                }
+                """;
+        mockMvc.perform(post("/api/challenge/score")
+                .header("Authorization", "Bearer " + getToken())
+                .content(getJsonString(uuid))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        mockMvc.perform(post("/api/challenge/challengeQuizzesAndAnswers/" + uuid)
+                .header("Authorization", "Bearer " + getToken())
+                .content(scoreAndAnswers)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        mockMvc.perform(get("/api/challenge/" + uuid))
                 .andExpect(jsonPath("$").isNotEmpty())
+                .andExpect(jsonPath("$.uuid").value(uuid.toString()))
+                .andExpect(jsonPath("$.email").value("gorskimatchesserver@gmail.com"))
+                .andExpect(jsonPath("$.email").isString())
+                .andExpect(jsonPath("$.challengeQuizzes[0].answerUser1").value("1+1=1"))
+                .andExpect(jsonPath("$.challengeQuizzes[0].scoreUser1").value("1"))
                 .andExpect(status().isOk());
     }
 
@@ -205,11 +218,12 @@ class ChallengeControllerTest {
         return objectMapper.readValue(mockMvc.perform(get("/api/challenge/generate"))
                 .andReturn().getResponse().getContentAsString(), UUID.class);
     }
-    private String getJsonString(UUID uuid){
+
+    private String getJsonString(UUID uuid) {
         return """
                 {
                  "uuid": "%s",
-                 "score" : "4",
+                 "score" : "5",
                  "time" : "12.21"
                 }
                 """.formatted(uuid);
