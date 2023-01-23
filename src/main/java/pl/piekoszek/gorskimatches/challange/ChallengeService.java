@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import pl.piekoszek.gorskimatches.config.http.NotFoundException;
 import pl.piekoszek.gorskimatches.email.EmailService;
 import pl.piekoszek.gorskimatches.equation.EquationRandomizer;
+import pl.piekoszek.gorskimatches.equation.QuizAnswerChecker;
 
 import javax.mail.MessagingException;
 import java.util.*;
@@ -27,13 +28,16 @@ public class ChallengeService {
 
     private final String server;
 
+    private final QuizAnswerChecker quizAnswerChecker;
+
     public ChallengeService(EmailService emailService,
                             EquationRandomizer equationRandomizer,
                             GenerateUUID generateUUID,
                             ChallengeRepository challengeRepository,
                             Judge judge,
                             TimeService timeService,
-                            @Value("${matches.server.address}") String server) {
+                            @Value("${matches.server.address}") String server,
+                            QuizAnswerChecker quizAnswerChecker) {
         this.emailService = emailService;
         this.equationRandomizer = equationRandomizer;
         this.generateUUID = generateUUID;
@@ -41,6 +45,7 @@ public class ChallengeService {
         this.judge = judge;
         this.timeService = timeService;
         this.server = server;
+        this.quizAnswerChecker = quizAnswerChecker;
     }
 
     void resultForRegisteredUser(ChallengeResult challengeResult) throws MessagingException {
@@ -84,22 +89,24 @@ public class ChallengeService {
         return challenge.getUuid();
     }
 
-    void saveUser1ScoreAndAnswers(UUID uuid, ChallengeScoreAndAnswers challengeScoreAndAnswers) {
+    void calculateAndSaveScoreForUser1(UUID uuid, ChallengeScoreAndAnswers challengeScoreAndAnswers) {
         var challenge = challengeRepository.findById(uuid).orElseThrow(() -> new NotFoundException("Couldn't find the challenge with uuid: " + uuid));
         for (int i = 0; i < 5; i++) {
             var challengeQuiz = challenge.getChallengeQuizzes().get(i);
             challengeQuiz.setAnswerUser1(challengeScoreAndAnswers.getAnswerUser1().get(i));
-            challengeQuiz.setScoreUser1(challengeScoreAndAnswers.getScoreUser1().get(i));
+            var correct = quizAnswerChecker.checkForCorrectAnswer(challengeQuiz.quiz, challengeScoreAndAnswers.getAnswerUser1().get(i));
+            challengeQuiz.setScoreUser1(correct ? 1 : 0);
         }
         challengeRepository.save(challenge);
     }
 
-    void saveUser2ScoreAndAnswers(UUID uuid, ChallengeScoreAndAnswers challengeScoreAndAnswers) {
+    void calculateAndSaveScoreForUser2(UUID uuid, ChallengeScoreAndAnswers challengeScoreAndAnswers) {
         var challenge = challengeRepository.findById(uuid).orElseThrow(() -> new NotFoundException("Couldn't find the challenge with uuid: " + uuid));
         for (int i = 0; i < 5; i++) {
             var challengeQuiz = challenge.getChallengeQuizzes().get(i);
             challengeQuiz.setAnswerUser2(challengeScoreAndAnswers.getAnswerUser2().get(i));
-            challengeQuiz.setScoreUser2(challengeScoreAndAnswers.getScoreUser2().get(i));
+            var correct = quizAnswerChecker.checkForCorrectAnswer(challengeQuiz.quiz, challengeScoreAndAnswers.getAnswerUser1().get(i));
+            challengeQuiz.setScoreUser2(correct ? 1 : 0);
         }
         challengeRepository.save(challenge);
     }
@@ -138,11 +145,11 @@ public class ChallengeService {
         return challengeRepository.findAll();
     }
 
-    public Challenge getChallenge(UUID id){
+    public Challenge getChallenge(UUID id) {
         return challengeRepository.findById(id).get();
     }
 
-    String getChallengeDetailsUrl(UUID uuid){
+    String getChallengeDetailsUrl(UUID uuid) {
         return server + "challengeDetails.html?uuid=" + uuid;
     }
 }

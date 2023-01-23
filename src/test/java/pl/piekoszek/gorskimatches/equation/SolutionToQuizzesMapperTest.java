@@ -101,6 +101,18 @@ class SolutionToQuizzesMapperTest {
     }
 
     @Test
+    void shouldCreateQuizzesFromSolutionByMovingMatchInsideWholeEquation6() {
+        var quizSolutionMap = solutionToQuizzesMapper.insideEquation("8-8=0");
+        assertThat(quizSolutionMap.get("8+6=0")).contains("8-8=0");
+    }
+
+    @Test
+    void shouldCreateQuizzesFromSolutionByMovingMatchInsideMatch() {
+        var map = solutionToQuizzesMapper.insideSingleNumber("6-2=4");
+        assertThat(map.get("9-2=4")).contains("6-2=4");
+    }
+
+    @Test
     void shouldNotHaveAnyMatchematicallyCorrectQuizzes() {
         var allGeneratedQuizzes = new QuizzesGenerator(solutionToQuizzesMapper, equationGenerator);
         var allEquations = allGeneratedQuizzes.getAllSolutionsByQuiz();

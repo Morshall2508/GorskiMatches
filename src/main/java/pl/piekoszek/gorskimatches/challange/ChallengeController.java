@@ -45,10 +45,10 @@ class ChallengeController {
     @PostMapping("challengeQuizzesAndAnswers/{uuid}")
     void saveChallengeData(@Email(required = false) String email, @PathVariable("uuid") UUID uuid, @RequestBody ChallengeScoreAndAnswers challengeScoreAndAnswers) {
         if (email != null) {
-            challengeService.saveUser1ScoreAndAnswers(uuid, challengeScoreAndAnswers);
+            challengeService.calculateAndSaveScoreForUser1(uuid, challengeScoreAndAnswers);
             return;
         }
-        challengeService.saveUser2ScoreAndAnswers(uuid, challengeScoreAndAnswers);
+        challengeService.calculateAndSaveScoreForUser2(uuid, challengeScoreAndAnswers);
     }
 
     @GetMapping("challenges")
