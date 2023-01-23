@@ -6,6 +6,8 @@ import pl.piekoszek.gorskimatches.config.http.NotFoundException;
 import pl.piekoszek.gorskimatches.email.EmailService;
 import pl.piekoszek.gorskimatches.token.TokenService;
 
+import javax.mail.MessagingException;
+
 @Component
 class AccountService {
 
@@ -22,9 +24,9 @@ class AccountService {
         this.server = server;
     }
 
-    void sendRegistrationOrLoginLink(String email) {
+    void sendRegistrationOrLoginLink(String email) throws MessagingException {
         emailService.sendEmail(email, "Account registration",
-                "To register click on this link: " + server + "auth/login.html?token=" + tokenService.encode(email));
+                        "To register click on this link: " + "<a href=" + server + "auth/login.html?token=" + tokenService.encode(email) + ">" + "Register" + "</a>");
     }
 
     void changeAccountInfo(AccountInfo accountInfo) {

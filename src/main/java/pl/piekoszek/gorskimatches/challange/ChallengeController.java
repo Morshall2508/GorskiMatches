@@ -3,6 +3,7 @@ package pl.piekoszek.gorskimatches.challange;
 import org.springframework.web.bind.annotation.*;
 import pl.piekoszek.gorskimatches.config.authorization.Email;
 
+import javax.mail.MessagingException;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,7 +23,7 @@ class ChallengeController {
     }
 
     @PostMapping("score")
-    void saveRegisteredUserAndGetResults(@Email(required = false) String email, @RequestBody ChallengeResult challengeResult) {
+    void saveRegisteredUserAndGetResults(@Email(required = false) String email, @RequestBody ChallengeResult challengeResult) throws MessagingException {
         if (email != null) {
             challengeService.saveRegisteredUserResult(challengeResult, email);
             return;
