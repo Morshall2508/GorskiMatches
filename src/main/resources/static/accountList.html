@@ -1,36 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+
 <body>
+<div id="challenge">Challenge</div>
 <div id="info">Info</div>
 <script type="module">
-import Auth from "/auth.js";
-     fetch(`/api/auth/accountList`)
+        import Auth from "/auth.js";
 
-        .then(res => {
-            if (res.ok) {
-                return res.json()
-            }
-            {
-                throw "Not found";
-            }
-        })
-        .then(json => {
-            let html= "";
-        html +=`
-                    <div class = "userName"> Username</div>`
-            json.forEach(item => {
+        fetch(`/api/auth/accountList`)
 
-            html+=`<div class = "tableElement"> ${item.accountName}</div>
-            <div class = "challenge"> Challenge!</div>`
-
+            .then(res => {
+                if (res.ok) {
+                    return res.json()
+                }
+                {
+                    throw "Not found";
+                }
             })
-            document.getElementById("info").innerHTML = html;
-    });
+            .then(json => {
+                let html = "";
+                html += `
+                    <div class = "userName"> Username</div>`
+                json.forEach(item => {
 
-</script>
+                    html += `<div class = "tableElement"> ${item.accountName}</div>
+            <div class = "challenge"onclick="getChallenge()"> Challenge!</div>`
+
+                })
+                document.getElementById("info").innerHTML = html;
+            });
+
+
+    </script>
+<script>
+        function getChallenge() {
+            fetch("api/challenge/generate")
+                .then(res => res.json()
+                    .then(json => {
+                        let uuid = json.toString();
+                        window.location.replace("/challenge.html?uuid=" + uuid);
+                    })
+                )
+
+        }
+    </script>
 </body>
+
 </html>
