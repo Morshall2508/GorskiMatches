@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 <div class="bigPad">
     <div class="navigationBar">
@@ -13,9 +14,16 @@
         <div id="accountPage">Account</div>
     </div>
     <div class="accountPad">
-        <div class ="accountInformationBasic">
-        <div class="accountPadTitle"><h1>Account <br>info</h1></div>
-        <div id="challengeScoreAndAnswers"><h3>Check<br>Challenge history</h3></div>
+        <div class="accountInformationBasic">
+            <div class="accountPadTitle">
+                <h1>Account <br>info</h1>
+            </div>
+            <div id="challengeScoreAndAnswers">
+                <h3>Check<br>Challenge history</h3>
+            </div>
+            <div id="accountList">
+                <h3>Challenge someone</h3>
+            </div>
         </div>
         <div id="loggedIn"></div>
         <div id="accountInfoPad">
@@ -27,12 +35,13 @@
             <div id="usernameEmpty"></div>
             <h2>Select your avatar</h2>
             <main>
-                <input type="file" id="file" accept="image/*" onchange="encodeImageFileAsURL(this), fileValidation()">
+                <input type="file" id="file" accept="image/*"
+                       onchange="encodeImageFileAsURL(this), fileValidation()">
                 <label for="file">
                     Choose file
                 </label>
                 <div id="thingsNeeded"></div>
-                <img id="output"/>
+                <img id="output" />
             </main>
             <button id="confirmChanges">Confirm</button>
         </div>
@@ -40,106 +49,110 @@
 </div>
 
 <script>
-    fileValidation = () => {
-        const fi = document.getElementById('file');
-        if (fi.files.length > 0) {
-            for (let i = 0; i <= fi.files.length - 1; i++) {
+        fileValidation = () => {
+            const fi = document.getElementById('file');
+            if (fi.files.length > 0) {
+                for (let i = 0; i <= fi.files.length - 1; i++) {
 
-                const fSize = fi.files.item(i).size;
-                const file = Math.round((fSize / 1024));
-                if (file >= 2048) {
-                    alert(
-                      "File is too big, please select a file less than 2Mb");
-                }  else {
-                    document.getElementById('thingsNeeded').innerHTML = "File has been selected";
+                    const fSize = fi.files.item(i).size;
+                    const file = Math.round((fSize / 1024));
+                    if (file >= 2048) {
+                        alert(
+                            "File is too big, please select a file less than 2Mb");
+                    } else {
+                        document.getElementById('thingsNeeded').innerHTML = "File has been selected";
+                    }
                 }
             }
         }
-    }
-</script>
+    </script>
 <script>
-    function encodeImageFileAsURL(element) {
-        var output = element.files[0];
-        var reader = new FileReader();
-        reader.onloadend = function () {
-            var byte64Image = reader.result;
-            sessionStorage.setItem('byte64Image', byte64Image);
+        function encodeImageFileAsURL(element) {
+            var output = element.files[0];
+            var reader = new FileReader();
+            reader.onloadend = function () {
+                var byte64Image = reader.result;
+                sessionStorage.setItem('byte64Image', byte64Image);
+            }
+            reader.readAsDataURL(output);
         }
-        reader.readAsDataURL(output);
-    }
-</script>
+    </script>
 <script type="module">
-    import Auth from "/auth.js";
+        import Auth from "/auth.js";
 
-    document.getElementById("confirmChanges").onclick = () => {
-        if (!Auth.isLoggedIn()){
-            document.getElementById("usernameEmpty").innerText = "Please register first"
-        } else {
-            if (document.getElementById("username").value === "") {
+        document.getElementById("confirmChanges").onclick = () => {
+            if (!Auth.isLoggedIn()) {
+                document.getElementById("usernameEmpty").innerText = "Please register first"
+            } else {
+                if (document.getElementById("username").value === "") {
                     document.getElementById("usernameEmpty").innerText = "Username cannot be empty"
-                    } else {
-                            document.getElementById("usernameEmpty").innerText = ""
-                            fetch("/api/auth/account",
-                            {
-                                method: "POST",
-                                headers: {
-                                    "Content-Type": "application/json",
-                                    'Authorization': 'bearer ' + token,
-                                },
-                                body: JSON.stringify({
-                                    email: Auth.getEmail(),
-                                    accountName: document.getElementById("username").value,
-                                    avatar: sessionStorage.getItem('byte64Image')
-                                })
-                            }).then (res => {
+                } else {
+                    document.getElementById("usernameEmpty").innerText = ""
+                    fetch("/api/auth/account",
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                'Authorization': 'bearer ' + token,
+                            },
+                            body: JSON.stringify({
+                                email: Auth.getEmail(),
+                                accountName: document.getElementById("username").value,
+                                avatar: sessionStorage.getItem('byte64Image')
+                            })
+                        }).then(res => {
                             if (res.ok) {
                                 window.location.reload();
-                                } else {
+                            } else {
                                 alert("Something went wrong, please try again");
-                                }
-                            });
-                    }
+                            }
+                        });
+                }
             }
         };
 
-</script>
+    </script>
 
 <script type="module">
-    import Auth from "/auth.js";
+        import Auth from "/auth.js";
 
-    fetch(`/api/auth/accountInfo/${Auth.getEmail()}`)
-        .then(res => {
-            if (res.ok) return res.json();
-            throw "Not found";
-        })
-        .then(accountInfo => {
-            document.getElementById("accountName").innerText = accountInfo.accountName;
-            document.getElementById("accountAvatar").src = accountInfo.avatar;
-            document.getElementById("username").value = accountInfo.accountName;
-        });
+        fetch(`/api/auth/accountInfo/${Auth.getEmail()}`)
+            .then(res => {
+                if (res.ok) return res.json();
+                throw "Not found";
+            })
+            .then(accountInfo => {
+                document.getElementById("accountName").innerText = accountInfo.accountName;
+                document.getElementById("accountAvatar").src = accountInfo.avatar;
+                document.getElementById("username").value = accountInfo.accountName;
+            });
 
-</script>
+    </script>
 <script>
-    const token = localStorage.getItem('token');
-    const tokenData = JSON.parse(atob(token.split('.')[1]));
-</script>
+        const token = localStorage.getItem('token');
+        const tokenData = JSON.parse(atob(token.split('.')[1]));
+    </script>
 
 <script>
-    document.getElementById("accountPage").onclick = () => {
-        window.location.replace("/account.html?")
-    };
-</script>
+        document.getElementById("accountPage").onclick = () => {
+            window.location.replace("/account.html?")
+        };
+    </script>
 <script>
-    document.getElementById("homeButton").onclick = () => {
-        window.location.replace("/")
-    };
-</script>
+        document.getElementById("homeButton").onclick = () => {
+            window.location.replace("/")
+        };
+    </script>
+<script>
+        document.getElementById("accountList").onclick = () => {
+            window.location.replace("/accountList.html?")
+        };
+    </script>
 <script>
         document.getElementById("challengeScoreAndAnswers").onclick = () => {
             window.location.replace("/challengeHistory.html?")
         };
-</script>
+    </script>
 </body>
-
 
 </html>

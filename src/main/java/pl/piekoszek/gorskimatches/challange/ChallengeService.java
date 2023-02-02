@@ -120,12 +120,12 @@ public class ChallengeService {
     }
 
     boolean checkIfQuizHasBeenCompletedByUser(UUID uuid) {
-        var challenges =  challengeRepository.findById(uuid).get().getChallengeQuizzes();
+        var challenges = challengeRepository.findById(uuid).get().getChallengeQuizzes();
         return challenges.get(0).getEmailUser1() != null;
     }
 
-    void resultsForRegisteredUsers (UUID uuid) {
-        var challenges =  challengeRepository.findById(uuid).get().getChallengeQuizzes();
+    void resultsForRegisteredUsers(UUID uuid) throws MessagingException {
+        var challenges = challengeRepository.findById(uuid).get().getChallengeQuizzes();
         String subject = "Challenge: " + uuid + " result";
         if (judge.getResultForChallengeUser(
                 challenges.stream().mapToInt(ChallengeQuiz::getScoreUser1).sum(),
@@ -139,6 +139,7 @@ public class ChallengeService {
             emailService.sendEmail(challenges.stream().toList().get(1).getEmailUser1(), subject, "Unfortunately you've lost :(!");
         }
     }
+
     List<String> getQuizzes(UUID uuid) {
         var challengeOptional = challengeRepository.findById(uuid);
         if (challengeOptional.isEmpty()) {
@@ -173,11 +174,17 @@ public class ChallengeService {
         return challengeRepository.findAll();
     }
 
-    Challenge getChallenge(UUID id){
+    Challenge getChallenge(UUID id) {
         return challengeRepository.findById(id).get();
     }
 
-    String getChallengeDetailsUrl(UUID uuid){
+    String getChallengeDetailsUrl(UUID uuid) {
         return server + "challengeDetails.html?uuid=" + uuid;
+    }
+
+    void sendChallengeEmail(String receiver, String initiator, UUID uuid) throws MessagingException {
+        emailService.sendEmail(receiver, "Challenge",
+                "You have been challenged by: " + initiator +
+                        "<a href=" + server + "challenge.html?uuid=" + uuid + ">" + " " + "Challenge" + "</a>");
     }
 }

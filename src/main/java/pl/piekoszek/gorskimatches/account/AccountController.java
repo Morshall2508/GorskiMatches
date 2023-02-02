@@ -38,6 +38,6 @@ class AccountController {
 
     @GetMapping("accountList")
     Iterable<AccountInfo> getAll() {
-        return accountService.getAllAccountsInformation();
+        return accountService.getAllAccounts();
     }
 }

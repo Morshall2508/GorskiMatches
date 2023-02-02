@@ -43,7 +43,7 @@ class ChallengeController {
     }
 
     @PostMapping("challengeQuizzesAndAnswers/{uuid}")
-    void saveChallengeData(@Email(required = false) String email, @PathVariable("uuid") UUID uuid, @RequestBody ChallengeScoreAndAnswers challengeScoreAndAnswers) {
+    void saveChallengeData(@Email(required = false) String email, @PathVariable("uuid") UUID uuid, @RequestBody ChallengeScoreAndAnswers challengeScoreAndAnswers) throws MessagingException {
         if (email != null) {
             if (challengeService.checkIfQuizHasBeenCompletedByUser(uuid)) {
                 challengeService.saveUser2ScoreAndAnswers(uuid, challengeScoreAndAnswers, email);
@@ -64,5 +64,10 @@ class ChallengeController {
     @GetMapping("{uuid}")
     Challenge getChallenge(@PathVariable("uuid") UUID uuid) {
         return challengeService.getChallenge(uuid);
+    }
+
+    @PostMapping("sendChallenge")
+    void sendChallenge(@RequestBody ChallengeRequest challengeRequest) throws MessagingException {
+        challengeService.sendChallengeEmail(challengeRequest.getReceiver(), challengeRequest.getInitiator(), challengeRequest.getUuid());
     }
 }

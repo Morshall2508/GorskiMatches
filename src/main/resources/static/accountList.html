@@ -2,53 +2,95 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-<div id="challenge">Challenge</div>
-<div id="info">Info</div>
+<div class="bigiPadForChallengeHistory">
+    <div class="navigationBar">
+        <div id="homeButton">Home</div>
+        <div id="accountPage">Account</div>
+    </div>
+    <div id="indexPadForChallengeHistory">
+        <div id="tableUuidTime"></div>
+        <div id="mainDiv"></div>
+    </div>
+</div>
+</body>
 <script type="module">
-        import Auth from "/auth.js";
+    import Auth from "/auth.js";
+    var emails = [];
+    fetch(`/api/auth/accountList`)
 
-        fetch(`/api/auth/accountList`)
+        .then(res => {
+            if (res.ok) {
+                return res.json()
+            }
+            {
+                throw "Not found";
+            }
+        })
+        .then(json => {
 
-            .then(res => {
-                if (res.ok) {
-                    return res.json()
-                }
-                {
-                    throw "Not found";
+            let html = "";
+            html += `<div class = "topBarFirst"> Username</div>
+                <div class = "topBarSecond"></div>`
+            json.forEach(item => {
+                if (item.email != Auth.getEmail()) {
+                    html += `<div class = "challengeHistoryElement disabled"> ${item.accountName}</div>`
+                    emails.push(item.email)
                 }
             })
-            .then(json => {
-                let html = "";
-                html += `
-                    <div class = "userName"> Username</div>`
-                json.forEach(item => {
+            const mainDiv = document.getElementById("mainDiv");
+            emails.forEach(email => {
 
-                    html += `<div class = "tableElement"> ${item.accountName}</div>
-            <div class = "challenge"onclick="getChallenge()"> Challenge!</div>`
+                let emailDiv = document.createElement("div");
 
+                emailDiv.addEventListener('click', function handleClick(event) {
+                    let uuid;
+                    fetch("api/challenge/generate")
+                        .then(res => res.json()
+                            .then(json => {
+                                uuid = json.toString();
+                            })
+                        ).then(() =>
+                            fetch(`/api/challenge/sendChallenge`,
+                                {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                    },
+                                    body: JSON.stringify({
+                                        receiver: email,
+                                        initiator: Auth.getEmail(),
+                                        uuid: uuid
+                                    })
+                                }
+                            )
+                        ).then(
+                            () => window.location.replace(`/challenge.html?uuid=${uuid}`)
+                        )
                 })
-                document.getElementById("info").innerHTML = html;
+                emailDiv.append("Challenge!");
+                emailDiv.classList.add("challengeHistoryElement");
+                mainDiv.append(emailDiv);
+
             });
+            document.getElementById("tableUuidTime").innerHTML = html;
+            document.getElementById("tableUuidTime").append(mainDiv);
+        });
 
-
-    </script>
+</script>
 <script>
-        function getChallenge() {
-            fetch("api/challenge/generate")
-                .then(res => res.json()
-                    .then(json => {
-                        let uuid = json.toString();
-                        window.location.replace("/challenge.html?uuid=" + uuid);
-                    })
-                )
-
-        }
-    </script>
-</body>
+    document.getElementById("accountPage").onclick = () => {
+        window.location.replace("/account.html?")
+    };
+</script>
+<script>
+    document.getElementById("homeButton").onclick = () => {
+        window.location.replace("/")
+    };
+</script>
 
 </html>

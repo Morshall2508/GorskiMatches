@@ -6,6 +6,9 @@ import pl.piekoszek.gorskimatches.config.http.NotFoundException;
 import pl.piekoszek.gorskimatches.email.EmailService;
 import pl.piekoszek.gorskimatches.token.TokenService;
 
+import javax.mail.MessagingException;
+import java.util.List;
+
 @Component
 class AccountService {
 
@@ -36,7 +39,7 @@ class AccountService {
                 -> new NotFoundException("Cannot find user with email: " + email));
     }
 
-    List<AccountInfo> getAllAccountsInformation(){
+    List<AccountInfo> getAllAccounts(){
         return accountRepository.findAll();
     }
 }
