@@ -6,6 +6,7 @@ import pl.piekoszek.gorskimatches.config.authorization.ForbiddenException;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/auth")
@@ -37,7 +38,7 @@ class AccountController {
     }
 
     @GetMapping("accountList")
-    Iterable<AccountInfo> getAll() {
+    List<AccountInfo> getAll() {
         return accountService.getAllAccounts();
     }
 }

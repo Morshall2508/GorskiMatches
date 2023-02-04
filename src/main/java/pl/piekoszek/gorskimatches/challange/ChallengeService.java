@@ -91,7 +91,7 @@ public class ChallengeService {
             challengeQuiz.setAnswerUser1(challengeScoreAndAnswers.getAnswerUser1().get(i));
             challengeQuiz.setScoreUser1(challengeScoreAndAnswers.getScoreUser1().get(i));
             challengeQuiz.setEmailUser1(email);
-            challengeQuiz.setTimeUser1(challengeScoreAndAnswers.getTimeUser1());
+            challengeQuiz.setTimeUser1(challengeScoreAndAnswers.getTimeToSolveUser1());
         }
         challengeRepository.save(challenge);
     }
@@ -103,7 +103,7 @@ public class ChallengeService {
             challengeQuiz.setAnswerUser2(challengeScoreAndAnswers.getAnswerUser1().get(i));
             challengeQuiz.setScoreUser2(challengeScoreAndAnswers.getScoreUser1().get(i));
             challengeQuiz.setEmailUser2(email);
-            challengeQuiz.setTimeUser2(challengeScoreAndAnswers.getTimeUser1());
+            challengeQuiz.setTimeUser2(challengeScoreAndAnswers.getTimeToSolveUser1());
         }
         challengeRepository.save(challenge);
     }
@@ -114,7 +114,7 @@ public class ChallengeService {
             var challengeQuiz = challenge.getChallengeQuizzes().get(i);
             challengeQuiz.setAnswerUser2(challengeScoreAndAnswers.getAnswerUser2().get(i));
             challengeQuiz.setScoreUser2(challengeScoreAndAnswers.getScoreUser2().get(i));
-            challengeQuiz.setTimeUser2(challengeScoreAndAnswers.getTimeUser2());
+            challengeQuiz.setTimeUser2(challengeScoreAndAnswers.getTimeToSolveUser2());
         }
         challengeRepository.save(challenge);
     }

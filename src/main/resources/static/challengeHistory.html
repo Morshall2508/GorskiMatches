@@ -50,7 +50,10 @@
                         totalResultUser2++;
                     }
                 }
-                if (item.challengeQuizzes[0].emailUser1 != null) {
+                console.log(item.challengeQuizzes[0].emailUser1)
+                console.log(item.challengeQuizzes[0].emailUser2)
+                console.log(Auth.getEmail())
+                if (item.challengeQuizzes[0].emailUser1 === Auth.getEmail() || item.challengeQuizzes[0].emailUser2 === Auth.getEmail()) {
 
                     if (Auth.getEmail() == item.challengeQuizzes[0].emailUser1) {
 
@@ -86,8 +89,6 @@
                 <div class = "challengeHistoryElement" onclick="window.location.href='/challengeDetails.html?uuid=' + ('${uuid}');"></div>`
                             } else {
 
-                                console.log(totalResultUser1);
-                                console.log(totalResultUser2);
                                 if (totalResultUser1 === totalResultUser2) {
 
                                     let totalTime = Boolean(item.challengeQuizzes[0].timeUser2 > item.challengeQuizzes[0].timeUser1);
@@ -126,9 +127,6 @@
                                 document.getElementById("tableUuidTime").innerHTML = html;
                             } else {
                                 let resultforBothRegistered = Boolean(totalResultUser2 > totalResultUser1);
-                                console.log(resultforBothRegistered)
-                                console.log(totalResultUser1);
-                                console.log(totalResultUser2);
                                 html += `
                 <div class = "challengeHistoryElement" onclick="window.location.href='/challengeDetails.html?uuid=' + ('${uuid}');" style = background-color:${resultforBothRegistered ? "#54af54" : "#d54545"}> ${new Date(item.time).toLocaleString()}</div>
                 <div class = "challengeHistoryElement" onclick="window.location.href='/challengeDetails.html?uuid=' + ('${uuid}');" style = background-color:${resultforBothRegistered ? "#54af54" : "#d54545"}> ${resultforBothRegistered ? "Won" : "Lost"}</div>`

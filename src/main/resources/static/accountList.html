@@ -13,7 +13,8 @@
         <div id="accountPage">Account</div>
     </div>
     <div id="indexPadForChallengeHistory">
-        <div id="tableUuidTime"></div>
+        <div class = "account" id="tableAccount"></div>
+        <div id="mainDivForUserNames"></div>
         <div id="mainDiv"></div>
     </div>
 </div>
@@ -32,15 +33,18 @@
             }
         })
         .then(json => {
+            const mainDivForUserNames = document.getElementById("mainDivForUserNames");
 
-            let html = "";
-            html += `<div class = "topBarFirst"> Username</div>
-                <div class = "topBarSecond"></div>`
             json.forEach(item => {
                 if (item.email != Auth.getEmail()) {
-                    html += `<div class = "challengeHistoryElement disabled"> ${item.accountName}</div>`
-                    emails.push(item.email)
+                    let accountDiv = document.createElement("div");
+                    accountDiv.append(item.accountName);
+                    accountDiv.classList.add("challengeHistoryElement");
+                                        accountDiv.classList.add("disabled");
+                    mainDivForUserNames.append(accountDiv);
+                    emails.push(item.email);
                 }
+                document.getElementById("tableAccount").append(mainDivForUserNames);
             })
             const mainDiv = document.getElementById("mainDiv");
             emails.forEach(email => {
@@ -77,8 +81,8 @@
                 mainDiv.append(emailDiv);
 
             });
-            document.getElementById("tableUuidTime").innerHTML = html;
-            document.getElementById("tableUuidTime").append(mainDiv);
+            // document.getElementById("tableAccount").innerHTML = html;
+            document.getElementById("tableAccount").append(mainDiv);
         });
 
 </script>
@@ -92,5 +96,3 @@
         window.location.replace("/")
     };
 </script>
-
-</html>
