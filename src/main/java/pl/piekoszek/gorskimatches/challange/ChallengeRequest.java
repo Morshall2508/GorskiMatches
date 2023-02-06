@@ -4,18 +4,18 @@ import java.util.UUID;
 
 class ChallengeRequest {
 
-    private String receiver;
+    private String sender;
 
-    private String initiator;
+    private String receiver;
 
     private UUID uuid;
 
-    public String getReceiver() {
-        return receiver;
+    public String getSender() {
+        return sender;
     }
 
-    public String getInitiator() {
-        return initiator;
+    public String getReceiver() {
+        return receiver;
     }
 
     public UUID getUuid() {

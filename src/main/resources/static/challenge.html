@@ -74,20 +74,7 @@
                         },
                         body: JSON.stringify({
                             uuid: sessionStorage.getItem('uuid'),
-                            score: sessionStorage.getItem('totalScore'),
-                            time: totalTimeToSolve
-                        })
-                    })
-                fetch(`/api/challenge/challengeQuizzesAndAnswers/${uuid}`,
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            'Authorization': 'bearer ' + localStorage.getItem('token'),
-                        },
-                        body: JSON.stringify({
-                            scoreUser1: scoreForEachQuiz,
-                            answerUser1: answersForEachQuiz,
+                            answersUser1: answersForEachQuiz,
                             timeToSolveUser1: totalTimeToSolve
                         })
                     })
@@ -100,30 +87,19 @@
                         },
                         body: JSON.stringify({
                             uuid: sessionStorage.getItem('uuid'),
-                            score: sessionStorage.getItem('totalScore'),
-                            time: totalTimeToSolve
+                            answersUser2: answersForEachQuiz,
+                            timeToSolveUser2: totalTimeToSolve
                         })
                     }
                 )
-                fetch(`/api/challenge/challengeQuizzesAndAnswers/${uuid}`,
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            scoreUser2: scoreForEachQuiz,
-                            answerUser2: answersForEachQuiz,
-                            timeToSolveUser2: totalTimeToSolve
-                        })
-                    })
                     .then(() =>
                         fetch(`api/challenge/resultForNonRegistered/${uuid}`)
                             .then(res => res.text())
                             .then(text => {
                                 document.getElementById("result").innerText = text;
                             })
-                    ).then(() =>
+                    )
+                    .then(() =>
                     fetch(`/api/challenge/${uuid}`)
 
                         .then(res => {
@@ -223,11 +199,9 @@
                                         totalScore++;
                                         sessionStorage.setItem('totalScore', totalScore.toString());
                                         answersForEachQuiz.push(document.getElementById("answer").value);
-                                        scoreForEachQuiz.push(score);
                                     } else {
                                         score = 0;
                                         answersForEachQuiz.push(document.getElementById("answer").value);
-                                        scoreForEachQuiz.push(score);
                                     }
                                 }).then(() => {
                                 countdownTimer.reset();
