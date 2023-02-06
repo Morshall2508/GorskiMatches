@@ -79,6 +79,14 @@ h3 {
     text-align: center;
 }
 
+#tableAccount {
+    background-color: #a4bad5;
+    width: auto;
+    height: auto;
+    display: flex;
+    text-align: center;
+}
+
 .topBarFirst {
     grid-column-start: 1;
     width: auto;
@@ -405,6 +413,10 @@ img[src="null"] {
 
 #answer {
     margin: 10px;
+}
+
+.disabled {
+  pointer-events: none;
 }
 
 #loggedIn {

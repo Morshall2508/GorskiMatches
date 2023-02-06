@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<div class="bigiPadForChallengeHistory">
+    <div class="navigationBar">
+        <div id="homeButton">Home</div>
+        <div id="accountPage">Account</div>
+    </div>
+    <div id="indexPadForChallengeHistory">
+        <div class = "account" id="tableAccount"></div>
+        <div id="mainDivForUserNames"></div>
+        <div id="mainDiv"></div>
+    </div>
+</div>
+</body>
+<script type="module">
+    import Auth from "/auth.js";
+    var emails = [];
+    fetch(`/api/auth/accountList`)
+
+        .then(res => {
+            if (res.ok) {
+                return res.json()
+            }
+            {
+                throw "Not found";
+            }
+        })
+        .then(json => {
+            const mainDivForUserNames = document.getElementById("mainDivForUserNames");
+
+            json.forEach(item => {
+                if (item.email != Auth.getEmail()) {
+                    let accountDiv = document.createElement("div");
+                    accountDiv.append(item.accountName);
+                    accountDiv.classList.add("challengeHistoryElement");
+                                        accountDiv.classList.add("disabled");
+                    mainDivForUserNames.append(accountDiv);
+                    emails.push(item.email);
+                }
+                document.getElementById("tableAccount").append(mainDivForUserNames);
+            })
+            const mainDiv = document.getElementById("mainDiv");
+            emails.forEach(email => {
+
+                let emailDiv = document.createElement("div");
+
+                emailDiv.addEventListener('click', function handleClick(event) {
+                    let uuid;
+                    fetch("api/challenge/generate")
+                        .then(res => res.json()
+                            .then(json => {
+                                uuid = json.toString();
+                            })
+                        ).then(() =>
+                            fetch(`/api/challenge/sendChallenge`,
+                                {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                    },
+                                    body: JSON.stringify({
+                                        receiver: email,
+                                        initiator: Auth.getEmail(),
+                                        uuid: uuid
+                                    })
+                                }
+                            )
+                        ).then(
+                            () => window.location.replace(`/challenge.html?uuid=${uuid}`)
+                        )
+                })
+                emailDiv.append("Challenge!");
+                emailDiv.classList.add("challengeHistoryElement");
+                mainDiv.append(emailDiv);
+
+            });
+            // document.getElementById("tableAccount").innerHTML = html;
+            document.getElementById("tableAccount").append(mainDiv);
+        });
+
+</script>
+<script>
+    document.getElementById("accountPage").onclick = () => {
+        window.location.replace("/account.html?")
+    };
+</script>
+<script>
+    document.getElementById("homeButton").onclick = () => {
+        window.location.replace("/")
+    };
+</script>

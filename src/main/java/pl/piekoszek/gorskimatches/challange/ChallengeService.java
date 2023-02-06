@@ -84,24 +84,60 @@ public class ChallengeService {
         return challenge.getUuid();
     }
 
-    void saveUser1ScoreAndAnswers(UUID uuid, ChallengeScoreAndAnswers challengeScoreAndAnswers) {
+    void saveUser1ScoreAndAnswers(UUID uuid, ChallengeScoreAndAnswers challengeScoreAndAnswers, String email) {
         var challenge = challengeRepository.findById(uuid).orElseThrow(() -> new NotFoundException("Couldn't find the challenge with uuid: " + uuid));
         for (int i = 0; i < 5; i++) {
             var challengeQuiz = challenge.getChallengeQuizzes().get(i);
             challengeQuiz.setAnswerUser1(challengeScoreAndAnswers.getAnswerUser1().get(i));
             challengeQuiz.setScoreUser1(challengeScoreAndAnswers.getScoreUser1().get(i));
+            challengeQuiz.setEmailUser1(email);
+            challengeQuiz.setTimeUser1(challengeScoreAndAnswers.getTimeToSolveUser1());
         }
         challengeRepository.save(challenge);
     }
 
-    void saveUser2ScoreAndAnswers(UUID uuid, ChallengeScoreAndAnswers challengeScoreAndAnswers) {
+    void saveUser2ScoreAndAnswers(UUID uuid, ChallengeScoreAndAnswers challengeScoreAndAnswers, String email) {
+        var challenge = challengeRepository.findById(uuid).orElseThrow(() -> new NotFoundException("Couldn't find the challenge with uuid: " + uuid));
+        for (int i = 0; i < 5; i++) {
+            var challengeQuiz = challenge.getChallengeQuizzes().get(i);
+            challengeQuiz.setAnswerUser2(challengeScoreAndAnswers.getAnswerUser1().get(i));
+            challengeQuiz.setScoreUser2(challengeScoreAndAnswers.getScoreUser1().get(i));
+            challengeQuiz.setEmailUser2(email);
+            challengeQuiz.setTimeUser2(challengeScoreAndAnswers.getTimeToSolveUser1());
+        }
+        challengeRepository.save(challenge);
+    }
+
+    void saveUser2ScoreAndAnswersNonRegistered(UUID uuid, ChallengeScoreAndAnswers challengeScoreAndAnswers) {
         var challenge = challengeRepository.findById(uuid).orElseThrow(() -> new NotFoundException("Couldn't find the challenge with uuid: " + uuid));
         for (int i = 0; i < 5; i++) {
             var challengeQuiz = challenge.getChallengeQuizzes().get(i);
             challengeQuiz.setAnswerUser2(challengeScoreAndAnswers.getAnswerUser2().get(i));
             challengeQuiz.setScoreUser2(challengeScoreAndAnswers.getScoreUser2().get(i));
+            challengeQuiz.setTimeUser2(challengeScoreAndAnswers.getTimeToSolveUser2());
         }
         challengeRepository.save(challenge);
+    }
+
+    boolean checkIfQuizHasBeenCompletedByUser(UUID uuid) {
+        var challenges = challengeRepository.findById(uuid).get().getChallengeQuizzes();
+        return challenges.get(0).getEmailUser1() != null;
+    }
+
+    void resultsForRegisteredUsers(UUID uuid) throws MessagingException {
+        var challenges = challengeRepository.findById(uuid).get().getChallengeQuizzes();
+        String subject = "Challenge: " + uuid + " result";
+        if (judge.getResultForChallengeUser(
+                challenges.stream().mapToInt(ChallengeQuiz::getScoreUser1).sum(),
+                challenges.stream().mapToInt(ChallengeQuiz::getScoreUser2).sum(),
+                challenges.stream().toList().get(1).getTimeUser1(),
+                challenges.stream().toList().get(1).getTimeUser2()) == Result.USER_1_WIN) {
+            emailService.sendEmail(challenges.stream().toList().get(1).getEmailUser1(), subject, "Congratulations you've won!");
+            emailService.sendEmail(challenges.stream().toList().get(1).getEmailUser2(), subject, "Unfortunately you've lost :(!");
+        } else {
+            emailService.sendEmail(challenges.stream().toList().get(1).getEmailUser2(), subject, "Congratulations you've won!");
+            emailService.sendEmail(challenges.stream().toList().get(1).getEmailUser1(), subject, "Unfortunately you've lost :(!");
+        }
     }
 
     List<String> getQuizzes(UUID uuid) {
@@ -134,15 +170,21 @@ public class ChallengeService {
         return challengeInfoData.orElseThrow(() -> new NotFoundException("Couldn't find the challenge with uuid: " + challengeResult.getUuid()));
     }
 
-    List<Challenge> getChallenges() {
+    List<Challenge> getAllChallenges() {
         return challengeRepository.findAll();
     }
 
-    public Challenge getChallenge(UUID id){
+    Challenge getChallenge(UUID id) {
         return challengeRepository.findById(id).get();
     }
 
-    String getChallengeDetailsUrl(UUID uuid){
+    String getChallengeDetailsUrl(UUID uuid) {
         return server + "challengeDetails.html?uuid=" + uuid;
+    }
+
+    void sendChallengeEmail(String receiver, String initiator, UUID uuid) throws MessagingException {
+        emailService.sendEmail(receiver, "Challenge",
+                "You have been challenged by: " + initiator +
+                        "<a href=" + server + "challenge.html?uuid=" + uuid + ">" + " " + "Challenge" + "</a>");
     }
 }
