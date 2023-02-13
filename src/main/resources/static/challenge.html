@@ -74,8 +74,8 @@
                         },
                         body: JSON.stringify({
                             uuid: sessionStorage.getItem('uuid'),
-                            answersUser1: answersForEachQuiz,
-                            timeToSolveUser1: totalTimeToSolve
+                            answersForChallenge: answersForEachQuiz,
+                            timeToSolveChallenge: totalTimeToSolve
                         })
                     })
             } else {
@@ -87,8 +87,8 @@
                         },
                         body: JSON.stringify({
                             uuid: sessionStorage.getItem('uuid'),
-                            answersUser2: answersForEachQuiz,
-                            timeToSolveUser2: totalTimeToSolve
+                            answersForChallenge: answersForEachQuiz,
+                            timeToSolveChallenge: totalTimeToSolve
                         })
                     }
                 )
@@ -96,7 +96,12 @@
                         fetch(`api/challenge/resultForNonRegistered/${uuid}`)
                             .then(res => res.text())
                             .then(text => {
-                                document.getElementById("result").innerText = text;
+                                if (text === "true"){
+                                    document.getElementById("result").innerText = "Congratulations, you've won!";
+                                } else {
+                                    document.getElementById("result").innerText = "Unfortunately, you've lost :(";
+                                }
+
                             })
                     )
                     .then(() =>
@@ -113,10 +118,10 @@
                         .then(challengeInfo => {
                             let html = "";
 
-                            let timeRegister = (challengeInfo.registeredUserTimeSeconds / 1000).toFixed(2);
-                            let timeNonRegister = (challengeInfo.nonRegisteredUserTimeSeconds / 1000).toFixed(2);
-                            let totalScoreRegister = challengeInfo.registeredUserScore;
-                            let totalScoreNonRegister = challengeInfo.nonRegisteredUserScore;
+                            let timeRegister = (challengeInfo.timeToSolveUser1 / 1000).toFixed(2);
+                            let timeNonRegister = (challengeInfo.timeToSolveUser2 / 1000).toFixed(2);
+                            let totalScoreRegister = challengeInfo.totalScoreUser1;
+                            let totalScoreNonRegister = challengeInfo.totalScoreUser2;
                             document.getElementById("table").style.gap = "2px";
                             html += `
                 <div class = "sidebarElement"> Quiz</div>
@@ -138,7 +143,7 @@
                             })
                             if (totalScoreNonRegister === totalScoreRegister) {
 
-                                let timeCompare = Boolean(challengeInfo.nonRegisteredUserTimeSeconds < challengeInfo.registeredUserTimeSeconds);
+                                let timeCompare = Boolean(challengeInfo.timeToSolveUser2 < challengeInfo.timeToSolveUser1);
 
                                 html += `<div class = "tableTime" style = background-color:${timeCompare ? "#54af54" : "#d54545"}>${timeNonRegister}s</div>
                                         <div class = "tableTime" style = background-color:${timeCompare ? "#d54545" : "#54af54"}>${timeRegister}s</div>`

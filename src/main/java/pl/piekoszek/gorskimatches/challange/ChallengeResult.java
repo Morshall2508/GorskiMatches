@@ -7,31 +7,19 @@ class ChallengeResult {
 
     private UUID uuid;
 
-    private List<String> answersUser1;
+    private List<String> answersForChallenge;
 
-    private List<String> answersUser2;
-
-    private float timeToSolveUser1;
-
-    private float timeToSolveUser2;
+    private float timeToSolveChallenge;
 
     public UUID getUuid() {
         return uuid;
     }
 
-    public List<String> getAnswersUser1() {
-        return answersUser1;
+    public List<String> getAnswersForChallenge() {
+        return answersForChallenge;
     }
 
-    public List<String> getAnswersUser2() {
-        return answersUser2;
-    }
-
-    public float getTimeToSolveUser1() {
-        return timeToSolveUser1;
-    }
-
-    public float getTimeToSolveUser2() {
-        return timeToSolveUser2;
+    public float getTimeToSolveChallenge() {
+        return timeToSolveChallenge;
     }
 }

@@ -43,25 +43,25 @@ public class ChallengeService {
         return challengeGenerator.createChallenge();
     }
 
-    void saveUserWithEmailAndReturnResult(ChallengeResult challengeResult, String email) throws MessagingException {
+    void saveUserWithEmailAndEmailWithResult(ChallengeResult challengeResult, String email) throws MessagingException {
         if (checkIfQuizHasBeenCompletedByUser1(challengeResult.getUuid())) {
             saveChallengeInformationForUser2(challengeResult.getUuid(), challengeResult, email);
-            resultForUserWithEmail(challengeResult);
+            determineResultAndSendEmail(challengeResult);
         } else {
             saveChallengeInformationForUser1(challengeResult.getUuid(), challengeResult, email);
         }
     }
 
-    void saveUserWithoutEmailAndReturnResult(ChallengeResult challengeResult) throws MessagingException {
+    void saveUserWithoutEmailAndEmailWithResult(ChallengeResult challengeResult) throws MessagingException {
         saveChallengeInformationForUser2(challengeResult.getUuid(), challengeResult, null);
-        resultForUserWithEmail(challengeResult);
+        determineResultAndSendEmail(challengeResult);
     }
 
     void saveChallengeInformationForUser1(UUID uuid, ChallengeResult challengeResult, String email) {
         var challenge = challengeRepository.findById(uuid).orElseThrow(() -> new NotFoundException("Couldn't find the challenge with uuid: " + uuid));
         saveAnswersAndScoreForUser1(challengeResult, challenge);
         challenge.setEmailUser1(email);
-        challenge.setTimeToSolveUser1(challengeResult.getTimeToSolveUser1());
+        challenge.setTimeToSolveUser1(challengeResult.getTimeToSolveChallenge());
         challenge.setTotalScoreUser1(challenge.getChallengeQuizzes().stream().mapToInt(ChallengeQuiz::getScoreUser1).sum());
         challengeRepository.save(challenge);
     }
@@ -71,12 +71,12 @@ public class ChallengeService {
         if (email != null) {
             saveAnswersAndScoreForUser2(challengeResult, challenge);
             challenge.setEmailUser2(email);
-            challenge.setTimeToSolveUser2(challengeResult.getTimeToSolveUser1());
-            challenge.setTotalScoreUser2(challenge.getChallengeQuizzes().stream().mapToInt(ChallengeQuiz::getScoreUser1).sum());
+            challenge.setTimeToSolveUser2(challengeResult.getTimeToSolveChallenge());
+            challenge.setTotalScoreUser2(challenge.getChallengeQuizzes().stream().mapToInt(ChallengeQuiz::getScoreUser2).sum());
             challengeRepository.save(challenge);
         } else {
-            saveAnswersAndScoreForUserWithoutEmail(challengeResult, challenge);
-            challenge.setTimeToSolveUser2(challengeResult.getTimeToSolveUser2());
+            saveAnswersAndScoreForUser2(challengeResult, challenge);
+            challenge.setTimeToSolveUser2(challengeResult.getTimeToSolveChallenge());
             challenge.setTotalScoreUser2(challenge.getChallengeQuizzes().stream().mapToInt(ChallengeQuiz::getScoreUser2).sum());
             challengeRepository.save(challenge);
         }
@@ -85,42 +85,31 @@ public class ChallengeService {
     void saveAnswersAndScoreForUser1(ChallengeResult challengeResult, Challenge challenge) {
         for (int i = 0; i < 5; i++) {
             var challengeQuiz = challenge.getChallengeQuizzes().get(i);
-            challengeQuiz.setAnswerUser1(challengeResult.getAnswersUser1().get(i));
-            challengeQuiz.setScoreUser1(quizAnswerChecker.checkForCorrectAnswer(challengeQuiz.quiz, challengeResult.getAnswersUser1().get(i)) ? 1 : 0);
+            challengeQuiz.setAnswerUser1(challengeResult.getAnswersForChallenge().get(i));
+            challengeQuiz.setScoreUser1(quizAnswerChecker.checkForCorrectAnswer(challengeQuiz.quiz, challengeResult.getAnswersForChallenge().get(i)) ? 1 : 0);
         }
     }
 
     void saveAnswersAndScoreForUser2(ChallengeResult challengeResult, Challenge challenge) {
         for (int i = 0; i < 5; i++) {
             var challengeQuiz = challenge.getChallengeQuizzes().get(i);
-            challengeQuiz.setAnswerUser2(challengeResult.getAnswersUser1().get(i));
-            challengeQuiz.setScoreUser2(quizAnswerChecker.checkForCorrectAnswer(challengeQuiz.quiz, challengeResult.getAnswersUser1().get(i)) ? 1 : 0);
+            challengeQuiz.setAnswerUser2(challengeResult.getAnswersForChallenge().get(i));
+            challengeQuiz.setScoreUser2(quizAnswerChecker.checkForCorrectAnswer(challengeQuiz.quiz, challengeResult.getAnswersForChallenge().get(i)) ? 1 : 0);
         }
     }
 
-    void saveAnswersAndScoreForUserWithoutEmail(ChallengeResult challengeResult, Challenge challenge) {
-        for (int i = 0; i < 5; i++) {
-            var challengeQuiz = challenge.getChallengeQuizzes().get(i);
-            challengeQuiz.setAnswerUser2(challengeResult.getAnswersUser2().get(i));
-            challengeQuiz.setScoreUser2(quizAnswerChecker.checkForCorrectAnswer(challengeQuiz.quiz, challengeResult.getAnswersUser2().get(i)) ? 1 : 0);
-        }
-    }
-
-    String resultForUserWithoutEmail(UUID uuid) {
+    boolean resultForUserWithoutEmail(UUID uuid) {
         var challengeInfoData = challengeRepository.findById(uuid);
         var challengeInfo = challengeInfoData.orElseThrow(() -> new NotFoundException("Couldn't find the challenge with uuid: " + uuid));
-        if (judge.getResultForChallengeUser(
+
+        return judge.getResultForChallengeUser(
                 challengeInfo.getTotalScoreUser1(),
                 challengeInfo.getTotalScoreUser2(),
                 challengeInfo.getTimeToSolveUser1(),
-                challengeInfo.getTimeToSolveUser2()) == Result.USER_2_WIN) {
-            return "Congratulations you've won!";
-        } else {
-            return "Unfortunately you've lost :(";
-        }
+                challengeInfo.getTimeToSolveUser2()) == Result.USER_2_WIN;
     }
 
-    void resultForUserWithEmail(ChallengeResult challengeResult) throws MessagingException {
+    void determineResultAndSendEmail(ChallengeResult challengeResult) throws MessagingException {
         var challengeInfo = getChallenge(challengeResult);
 
         if (challengeAgainstUserWithoutEmail(challengeResult)) {

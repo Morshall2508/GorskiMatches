@@ -23,16 +23,16 @@ class ChallengeController {
     }
 
     @PostMapping("score")
-    void saveUserSScoreAndGetResults(@Email(required = false) String email, @RequestBody ChallengeResult challengeResult) throws MessagingException {
+    void saveUsersScore(@Email(required = false) String email, @RequestBody ChallengeResult challengeResult) throws MessagingException {
         if (email != null) {
-            challengeService.saveUserWithEmailAndReturnResult(challengeResult, email);
+            challengeService.saveUserWithEmailAndEmailWithResult(challengeResult, email);
             return;
         }
-        challengeService.saveUserWithoutEmailAndReturnResult(challengeResult);
+        challengeService.saveUserWithoutEmailAndEmailWithResult(challengeResult);
     }
 
     @GetMapping("resultForNonRegistered/{uuid}")
-    String getResultForNonRegisteredUser(@PathVariable("uuid") UUID uuid) {
+    boolean getResultForNonRegisteredUser(@PathVariable("uuid") UUID uuid) {
         return challengeService.resultForUserWithoutEmail(uuid);
     }
 

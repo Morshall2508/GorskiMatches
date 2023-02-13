@@ -29,10 +29,10 @@ public class Challenge {
 
     private float timeToSolveUser2;
 
+    private long creationTime;
+
     @OneToMany(cascade = CascadeType.ALL)
     private List<ChallengeQuiz> challengeQuizzes;
-
-    private long creationTime;
 
     public UUID getUuid() {
         return uuid;
@@ -90,15 +90,19 @@ public class Challenge {
         this.timeToSolveUser2 = timeToSolveUser2;
     }
 
+    public long getCreationTime() {
+        return creationTime;
+    }
+
+    public void setCreationTime(long creationTime) {
+        this.creationTime = creationTime;
+    }
+
     public List<ChallengeQuiz> getChallengeQuizzes() {
         return challengeQuizzes;
     }
 
     public void setChallengeQuizzes(List<ChallengeQuiz> challengeQuizzes) {
         this.challengeQuizzes = challengeQuizzes;
-    }
-
-    public void setCreationTime(long creationTime) {
-        this.creationTime = creationTime;
     }
 }
