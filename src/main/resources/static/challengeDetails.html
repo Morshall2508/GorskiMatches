@@ -43,10 +43,10 @@
                 let timeCompareUser1Win = json.timeToSolveUser2 > json.timeToSolveUser1;
 
                 let quizNotFinishedOneOrBothUsers = timeUser1 === 0 || timeUser2 === 0;
-                let user2View = Auth.getEmail() == json.emailUser2;
                 let bothUsersHaveEmail = json.emailUser2 != null;
                 let sameScore = json.totalScoreUser1 == json.totalScoreUser2;
                 let user2HasEmail = json.emailUser2 != null;
+                let user1View = Auth.getEmail() === json.emailUser1;
 
                 document.getElementById("table").style.gap = "2px";
                 html += `
@@ -58,44 +58,30 @@
 
                 json.challengeQuizzes.forEach(innerItem => {
 
-                    let resultUser1 = Boolean(innerItem.scoreUser1 > 0);
-                    let resultUser2 = Boolean(innerItem.scoreUser2 > 0);
+                    let resultUser1 = innerItem.scoreUser1 > 0;
+                    let resultUser2 = innerItem.scoreUser2 > 0;
 
-                    if (bothUsersHaveEmail) {
-
-                        if (user2View) {
-                            if (quizNotFinishedOneOrBothUsers) {
-                                html += `<div class = "tableElement">${innerItem.quiz}</div>
-                        <div class = "tableElement"> ${innerItem.answerUser2}</div>
-                        <div class = "tableElement"> ${innerItem.answerUser1}</div>
-                        </div>`
-                            } else {
-                                html += `<div class = "tableElement">${innerItem.quiz}</div>
-                        <div class = "tableElement" style = background-color:${resultUser2 ? "#54af54" : "#d54545"}> ${innerItem.answerUser2}</div>
-                        <div class = "tableElement" style = background-color:${resultUser1 ? "#54af54" : "#d54545"}> ${innerItem.answerUser1}</div>
-                        </div>`
-                            }
-
-                        } else {
-
-                            if (quizNotFinishedOneOrBothUsers) {
-                                html += `<div class = "tableElement">${innerItem.quiz}</div>
-                        <div class = "tableElement"> ${innerItem.answerUser1}</div>
-                        <div class = "tableElement"> ${innerItem.answerUser2}</div>
-                        </div>`
-                            } else {
-                                html += `<div class = "tableElement">${innerItem.quiz}</div>
-                        <div class = "tableElement" style = background-color:${resultUser1 ? "#54af54" : "#d54545"}> ${innerItem.answerUser1}</div>
-                        <div class = "tableElement" style = background-color:${resultUser2 ? "#54af54" : "#d54545"}> ${innerItem.answerUser2}</div>
-                        </div>`
-                            }
-                        }
-                    } else {
+                    if (user1View) {
                         if (quizNotFinishedOneOrBothUsers) {
                             html += `<div class = "tableElement">${innerItem.quiz}</div>
                         <div class = "tableElement"> ${innerItem.answerUser1}</div>
                         <div class = "tableElement"> ${innerItem.answerUser2}</div>
                         </div>`
+
+                        } else {
+                            html += `<div class = "tableElement">${innerItem.quiz}</div>
+                        <div class = "tableElement" style = background-color:${resultUser1 ? "#54af54" : "#d54545"}> ${innerItem.answerUser1}</div>
+                        <div class = "tableElement" style = background-color:${resultUser2 ? "#54af54" : "#d54545"}> ${innerItem.answerUser2}</div>
+                        </div>`
+                        }
+
+                    } else {
+                        if (quizNotFinishedOneOrBothUsers) {
+                            html += `<div class = "tableElement">${innerItem.quiz}</div>
+                        <div class = "tableElement"> ${innerItem.answerUser2}</div>
+                        <div class = "tableElement"> ${innerItem.answerUser1}</div>
+                        </div>`
+
                         } else {
                             html += `<div class = "tableElement">${innerItem.quiz}</div>
                         <div class = "tableElement" style = background-color:${resultUser2 ? "#54af54" : "#d54545"}> ${innerItem.answerUser2}</div>
@@ -105,8 +91,26 @@
                     }
                 })
 
+                if (user1View) {
+                    if (quizNotFinishedOneOrBothUsers) {
+                        html += `<div class = "tableTime">${timeUser1}s</div>
+                         <div class = "tableTime">${timeUser2}s</div>`
 
-                if (user2View) {
+                    } else {
+                        if (sameScore) {
+
+                            html += `<div class = "tableTime" style = background-color:${timeCompareUser1Win ? "#54af54" : "#d54545"}>${timeUser1}s</div>
+                         <div class = "tableTime" style = background-color:${timeCompareUser1Win ? "#d54545" : "#54af54"}>${timeUser2}s</div>`
+                            document.getElementById("table").innerHTML = html;
+
+                        } else {
+                            html += `<div class = "tableTime">${timeUser1}s</div>
+                         <div class = "tableTime">${timeUser2}s</div>`
+                            document.getElementById("table").innerHTML = html;
+                        }
+                    }
+
+                } else {
                     if (quizNotFinishedOneOrBothUsers) {
                         html += `<div class = "tableTime">${timeUser2}s</div>
                          <div class = "tableTime">${timeUser1}s</div>`
@@ -122,48 +126,6 @@
                             html += `<div class = "tableTime">${timeUser2}s</div>
                          <div class = "tableTime">${timeUser1}s</div>`
                             document.getElementById("table").innerHTML = html;
-                        }
-                    }
-                } else {
-
-                    if (user2HasEmail) {
-
-                        if (quizNotFinishedOneOrBothUsers) {
-                            html += `<div class = "tableTime">${timeUser1}s</div>
-                         <div class = "tableTime">${timeUser2}s</div>`
-
-                        } else {
-                            if (sameScore) {
-
-                                html += `<div class = "tableTime" style = background-color:${timeCompareUser1Win ? "#54af54" : "#d54545"}>${timeUser1}s</div>
-                         <div class = "tableTime" style = background-color:${timeCompareUser1Win ? "#d54545" : "#54af54"}>${timeUser2}s</div>`
-                                document.getElementById("table").innerHTML = html;
-                            } else {
-
-                                html += `<div class = "tableTime">${timeUser1}s</div>
-                         <div class = "tableTime">${timeUser2}s</div>`
-                                document.getElementById("table").innerHTML = html;
-                            }
-                        }
-
-                    } else {
-
-                        if (quizNotFinishedOneOrBothUsers) {
-                            html += `<div class = "tableTime">${timeUser1}s</div>
-                         <div class = "tableTime">${timeUser2}s</div>`
-
-                        } else {
-                            if (sameScore) {
-
-                                html += `<div class = "tableTime" style = background-color:${timeCompareUser1Win ? "#54af54" : "#d54545"}>${timeUser1}s</div>
-                         <div class = "tableTime" style = background-color:${timeCompareUser1Win ? "#d54545" : "#54af54"}>${timeUser2}s</div>`
-                                document.getElementById("table").innerHTML = html;
-                            } else {
-
-                                html += `<div class = "tableTime">${timeUser1}s</div>
-                         <div class = "tableTime">${timeUser2}s</div>`
-                                document.getElementById("table").innerHTML = html;
-                            }
                         }
                     }
                 }
