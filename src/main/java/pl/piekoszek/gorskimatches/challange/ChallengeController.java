@@ -22,13 +22,13 @@ class ChallengeController {
         return challengeService.createChallenge();
     }
 
-    @PostMapping("score")
+    @PostMapping("save")
     void saveUsersScore(@Email(required = false) String email, @RequestBody ChallengeResult challengeResult) throws MessagingException {
         if (email != null) {
-            challengeService.saveUserWithEmailAndEmailWithResult(challengeResult, email);
+            challengeService.saveUserWithEmailAndSendEmail(challengeResult, email);
             return;
         }
-        challengeService.saveUserWithoutEmailAndEmailWithResult(challengeResult);
+        challengeService.saveUserWithoutEmailAndSendEmail(challengeResult);
     }
 
     @GetMapping("resultForNonRegistered/{uuid}")

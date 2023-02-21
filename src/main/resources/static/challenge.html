@@ -65,7 +65,7 @@
             const timeOnEnd = performance.now();
             let totalTimeToSolve = (+timeOnEnd) - (+timeOnStart);
             if (Auth.isLoggedIn()) {
-                fetch(`/api/challenge/score`,
+                fetch(`/api/challenge/save`,
                     {
                         method: "POST",
                         headers: {
@@ -79,7 +79,7 @@
                         })
                     })
             } else {
-                fetch(`/api/challenge/score`,
+                fetch(`/api/challenge/save`,
                     {
                         method: "POST",
                         headers: {

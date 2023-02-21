@@ -35,13 +35,11 @@
                 <div class = "topBarSecond"> Result </div>`
 
             json.forEach(item => {
-                var date = (new Date(item.creationTime).toLocaleString())
                 let user1View = Auth.getEmail() === item.emailUser1;
                 let quizNotFinished = item.timeToSolveUser2 === 0 || item.timeToSolveUser1 === 0;
                 let timeCompareUser2Win = item.timeToSolveUser1 > item.timeToSolveUser2;
                 let timeCompareUser1Win = item.timeToSolveUser2 > item.timeToSolveUser1;
                 let sameScore = item.totalScoreUser1 === item.totalScoreUser2;
-                let quizAgainstUserWithoutEmail = item.emailUser2 == null;
                 let scoreCompareUser1Win = item.totalScoreUser1 > item.totalScoreUser2;
                 let scoreCompareUser2Win = item.totalScoreUser2 > item.totalScoreUser1;
                 let oneOfUsersSolvedQuiz = item.emailUser1 === Auth.getEmail() || item.emailUser2 === Auth.getEmail()

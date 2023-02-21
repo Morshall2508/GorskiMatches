@@ -43,9 +43,7 @@
                 let timeCompareUser1Win = json.timeToSolveUser2 > json.timeToSolveUser1;
 
                 let quizNotFinishedOneOrBothUsers = timeUser1 === 0 || timeUser2 === 0;
-                let bothUsersHaveEmail = json.emailUser2 != null;
                 let sameScore = json.totalScoreUser1 == json.totalScoreUser2;
-                let user2HasEmail = json.emailUser2 != null;
                 let user1View = Auth.getEmail() === json.emailUser1;
 
                 document.getElementById("table").style.gap = "2px";

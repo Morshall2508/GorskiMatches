@@ -43,7 +43,7 @@ public class ChallengeService {
         return challengeGenerator.createChallenge();
     }
 
-    void saveUserWithEmailAndEmailWithResult(ChallengeResult challengeResult, String email) throws MessagingException {
+    void saveUserWithEmailAndSendEmail(ChallengeResult challengeResult, String email) throws MessagingException {
         if (checkIfQuizHasBeenCompletedByUser1(challengeResult.getUuid())) {
             saveChallengeInformationForUser2(challengeResult.getUuid(), challengeResult, email);
             determineResultAndSendEmail(challengeResult);
@@ -52,7 +52,7 @@ public class ChallengeService {
         }
     }
 
-    void saveUserWithoutEmailAndEmailWithResult(ChallengeResult challengeResult) throws MessagingException {
+    void saveUserWithoutEmailAndSendEmail(ChallengeResult challengeResult) throws MessagingException {
         saveChallengeInformationForUser2(challengeResult.getUuid(), challengeResult, null);
         determineResultAndSendEmail(challengeResult);
     }
