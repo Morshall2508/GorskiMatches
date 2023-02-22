@@ -93,18 +93,6 @@
                     }
                 )
                     .then(() =>
-                        fetch(`api/challenge/resultForNonRegistered/${uuid}`)
-                            .then(res => res.text())
-                            .then(text => {
-                                if (text === "true"){
-                                    document.getElementById("result").innerText = "Congratulations, you've won!";
-                                } else {
-                                    document.getElementById("result").innerText = "Unfortunately, you've lost :(";
-                                }
-
-                            })
-                    )
-                    .then(() =>
                     fetch(`/api/challenge/${uuid}`)
 
                         .then(res => {
@@ -117,6 +105,11 @@
                         })
                         .then(challengeInfo => {
                             let html = "";
+                            if (challengeInfo.result === "USER_2_WIN"){
+                                    document.getElementById("result").innerText = "Congratulations, you've won!";
+                                } else {
+                                    document.getElementById("result").innerText = "Unfortunately, you've lost :(";
+                                }
 
                             let timeRegister = (challengeInfo.timeToSolveUser1 / 1000).toFixed(2);
                             let timeNonRegister = (challengeInfo.timeToSolveUser2 / 1000).toFixed(2);

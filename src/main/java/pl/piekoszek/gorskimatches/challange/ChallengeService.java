@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pl.piekoszek.gorskimatches.config.http.NotFoundException;
 import pl.piekoszek.gorskimatches.email.EmailService;
-import pl.piekoszek.gorskimatches.equation.QuizAnswerChecker;
 
 import javax.mail.MessagingException;
 import java.util.*;
@@ -21,26 +20,14 @@ public class ChallengeService {
 
     private final String server;
 
-    private final QuizAnswerChecker quizAnswerChecker;
-
-    private final ChallengeGenerator challengeGenerator;
-
     public ChallengeService(EmailService emailService,
                             ChallengeRepository challengeRepository,
                             Judge judge,
-                            @Value("${matches.server.address}") String server,
-                            QuizAnswerChecker quizAnswerChecker,
-                            ChallengeGenerator challengeGenerator) {
+                            @Value("${matches.server.address}") String server) {
         this.emailService = emailService;
         this.challengeRepository = challengeRepository;
         this.judge = judge;
         this.server = server;
-        this.quizAnswerChecker = quizAnswerChecker;
-        this.challengeGenerator = challengeGenerator;
-    }
-
-    UUID createChallenge() {
-        return challengeGenerator.createChallenge();
     }
 
     void saveUserWithEmailAndSendEmail(ChallengeResult challengeResult, String email) throws MessagingException {
@@ -86,7 +73,7 @@ public class ChallengeService {
         for (int i = 0; i < 5; i++) {
             var challengeQuiz = challenge.getChallengeQuizzes().get(i);
             challengeQuiz.setAnswerUser1(challengeResult.getAnswersForChallenge().get(i));
-            challengeQuiz.setScoreUser1(quizAnswerChecker.checkForCorrectAnswer(challengeQuiz.quiz, challengeResult.getAnswersForChallenge().get(i)) ? 1 : 0);
+            challengeQuiz.setScoreUser1(judge.verifyAnswerToQuiz(challengeQuiz.quiz, challengeResult.getAnswersForChallenge().get(i)));
         }
     }
 
@@ -94,7 +81,7 @@ public class ChallengeService {
         for (int i = 0; i < 5; i++) {
             var challengeQuiz = challenge.getChallengeQuizzes().get(i);
             challengeQuiz.setAnswerUser2(challengeResult.getAnswersForChallenge().get(i));
-            challengeQuiz.setScoreUser2(quizAnswerChecker.checkForCorrectAnswer(challengeQuiz.quiz, challengeResult.getAnswersForChallenge().get(i)) ? 1 : 0);
+            challengeQuiz.setScoreUser2(judge.verifyAnswerToQuiz(challengeQuiz.quiz, challengeResult.getAnswersForChallenge().get(i)));
         }
     }
 
@@ -118,8 +105,12 @@ public class ChallengeService {
                     challengeInfo.getTotalScoreUser2(),
                     challengeInfo.getTimeToSolveUser1(),
                     challengeInfo.getTimeToSolveUser2()) == Result.USER_1_WIN) {
+                challengeInfo.setResult(Result.USER_1_WIN);
+                challengeRepository.save(challengeInfo);
                 sendEmailWon(challengeResult, challengeInfo.getEmailUser1());
             } else {
+                challengeInfo.setResult(Result.USER_2_WIN);
+                challengeRepository.save(challengeInfo);
                 sendEmailLost(challengeResult, challengeInfo.getEmailUser1());
             }
         } else {
@@ -128,9 +119,13 @@ public class ChallengeService {
                     challengeInfo.getTotalScoreUser2(),
                     challengeInfo.getTimeToSolveUser1(),
                     challengeInfo.getTimeToSolveUser2()) == Result.USER_1_WIN) {
+                challengeInfo.setResult(Result.USER_1_WIN);
+                challengeRepository.save(challengeInfo);
                 sendEmailWon(challengeResult, challengeInfo.getEmailUser1());
                 sendEmailLost(challengeResult, challengeInfo.getEmailUser2());
             } else {
+                challengeInfo.setResult(Result.USER_2_WIN);
+                challengeRepository.save(challengeInfo);
                 sendEmailLost(challengeResult, challengeInfo.getEmailUser1());
                 sendEmailWon(challengeResult, challengeInfo.getEmailUser2());
             }
@@ -144,14 +139,14 @@ public class ChallengeService {
 
     void sendEmailWon(ChallengeResult challengeResult, String user) throws MessagingException {
         String subject = "Challenge: " + challengeResult.getUuid() + " result";
-        String won = "Congratulations you've won!\n Here is a link:" + "<a href=" +
+        String won = "Congratulations you've won!\n Here is a link: " + "<a href=" +
                 getChallengeDetailsUrl(challengeResult.getUuid()) + ">" + "Result" + "</a>";
         emailService.sendEmail(user, subject, won);
     }
 
     void sendEmailLost(ChallengeResult challengeResult, String user) throws MessagingException {
         String subject = "Challenge: " + challengeResult.getUuid() + " result";
-        String lost = "Unfortunately you've lost :(\n Here is a link:" + "<a href=" +
+        String lost = "Unfortunately you've lost :(\n Here is a link: " + "<a href=" +
                 getChallengeDetailsUrl(challengeResult.getUuid()) + ">" + "Result" + "</a>";
         emailService.sendEmail(user, subject, lost);
     }

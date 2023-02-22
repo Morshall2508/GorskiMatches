@@ -13,13 +13,15 @@ class ChallengeController {
 
     private final ChallengeService challengeService;
 
-    public ChallengeController(ChallengeService challengeService) {
+    private final ChallengeGenerator challengeGenerator;
+    public ChallengeController(ChallengeService challengeService, ChallengeGenerator challengeGenerator) {
         this.challengeService = challengeService;
+        this.challengeGenerator = challengeGenerator;
     }
 
     @GetMapping("generate")
     UUID createChallenge() {
-        return challengeService.createChallenge();
+        return challengeGenerator.createChallenge();
     }
 
     @PostMapping("save")
@@ -31,10 +33,10 @@ class ChallengeController {
         challengeService.saveUserWithoutEmailAndSendEmail(challengeResult);
     }
 
-    @GetMapping("resultForNonRegistered/{uuid}")
-    boolean getResultForNonRegisteredUser(@PathVariable("uuid") UUID uuid) {
-        return challengeService.resultForUserWithoutEmail(uuid);
-    }
+//    @GetMapping("resultForNonRegistered/{uuid}")
+//    boolean getResultForNonRegisteredUser(@PathVariable("uuid") UUID uuid) {
+//        return challengeService.resultForUserWithoutEmail(uuid);
+//    }
 
     @GetMapping("quizzes/{uuid}")
     List<String> getQuizzes(@PathVariable("uuid") UUID uuid) {

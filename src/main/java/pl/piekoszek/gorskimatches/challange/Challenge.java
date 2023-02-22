@@ -2,10 +2,7 @@ package pl.piekoszek.gorskimatches.challange;
 
 import org.hibernate.annotations.Type;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,6 +27,9 @@ public class Challenge {
     private float timeToSolveUser2;
 
     private long creationTime;
+
+    @Enumerated(EnumType.STRING)
+    private Result result;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<ChallengeQuiz> challengeQuizzes;
@@ -104,5 +104,13 @@ public class Challenge {
 
     public void setChallengeQuizzes(List<ChallengeQuiz> challengeQuizzes) {
         this.challengeQuizzes = challengeQuizzes;
+    }
+
+    public Result getResult() {
+        return result;
+    }
+
+    public void setResult(Result result) {
+        this.result = result;
     }
 }

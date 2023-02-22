@@ -1,9 +1,16 @@
 package pl.piekoszek.gorskimatches.challange;
 
 import org.springframework.stereotype.Component;
+import pl.piekoszek.gorskimatches.equation.QuizAnswerChecker;
 
 @Component
 class Judge {
+
+    private final QuizAnswerChecker quizAnswerChecker;
+
+    public Judge(QuizAnswerChecker quizAnswerChecker) {
+        this.quizAnswerChecker = quizAnswerChecker;
+    }
 
     Result getResultForChallengeUser(int scoreUser1, int scoreUser2, float timeUser1, float timeUser2) {
         if (scoreUser1 != scoreUser2) {
@@ -19,5 +26,9 @@ class Judge {
                 return Result.USER_2_WIN;
             }
         }
+    }
+
+    Integer verifyAnswerToQuiz(String quiz, String answer) {
+        return quizAnswerChecker.checkForCorrectAnswer(quiz, answer) ? 1 : 0;
     }
 }
