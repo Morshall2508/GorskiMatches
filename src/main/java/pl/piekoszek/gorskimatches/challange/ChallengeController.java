@@ -33,18 +33,13 @@ class ChallengeController {
         challengeService.saveUserWithoutEmailAndSendEmail(challengeResult);
     }
 
-//    @GetMapping("resultForNonRegistered/{uuid}")
-//    boolean getResultForNonRegisteredUser(@PathVariable("uuid") UUID uuid) {
-//        return challengeService.resultForUserWithoutEmail(uuid);
-//    }
-
     @GetMapping("quizzes/{uuid}")
     List<String> getQuizzes(@PathVariable("uuid") UUID uuid) {
         return challengeService.getQuizzes(uuid);
     }
 
     @GetMapping("challenges")
-    List<Challenge> returnsChallenges() {
+    List<Challenge> returnChallenges() {
         return challengeService.getAllChallenges();
     }
 

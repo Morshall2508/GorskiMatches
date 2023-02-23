@@ -42,7 +42,7 @@
                 let timeCompareUser2Win = json.timeToSolveUser1 > json.timeToSolveUser2;
                 let timeCompareUser1Win = json.timeToSolveUser2 > json.timeToSolveUser1;
 
-                let quizNotFinishedOneOrBothUsers = timeUser1 === 0 || timeUser2 === 0;
+                let quizNotFinishedBySecondUser = json.result === null;
                 let sameScore = json.totalScoreUser1 == json.totalScoreUser2;
                 let user1View = Auth.getEmail() === json.emailUser1;
 
@@ -59,25 +59,16 @@
                     let resultUser1 = innerItem.scoreUser1 > 0;
                     let resultUser2 = innerItem.scoreUser2 > 0;
 
-                    if (user1View) {
-                        if (quizNotFinishedOneOrBothUsers) {
-                            html += `<div class = "tableElement">${innerItem.quiz}</div>
+                    if (quizNotFinishedBySecondUser) {
+                        html += `<div class = "tableElement">${innerItem.quiz}</div>
                         <div class = "tableElement"> ${innerItem.answerUser1}</div>
                         <div class = "tableElement"> ${innerItem.answerUser2}</div>
                         </div>`
-
-                        } else {
-                            html += `<div class = "tableElement">${innerItem.quiz}</div>
-                        <div class = "tableElement" style = background-color:${resultUser1 ? "#54af54" : "#d54545"}> ${innerItem.answerUser1}</div>
-                        <div class = "tableElement" style = background-color:${resultUser2 ? "#54af54" : "#d54545"}> ${innerItem.answerUser2}</div>
-                        </div>`
-                        }
-
                     } else {
-                        if (quizNotFinishedOneOrBothUsers) {
+                        if (user1View) {
                             html += `<div class = "tableElement">${innerItem.quiz}</div>
-                        <div class = "tableElement"> ${innerItem.answerUser2}</div>
-                        <div class = "tableElement"> ${innerItem.answerUser1}</div>
+                        <div class = "tableElement" style = background-color:${resultUser1 ? "#54af54" : "#d54545"}> ${innerItem.answerUser1}</div>
+                        <div class = "tableElement" style = background-color:${resultUser2 ? "#54af54" : "#d54545"}> ${innerItem.answerUser2}</div>
                         </div>`
 
                         } else {
@@ -85,18 +76,18 @@
                         <div class = "tableElement" style = background-color:${resultUser2 ? "#54af54" : "#d54545"}> ${innerItem.answerUser2}</div>
                         <div class = "tableElement" style = background-color:${resultUser1 ? "#54af54" : "#d54545"}> ${innerItem.answerUser1}</div>
                         </div>`
+
                         }
                     }
                 })
 
-                if (user1View) {
-                    if (quizNotFinishedOneOrBothUsers) {
-                        html += `<div class = "tableTime">${timeUser1}s</div>
+                if (quizNotFinishedBySecondUser) {
+                    html += `<div class = "tableTime">${timeUser1}s</div>
                          <div class = "tableTime">${timeUser2}s</div>`
 
-                    } else {
+                } else {
+                    if (user1View) {
                         if (sameScore) {
-
                             html += `<div class = "tableTime" style = background-color:${timeCompareUser1Win ? "#54af54" : "#d54545"}>${timeUser1}s</div>
                          <div class = "tableTime" style = background-color:${timeCompareUser1Win ? "#d54545" : "#54af54"}>${timeUser2}s</div>`
                             document.getElementById("table").innerHTML = html;
@@ -106,16 +97,9 @@
                          <div class = "tableTime">${timeUser2}s</div>`
                             document.getElementById("table").innerHTML = html;
                         }
-                    }
-
-                } else {
-                    if (quizNotFinishedOneOrBothUsers) {
-                        html += `<div class = "tableTime">${timeUser2}s</div>
-                         <div class = "tableTime">${timeUser1}s</div>`
 
                     } else {
                         if (sameScore) {
-
                             html += `<div class = "tableTime" style = background-color:${timeCompareUser2Win ? "#54af54" : "#d54545"}>${timeUser2}s</div>
                          <div class = "tableTime" style = background-color:${timeCompareUser2Win ? "#d54545" : "#54af54"}>${timeUser1}s</div>`
                             document.getElementById("table").innerHTML = html;
