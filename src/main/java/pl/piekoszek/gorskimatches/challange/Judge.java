@@ -28,7 +28,7 @@ class Judge {
         }
     }
 
-    Integer verifyAnswerToQuiz(String quiz, String answer) {
-        return quizAnswerChecker.checkForCorrectAnswer(quiz, answer) ? 1 : 0;
+    Boolean verifyAnswerToQuiz(String quiz, String answer) {
+        return quizAnswerChecker.checkForCorrectAnswer(quiz, answer);
     }
 }

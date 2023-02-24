@@ -73,7 +73,7 @@ public class ChallengeService {
         for (int i = 0; i < 5; i++) {
             var challengeQuiz = challenge.getChallengeQuizzes().get(i);
             challengeQuiz.setAnswerUser1(challengeResult.getAnswersForChallenge().get(i));
-            challengeQuiz.setScoreUser1(judge.verifyAnswerToQuiz(challengeQuiz.quiz, challengeResult.getAnswersForChallenge().get(i)));
+            challengeQuiz.setScoreUser1(judge.verifyAnswerToQuiz(challengeQuiz.quiz, challengeResult.getAnswersForChallenge().get(i)) ? 1 : 0);
         }
     }
 
@@ -81,7 +81,7 @@ public class ChallengeService {
         for (int i = 0; i < 5; i++) {
             var challengeQuiz = challenge.getChallengeQuizzes().get(i);
             challengeQuiz.setAnswerUser2(challengeResult.getAnswersForChallenge().get(i));
-            challengeQuiz.setScoreUser2(judge.verifyAnswerToQuiz(challengeQuiz.quiz, challengeResult.getAnswersForChallenge().get(i)));
+            challengeQuiz.setScoreUser2(judge.verifyAnswerToQuiz(challengeQuiz.quiz, challengeResult.getAnswersForChallenge().get(i)) ? 1 : 0);
         }
     }
 
