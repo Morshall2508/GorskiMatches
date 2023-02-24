@@ -13,61 +13,43 @@ class ChallengeController {
 
     private final ChallengeService challengeService;
 
-    public ChallengeController(ChallengeService challengeService) {
+    private final ChallengeGenerator challengeGenerator;
+    public ChallengeController(ChallengeService challengeService, ChallengeGenerator challengeGenerator) {
         this.challengeService = challengeService;
+        this.challengeGenerator = challengeGenerator;
     }
 
     @GetMapping("generate")
     UUID createChallenge() {
-        return challengeService.createChallenge();
+        return challengeGenerator.createChallenge();
     }
 
-    @PostMapping("score")
-    void saveRegisteredUserAndGetResults(@Email(required = false) String email, @RequestBody ChallengeResult challengeResult) throws MessagingException {
+    @PostMapping("save")
+    void saveUsersScore(@Email(required = false) String email, @RequestBody ChallengeResult challengeResult) throws MessagingException {
         if (email != null) {
-            challengeService.saveRegisteredUserResult(challengeResult, email);
+            challengeService.saveUserWithEmailAndSendEmail(challengeResult, email);
             return;
         }
-        challengeService.saveNonRegisteredUserResult(challengeResult);
-        challengeService.resultForRegisteredUser(challengeResult);
-    }
-
-    @GetMapping("resultForNonRegistered/{uuid}")
-    String getResultForNonRegisteredUser(@PathVariable("uuid") UUID uuid) {
-        return challengeService.resultForNonRegisteredUser(uuid);
+        challengeService.saveUserWithoutEmailAndSendEmail(challengeResult);
     }
 
     @GetMapping("quizzes/{uuid}")
-    List<String> fetchQuizzes(@PathVariable("uuid") UUID uuid) {
+    List<String> getQuizzes(@PathVariable("uuid") UUID uuid) {
         return challengeService.getQuizzes(uuid);
     }
 
-    @PostMapping("challengeQuizzesAndAnswers/{uuid}")
-    void saveChallengeData(@Email(required = false) String email, @PathVariable("uuid") UUID uuid, @RequestBody ChallengeScoreAndAnswers challengeScoreAndAnswers) throws MessagingException {
-        if (email != null) {
-            if (challengeService.checkIfQuizHasBeenCompletedByUser(uuid)) {
-                challengeService.saveUser2ScoreAndAnswers(uuid, challengeScoreAndAnswers, email);
-            } else {
-                challengeService.saveUser1ScoreAndAnswers(uuid, challengeScoreAndAnswers, email);
-            }
-            return;
-        }
-        challengeService.saveUser2ScoreAndAnswersNonRegistered(uuid, challengeScoreAndAnswers);
-        challengeService.resultsForRegisteredUsers(uuid);
-    }
-
     @GetMapping("challenges")
-    List<Challenge> returnsChallenges() {
+    List<Challenge> returnChallenges() {
         return challengeService.getAllChallenges();
     }
 
     @GetMapping("{uuid}")
     Challenge getChallenge(@PathVariable("uuid") UUID uuid) {
-        return challengeService.getChallenge(uuid);
+        return challengeService.getSingleChallenge(uuid);
     }
 
     @PostMapping("sendChallenge")
     void sendChallenge(@RequestBody ChallengeRequest challengeRequest) throws MessagingException {
-        challengeService.sendChallengeEmail(challengeRequest.getReceiver(), challengeRequest.getInitiator(), challengeRequest.getUuid());
+        challengeService.sendChallengeEmail(challengeRequest.getReceiver(), challengeRequest.getSender(), challengeRequest.getUuid());
     }
 }

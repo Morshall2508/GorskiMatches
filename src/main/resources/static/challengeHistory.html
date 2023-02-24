@@ -30,113 +30,65 @@
             }
         })
         .then(json => {
-
             let html = "";
             html += `<div class = "topBarFirst"> Date and Time</div>
                 <div class = "topBarSecond"> Result </div>`
 
             json.forEach(item => {
+                let user1View = Auth.getEmail() === item.emailUser1;
+                let quizNotFinishedBySecondUser = item.result === null;
+                let sameScore = item.totalScoreUser1 === item.totalScoreUser2;
+                let oneOfUsersSolvedQuiz = item.emailUser1 === Auth.getEmail() || item.emailUser2 === Auth.getEmail()
 
                 let uuid = item.uuid;
-                let result = Boolean(item.registeredUserScore > item.nonRegisteredUserScore);
-                let totalResultUser1 = 0;
-                let totalResultUser2 = 0;
-                let i;
-                for (i = 0; i < 5; i++) {
-                    if (item.challengeQuizzes[i].scoreUser1 > 0) {
-                        totalResultUser1++;
-                    }
-                    if (item.challengeQuizzes[i].scoreUser2 > 0) {
-                        totalResultUser2++;
-                    }
-                }
-                console.log(item.challengeQuizzes[0].emailUser1)
-                console.log(item.challengeQuizzes[0].emailUser2)
-                console.log(Auth.getEmail())
-                if (item.challengeQuizzes[0].emailUser1 === Auth.getEmail() || item.challengeQuizzes[0].emailUser2 === Auth.getEmail()) {
 
-                    if (Auth.getEmail() == item.challengeQuizzes[0].emailUser1) {
-
-                        // Case Registered_01 vs Non Registered
-                        if (item.challengeQuizzes[0].emailUser2 == null) {
-
-                            if (item.nonRegisteredUserTimeSeconds === 0 || item.registeredUserTimeSeconds === 0) {
-
-                                html += `
-                <div class = "challengeHistoryElement" onclick="window.location.href='/challengeDetails.html?uuid=' + ('${uuid}');"> ${new Date(item.time).toLocaleString()}</div>
-                <div class = "challengeHistoryElement" onclick="window.location.href='/challengeDetails.html?uuid=' + ('${uuid}');"></div>`
-                            } else {
-                                let totalTime = Boolean(item.nonRegisteredUserTimeSeconds > item.registeredUserTimeSeconds);
-                                if (item.registeredUserScore === item.nonRegisteredUserScore) {
-                                    html += `
-                <div class = "challengeHistoryElement" onclick="window.location.href='/challengeDetails.html?uuid=' + ('${uuid}');" style = background-color:${totalTime ? "#54af54" : "#d54545"}> ${new Date(item.time).toLocaleString()}</div>
-                <div class = "challengeHistoryElement" onclick="window.location.href='/challengeDetails.html?uuid=' + ('${uuid}');" style = background-color:${totalTime ? "#54af54" : "#d54545"}> ${totalTime ? "Won" : "Lost"}</div>`
-                                    document.getElementById("tableUuidTime").innerHTML = html;
-                                } else {
-                                    html += `
-                <div class = "challengeHistoryElement" onclick="window.location.href='/challengeDetails.html?uuid=' + ('${uuid}');" style = background-color:${result ? "#54af54" : "#d54545"}> ${new Date(item.time).toLocaleString()}</div>
-                <div class = "challengeHistoryElement" onclick="window.location.href='/challengeDetails.html?uuid=' + ('${uuid}');" style = background-color:${result ? "#54af54" : "#d54545"}> ${result ? "Won" : "Lost"}</div>`
-                                    document.getElementById("tableUuidTime").innerHTML = html;
-                                }
-                            }
-                        }
-                        // Case Registered vs registered - Registered 01 view
-                        else {
-                            if (item.challengeQuizzes[0].timeUser1 === 0 || item.challengeQuizzes[0].timeUser2 === 0) {
-
-                                html += `
-                <div class = "challengeHistoryElement" onclick="window.location.href='/challengeDetails.html?uuid=' + ('${uuid}');"> ${new Date(item.time).toLocaleString()}</div>
-                <div class = "challengeHistoryElement" onclick="window.location.href='/challengeDetails.html?uuid=' + ('${uuid}');"></div>`
-                            } else {
-
-                                if (totalResultUser1 === totalResultUser2) {
-
-                                    let totalTime = Boolean(item.challengeQuizzes[0].timeUser2 > item.challengeQuizzes[0].timeUser1);
-                                    html += `
-                <div class = "challengeHistoryElement" onclick="window.location.href='/challengeDetails.html?uuid=' + ('${uuid}');" style = background-color:${totalTime ? "#54af54" : "#d54545"}> ${new Date(item.time).toLocaleString()}</div>
-                <div class = "challengeHistoryElement" onclick="window.location.href='/challengeDetails.html?uuid=' + ('${uuid}');" style = background-color:${totalTime ? "#54af54" : "#d54545"}> ${totalTime ? "Won" : "Lost"}</div>`
-                                    document.getElementById("tableUuidTime").innerHTML = html;
-                                } else {
-
-                                    let resultforBothRegistered = Boolean(totalResultUser1 > totalResultUser2);
-                                    html += `
-                <div class = "challengeHistoryElement" onclick="window.location.href='/challengeDetails.html?uuid=' + ('${uuid}');" style = background-color:${resultforBothRegistered ? "#54af54" : "#d54545"}> ${new Date(item.time).toLocaleString()}</div>
-                <div class = "challengeHistoryElement" onclick="window.location.href='/challengeDetails.html?uuid=' + ('${uuid}');" style = background-color:${resultforBothRegistered ? "#54af54" : "#d54545"}> ${resultforBothRegistered ? "Won" : "Lost"}</div>`
-                                    document.getElementById("tableUuidTime").innerHTML = html;
-                                }
-                            }
-                        }
-
+                if (oneOfUsersSolvedQuiz) {
+                    if (quizNotFinishedBySecondUser) {
+                        html += `
+                <div class = "challengeHistoryElement" onclick="window.location.href='/challengeDetails.html?uuid=' +
+                 ('${uuid}');"> ${new Date(item.creationTime).toLocaleString()}</div>
+                <div class = "challengeHistoryElement" onclick="window.location.href='/challengeDetails.html?uuid=' +
+                 ('${uuid}');"></div>`
                         document.getElementById("tableUuidTime").innerHTML = html;
-
                     } else {
-                        // Case Registered vs registered - Registered 02 view
-                        if (item.challengeQuizzes[0].timeUser1 === 0 || item.challengeQuizzes[0].timeUser2 === 0) {
+                        if (user1View) {
 
-                            html += `
-                <div class = "challengeHistoryElement" onclick="window.location.href='/challengeDetails.html?uuid=' + ('${uuid}');"> ${new Date(item.time).toLocaleString()}</div>
-                <div class = "challengeHistoryElement" onclick="window.location.href='/challengeDetails.html?uuid=' + ('${uuid}');"></div>`
-                        } else {
-
-                            if (totalResultUser1 === totalResultUser2) {
-
-                                let totalTime = Boolean(item.challengeQuizzes[0].timeUser1 > item.challengeQuizzes[0].timeUser2);
+                            if (item.result === "USER_1_WIN") {
                                 html += `
-                <div class = "challengeHistoryElement" onclick="window.location.href='/challengeDetails.html?uuid=' + ('${uuid}');" style = background-color:${totalTime ? "#54af54" : "#d54545"}> ${new Date(item.time).toLocaleString()}</div>
-                <div class = "challengeHistoryElement" onclick="window.location.href='/challengeDetails.html?uuid=' + ('${uuid}');" style = background-color:${totalTime ? "#54af54" : "#d54545"}> ${totalTime ? "Won" : "Lost"}</div>`
+                <div class = "challengeHistoryElement" onclick="window.location.href='/challengeDetails.html?uuid=' +
+                 ('${uuid}');" style = "background-color: #54af54;"> ${new Date(item.creationTime).toLocaleString()}</div>
+                <div class = "challengeHistoryElement" onclick="window.location.href='/challengeDetails.html?uuid=' +
+                 ('${uuid}');" style = "background-color: #54af54;"}> Won </div>`
                                 document.getElementById("tableUuidTime").innerHTML = html;
                             } else {
-                                let resultforBothRegistered = Boolean(totalResultUser2 > totalResultUser1);
                                 html += `
-                <div class = "challengeHistoryElement" onclick="window.location.href='/challengeDetails.html?uuid=' + ('${uuid}');" style = background-color:${resultforBothRegistered ? "#54af54" : "#d54545"}> ${new Date(item.time).toLocaleString()}</div>
-                <div class = "challengeHistoryElement" onclick="window.location.href='/challengeDetails.html?uuid=' + ('${uuid}');" style = background-color:${resultforBothRegistered ? "#54af54" : "#d54545"}> ${resultforBothRegistered ? "Won" : "Lost"}</div>`
+                <div class = "challengeHistoryElement" onclick="window.location.href='/challengeDetails.html?uuid=' +
+                 ('${uuid}');" style = "background-color: #d54545;"> ${new Date(item.creationTime).toLocaleString()}</div>
+                <div class = "challengeHistoryElement" onclick="window.location.href='/challengeDetails.html?uuid=' +
+                 ('${uuid}');" style = "background-color: #d54545;"}> Lost </div>`
+                                document.getElementById("tableUuidTime").innerHTML = html;
+                            }
+
+                        } else {
+                            if (item.result === "USER_2_WIN") {
+                                html += `
+                <div class = "challengeHistoryElement" onclick="window.location.href='/challengeDetails.html?uuid=' +
+                 ('${uuid}');" style = "background-color: #54af54;"> ${new Date(item.creationTime).toLocaleString()}</div>
+                <div class = "challengeHistoryElement" onclick="window.location.href='/challengeDetails.html?uuid=' +
+                 ('${uuid}');" style = "background-color: #54af54;"}> Won </div>`
+                                document.getElementById("tableUuidTime").innerHTML = html;
+                            } else {
+                                html += `
+                <div class = "challengeHistoryElement" onclick="window.location.href='/challengeDetails.html?uuid=' +
+                 ('${uuid}');" style = "background-color: #d54545;"> ${new Date(item.creationTime).toLocaleString()}</div>
+                <div class = "challengeHistoryElement" onclick="window.location.href='/challengeDetails.html?uuid=' +
+                 ('${uuid}');" style = "background-color: #d54545;"}> Lost </div>`
                                 document.getElementById("tableUuidTime").innerHTML = html;
                             }
                         }
                     }
                 }
             })
-
         })
 </script>
 <script>
