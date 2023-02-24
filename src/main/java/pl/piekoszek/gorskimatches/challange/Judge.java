@@ -28,7 +28,7 @@ class Judge {
         }
     }
 
-    Boolean verifyAnswerToQuiz(String quiz, String answer) {
+    boolean verifyAnswerToQuiz(String quiz, String answer) {
         return quizAnswerChecker.checkForCorrectAnswer(quiz, answer);
     }
 }
