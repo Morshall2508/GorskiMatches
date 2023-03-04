@@ -168,9 +168,9 @@ class AccountControllerTest {
 
     @Test
     void shouldNotReturnAccountInfoWhenUserIsNotInDatabase() throws Exception {
-        mockMvc.perform(get("/api/auth/accountInfo/" + email))
+        mockMvc.perform(get("/api/auth/accountInfo/" + "gorskimatch@gmail.com"))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$").value("Cannot find user with email: " + email));
+                .andExpect(jsonPath("$").value("Cannot find user with email: " + "gorskimatch@gmail.com"));
     }
 
     private String getToken(){
