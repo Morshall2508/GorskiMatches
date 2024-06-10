@@ -1,14 +1,14 @@
-package pl.piekoszek.gorskimatches.facebook;
+package pl.piekoszek.gorskimatches.messenger;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-class FacebookUrlCreator {
+public class QuizUrlCreator {
 
     private final String server;
 
-    public FacebookUrlCreator(@Value("${matches.server.address}") String server) {
+    public QuizUrlCreator(@Value("${matches.server.address}") String server) {
         this.server = server;
     }
 
