@@ -8,16 +8,16 @@ import pl.piekoszek.gorskimatches.messenger.QuizHandler;
 import java.util.List;
 
 @Component
-class RequestHandler {
+ class RequestHandler {
 
-    private final Commands commands;
+    private final DiscordCommands discordCommands;
 
     public RequestHandler(QuizHandler quizHandler) {
-        this.commands = new Commands(quizHandler);
+        this.discordCommands = new DiscordCommands(quizHandler);
     }
 
     public String reply(String messageReceived, MessageReceivedEvent event) {
-        List<String> responses = commands.handleCommands(messageReceived, event.getAuthor().getId());
+        List<String> responses = discordCommands.handleCommands(messageReceived, event.getAuthor().getId());
         return String.join("\n", responses);
     }
 }

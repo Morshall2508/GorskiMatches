@@ -5,11 +5,11 @@ import pl.piekoszek.gorskimatches.validation.StringEditor;
 
 import java.util.List;
 
-class Commands {
+class DiscordCommands {
 
     private final QuizHandler quizHandler;
 
-    public Commands(QuizHandler quizHandler) {
+    public DiscordCommands(QuizHandler quizHandler) {
         this.quizHandler = quizHandler;
     }
 

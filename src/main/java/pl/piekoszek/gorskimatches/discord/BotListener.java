@@ -9,7 +9,7 @@ class BotListener extends ListenerAdapter {
 
     private final RequestHandler requestHandler;
 
-    public BotListener(RequestHandler requestHandler) {
+    BotListener(RequestHandler requestHandler) {
         this.requestHandler = requestHandler;
     }
 

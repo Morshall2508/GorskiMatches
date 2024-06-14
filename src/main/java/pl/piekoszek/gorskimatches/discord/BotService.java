@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.Objects;
 
 @Service
 class BotService {
@@ -26,18 +25,6 @@ class BotService {
         try {
             this.jda = JDABuilder.createDefault(discordToken, GatewayIntent.GUILD_MESSAGES, GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_MEMBERS)
                     .addEventListeners(new BotListener(requestHandler)).build();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void sendMessage(String guild, String channel, String message) {
-        try {
-            Objects.requireNonNull(Objects.requireNonNull(jda
-                                    .getGuildById(guild))
-                            .getTextChannelById(channel))
-                    .sendMessage(message)
-                    .queue();
         } catch (Exception e) {
             e.printStackTrace();
         }
