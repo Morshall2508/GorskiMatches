@@ -1,21 +1,21 @@
 package pl.piekoszek.gorskimatches.facebook;
 
 import org.springframework.stereotype.Component;
+import pl.piekoszek.gorskimatches.messenger.QuizHandler;
+import pl.piekoszek.gorskimatches.messenger.QuizUrlCreator;
 import pl.piekoszek.gorskimatches.validation.StringEditor;
 
 import java.util.List;
-import java.util.Locale;
 
 @Component
 public class FacebookCommands {
 
-    private final FacebookQuiz facebookQuiz;
+    private final QuizHandler quizHandler;
+    private final QuizUrlCreator quizUrlCreator;
 
-    private final FacebookUrlCreator facebookUrlCreator;
-
-    FacebookCommands(FacebookQuiz facebookQuiz, FacebookUrlCreator facebookUrlCreator) {
-        this.facebookQuiz = facebookQuiz;
-        this.facebookUrlCreator = facebookUrlCreator;
+    FacebookCommands(QuizHandler quizHandler, QuizUrlCreator quizUrlCreator) {
+        this.quizHandler = quizHandler;
+        this.quizUrlCreator = quizUrlCreator;
     }
 
     public List<FacebookCommandResponse> handleCommands(FacebookMessageReceived messageReceived, String id) {
@@ -55,13 +55,13 @@ public class FacebookCommands {
     }
 
     private List<FacebookCommandResponse> quiz(String id) {
-        return List.of(FacebookCommandResponse.ofAttachment(facebookUrlCreator.createUrl(facebookQuiz.generateQuiz(id))));
+        return List.of(FacebookCommandResponse.ofAttachment(quizUrlCreator.createUrl(quizHandler.generateQuiz(id))));
     }
 
     private List<FacebookCommandResponse> check(String id, String answer) {
         if (isStarted(id)) {
-            if (facebookQuiz.checkQuiz(id, answer)) {
-                facebookQuiz.cleanUpAfterQuiz(id);
+            if (quizHandler.checkQuiz(id, answer)) {
+                quizHandler.cleanUpAfterQuiz(id);
                 return List.of(FacebookCommandResponse.ofMessage("Great Job! For another quiz, type in: challenge"));
             } else {
                 return List.of(FacebookCommandResponse.ofMessage("Hmm, try again!"));
@@ -82,6 +82,6 @@ public class FacebookCommands {
     }
 
     private boolean isStarted(String id) {
-        return facebookQuiz.isStarted(id);
+        return quizHandler.isStarted(id);
     }
 }

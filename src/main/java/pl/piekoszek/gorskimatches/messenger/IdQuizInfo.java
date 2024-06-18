@@ -1,10 +1,10 @@
-package pl.piekoszek.gorskimatches.facebook;
+package pl.piekoszek.gorskimatches.messenger;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class FacebookIdQuizInfo {
+public class IdQuizInfo {
 
     @Id
     String id;
